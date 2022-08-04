@@ -8,7 +8,7 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 const images = [
     {
-        url: '../assets/fondo.jpg',  //no me funciona la imagen
+        url: 'https://arc-anglerfish-arc2-prod-copesa.s3.amazonaws.com/public/EEUWJOBQF5ASVDETG7KSGCPDHY.jpg',
         title: 'Ver personajes',
         width: '100%',
     },

@@ -53,8 +53,12 @@ export default function Login() {
     }else{
         Swal.fire({
             icon:'error',
-            title:'Oops...',
-            text:'email o password'
+            title:'Error...!!',
+            text:'email o password incorrectos',
+            imageUrl: "https://arc-anglerfish-arc2-prod-copesa.s3.amazonaws.com/public/EEUWJOBQF5ASVDETG7KSGCPDHY.jpg",
+            imageWidth: 400,
+            imageHeight: 200,
+            imageAlt: "Custom image",
     })  
     }
 };
