@@ -30,7 +30,7 @@ export function login () {
 
 export const getCharacters = () => async (dispatch) => {
   try {
-    const response = await axios.get(process.env.REACT_APP_BASEURL);
+    const response = await axios.get(process.env.REACT_APP_BASEURL); //llama al env
     dispatch({
       type: GET_CHARACTERS_SUCCESS,
       payload: response.data.results,

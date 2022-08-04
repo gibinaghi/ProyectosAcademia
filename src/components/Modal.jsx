@@ -29,7 +29,7 @@ export default function BasicModal({id, species, name, status, gender}) {
 
     return (
         <div>
-        <Button onClick={handleOpen} sx={color}>Open modal</Button>
+        <Button onClick={handleOpen} sx={color}>Más Info</Button>
         <Modal
             open={open}
             onClose={handleClose}
