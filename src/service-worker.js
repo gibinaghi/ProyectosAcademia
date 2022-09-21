@@ -8,10 +8,7 @@
 // service worker, and the Workbox build step will be skipped.
 
 import { clientsClaim } from 'workbox-core';
-import { ExpirationPlugin } from 'workbox-expiration';
-import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
-import { registerRoute } from 'workbox-routing';
-import { StaleWhileRevalidate } from 'workbox-strategies';
+import { precacheAndRoute } from 'workbox-precaching';
 
 clientsClaim();
 
@@ -21,52 +18,34 @@ clientsClaim();
 // even if you decide not to use precaching. See https://cra.link/PWA
 precacheAndRoute(self.__WB_MANIFEST);
 
-// Set up App Shell-style routing, so that all navigation requests
-// are fulfilled with your index.html shell. Learn more at
-// https://developers.google.com/web/fundamentals/architecture/app-shell
-const fileExtensionRegexp = new RegExp('/[^/?]+\\.[^/]+$');
-registerRoute(
-  // Return false to exempt requests from being fulfilled by index.html.
-  ({ request, url }) => {
-    // If this isn't a navigation, skip.
-    if (request.mode !== 'navigate') {
-      return false;
-    } // If this is a URL that starts with /_, skip.
+const CACHE_STATIC = 'cache-static-v1';
+const CACHE_DYNAMIC = 'cache-dynamic-v1'; //aca poner la imagen de la ruta externa
+const CACHE_INMUTABLE = 'cache-inmutable-v1';
 
-    if (url.pathname.startsWith('/_')) {
-      return false;
-    } // If this looks like a URL for a resource, because it contains // a file extension, skip.
+const APP_SHELL = [
+  '/favicon.ico', 
+  '/', 
+  '/index.html'
+]; //aca puede ir alguna imagen de static, del build, todos los logos
 
-    if (url.pathname.match(fileExtensionRegexp)) {
-      return false;
-    } // Return true to signal that we want to use the handler.
+const APP_SHELL_INMUTABLE = []; //aca pueden ir las fuentes del css
 
-    return true;
-  },
-  createHandlerBoundToURL(process.env.PUBLIC_URL + '/index.html')
-);
-
-// An example runtime caching route for requests that aren't handled by the
-// precache, in this case same-origin .png requests like those from in public/
-registerRoute(
-  // Add in any other file extensions or routing criteria as needed.
-  ({ url }) => url.origin === self.location.origin && url.pathname.endsWith('.png'), // Customize this strategy as needed, e.g., by changing to CacheFirst.
-  new StaleWhileRevalidate({
-    cacheName: 'images',
-    plugins: [
-      // Ensure that once this runtime cache reaches a maximum size the
-      // least-recently used images are removed.
-      new ExpirationPlugin({ maxEntries: 50 }),
-    ],
-  })
-);
-
-// This allows the web app to trigger skipWaiting via
-// registration.waiting.postMessage({type: 'SKIP_WAITING'})
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
+self.addEventListener('install', e => {
+  const promiseStatic = caches.open(CACHE_STATIC).then(cache => cache.addAll(APP_SHELL));
+  const promiseInmutable = caches.open(CACHE_INMUTABLE).then(cache => cache.addAll(APP_SHELL_INMUTABLE));
+  e.waitUntil(Promise.all([promiseStatic, promiseInmutable]));
 });
 
-// Any other custom service worker logic can go here.
+self.addEventListener('activate', e => {
+  const response = caches.keys().then(keys => {
+    keys.forEach(key => {
+      if (key !== CACHE_STATIC && key.includes('static')) {
+        return caches.delete(key);
+      }
+      if (key !== CACHE_DYNAMIC && key.includes('dynamic')) {
+        return caches.delete(key);
+      }
+    });
+  });
+  e.waitUntil(response);
+});
