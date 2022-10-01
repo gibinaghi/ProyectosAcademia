@@ -4,6 +4,7 @@ import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientDetailRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientDetailResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientResponse;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.ReadAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,17 +12,17 @@ import java.util.List;
 @Service
 public interface IClientDetailService {
     /*//Get all
-    List<ClientDetailResponse> findAllClientDetail();
+    List<ClientDetailResponse> findAllClientDetail() throws ReadAccessException;*/
 
     //Get by id
-    ClientDetailResponse findClientDetailById(Long idClientDetail);
+    ClientDetailResponse findClientDetailById(Long idClientDetail) throws ReadAccessException;
 
-    //Create
+    /*//Create
     ClientDetailResponse createClientDetail(ClientDetailRequest clientDetailRequest);
 
     //Update
-    ClientDetailResponse updateClientDetailById(Long idClientDetail, ClientDetailRequest clientDetailRequest);
+    ClientDetailResponse updateClientDetailById(Long idClientDetail, ClientDetailRequest clientDetailRequest);*/
 
     //Delete
-    void deleteClientDetail(Long idClientDetail);*/
+    void deleteClientDetail(Long idClientDetail);
 }

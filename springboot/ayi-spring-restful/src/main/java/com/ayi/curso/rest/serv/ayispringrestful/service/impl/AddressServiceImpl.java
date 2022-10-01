@@ -23,7 +23,7 @@ public class AddressServiceImpl implements IAddressService {
 
     private IAddressMapper addressMapper;
 
-    //Get all
+    //Get all -> agregar paginacion si alcanzo
 
     //Get by id
     @Override
@@ -71,7 +71,7 @@ public class AddressServiceImpl implements IAddressService {
 
     //Delete
     @Override
-    public deleteAddress(Long idAddress){
+    public void deleteAddress(Long idAddress){
         Optional<Address> entityAddress = addressRepository.findById(idAddress);
 
         if (entityAddress.isPresent()) {
