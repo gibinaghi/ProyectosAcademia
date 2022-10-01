@@ -4,6 +4,7 @@ import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Address;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Client;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.ReadAccessException;
 import com.ayi.curso.rest.serv.ayispringrestful.mapper.IAddressMapper;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.IAddressRepository;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.IClientRepository;
@@ -22,11 +23,33 @@ public class AddressServiceImpl implements IAddressService {
 
     private IAddressMapper addressMapper;
 
+    //Get all
+
+    //Get by id
+    @Override
+    @Transactional
+    public AddressResponse findAddressById(Long idAddress) throws ReadAccessException {
+        if(idAddress == null || idAddress < 0){
+            throw new ReadAccessException("El id es nulo o vacío.");
+        }
+
+
+        AddressResponse addressResponse;
+        Optional<Address> entityAddress = addressRepository.findById(idAddress);
+
+        if (!entityAddress.isPresent()) {
+            throw new ReadAccessException("Error. ID not found.");
+        }
+
+        addressResponse = addressMapper.convertEntityToDto(entityAddress.get());
+        return addressResponse;
+    }
+
     //Create
     @Override
     @Transactional
-    public AddressResponse createAddress(AddressRequest request) {
-        Address address = addressMapper.convertDtoToEntity(request);
+    public AddressResponse createAddress(AddressRequest addressRequest) {
+        Address address = addressMapper.convertDtoToEntity(addressRequest);
 
         //Find client entity for id
         //Long clientId = address.getClient().getIdClient();
@@ -34,7 +57,7 @@ public class AddressServiceImpl implements IAddressService {
 
         Client client = address.getClient();
 
-//        BIDIRECCIONALIDAD EN LA RELACIÓN PARA ACTUALIZAR LA LISTA DE ADDRESS DEL CLIENTE??
+        //BIDIRECCIONALIDAD EN LA RELACIÓN PARA ACTUALIZAR LA LISTA DE ADDRESS DEL CLIENTE??
         address.setClient(client);
 
         //Set Client entity in Address
@@ -43,4 +66,19 @@ public class AddressServiceImpl implements IAddressService {
 
         return addressMapper.convertEntityToDto(address);
     }
+
+    //Update
+
+    //Delete
+    @Override
+    public deleteAddress(Long idAddress){
+        Optional<Address> entityAddress = addressRepository.findById(idAddress);
+
+        if (entityAddress.isPresent()) {
+            addressRepository.deleteById(idAddress);
+        } else {
+            throw new RuntimeException("Error. ID not found.");
+        }
+    }
+
 }
