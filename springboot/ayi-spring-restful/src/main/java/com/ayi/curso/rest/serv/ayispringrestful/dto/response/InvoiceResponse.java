@@ -17,7 +17,7 @@ import java.io.Serializable;
 @Builder
 @ApiModel(
         value = "Invoice Response",
-        description = "Represents invoice data retrieve from server"
+        description = "Represents invoice and client data"
 )
 public class InvoiceResponse implements Serializable {
 

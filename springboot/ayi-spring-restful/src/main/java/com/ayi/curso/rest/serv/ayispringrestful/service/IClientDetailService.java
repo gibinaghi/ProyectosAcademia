@@ -17,10 +17,10 @@ public interface IClientDetailService {
     //Get by id
     ClientDetailResponse findClientDetailById(Long idClientDetail) throws ReadAccessException;
 
-    /*//Create
+    //Create client detail and client
     ClientDetailResponse createClientDetail(ClientDetailRequest clientDetailRequest);
 
-    //Update
+    /*//Update
     ClientDetailResponse updateClientDetailById(Long idClientDetail, ClientDetailRequest clientDetailRequest);*/
 
     //Delete

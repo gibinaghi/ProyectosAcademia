@@ -1,7 +1,9 @@
 package com.ayi.curso.rest.serv.ayispringrestful.controller;
 
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientDetailRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientDetailResponse;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.ReadAccessException;
 import com.ayi.curso.rest.serv.ayispringrestful.service.IClientDetailService;
 import io.swagger.annotations.*;
@@ -52,7 +54,30 @@ public class ClientDetailControllerImpl {
         }
     }
 
-    //Create
+    //Create client detail and client
+    @PostMapping(
+            value = "/createClientDetail",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(
+            value = "Retrieves a client detail created",
+            httpMethod = "POST",
+            response = AddressResponse.class
+    )
+    @ApiResponses(value = {
+            @ApiResponse(code = 201,
+                    message = "Body content with all information about address",
+                    response = AddressResponse.class),
+            @ApiResponse(code = 400,
+                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data form")
+    })
+    public ResponseEntity<ClientDetailResponse> createClientDetail(
+            @ApiParam(value = "data of client detail", required = true)
+            @RequestBody ClientDetailRequest request
+    ) {
+        ClientDetailResponse clientDetailResponse = clientDetailService.createClientDetail(request);
+        return new ResponseEntity<>(clientDetailResponse, HttpStatus.CREATED);
+    }
 
     //Update
 

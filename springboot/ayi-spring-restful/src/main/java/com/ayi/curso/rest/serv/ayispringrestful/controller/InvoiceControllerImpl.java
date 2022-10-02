@@ -1,6 +1,9 @@
 package com.ayi.curso.rest.serv.ayispringrestful.controller;
 
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientRequest;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.InvoiceRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.InvoiceResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.ReadAccessException;
 import com.ayi.curso.rest.serv.ayispringrestful.service.IClientDetailService;
@@ -53,7 +56,30 @@ public class InvoiceControllerImpl {
         }
     }
 
-    //Create
+    //Create invoice and client detail
+    @PostMapping(
+            value = "/createInvoice",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(
+            value = "Retrieves a invoice created",
+            httpMethod = "POST",
+            response = AddressResponse.class
+    )
+    @ApiResponses(value = {
+            @ApiResponse(code = 201,
+                    message = "Body content with all information about address",
+                    response = AddressResponse.class),
+            @ApiResponse(code = 400,
+                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data form")
+    })
+    public ResponseEntity<InvoiceResponse> createInvoice(
+            @ApiParam(value = "data of invoice", required = true)
+            @RequestBody InvoiceRequest request
+    ) {
+        InvoiceResponse invoiceResponse = invoiceService.createInvoice(request);
+        return new ResponseEntity<>(invoiceResponse, HttpStatus.CREATED);
+    }
 
     //Update
 

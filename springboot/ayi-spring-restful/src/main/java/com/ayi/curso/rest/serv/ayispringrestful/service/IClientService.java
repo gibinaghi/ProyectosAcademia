@@ -18,10 +18,10 @@ public interface IClientService {
     //Get by id
     ClientResponse findClientById(Long idClient) throws ReadAccessException;
 
-    /*//Create
+    //Create client, client detail and address
     ClientResponse createClient(ClientRequest clientRequest);
 
-    //Update
+   /* //Update
     ClientResponse updateClientById(Long idClient, ClientRequest clientRequest);*/
 
     //Delete

@@ -54,7 +54,7 @@ public class AddressController {
         }
     }
 
-    //Create
+    //Create address and set client
     @PostMapping(
             value = "/createAddress",
             consumes = MediaType.APPLICATION_JSON_VALUE,

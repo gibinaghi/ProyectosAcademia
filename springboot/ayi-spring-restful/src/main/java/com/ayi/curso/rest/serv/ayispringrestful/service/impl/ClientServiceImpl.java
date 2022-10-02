@@ -1,7 +1,11 @@
 package com.ayi.curso.rest.serv.ayispringrestful.service.impl;
 
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressRequest;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientRequest;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientDetailResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientResponse;
+import com.ayi.curso.rest.serv.ayispringrestful.entity.Address;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Client;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.ClientDetail;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.ReadAccessException;
@@ -12,6 +16,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -33,17 +38,34 @@ public class ClientServiceImpl implements IClientService {
 
 
         ClientResponse clientResponse;
-        Optional<Client> entityClent = clientRepository.findById(idClient);
+        Optional<Client> entityClient = clientRepository.findById(idClient);
 
-        if (!entityClent.isPresent()) {
+        if (!entityClient.isPresent()) {
             throw new ReadAccessException("Error. ID not found.");
         }
 
-        clientResponse = clientMapper.convertEntityToDto(entityClent.get());
+        clientResponse = clientMapper.convertEntityToDto(entityClient.get());
         return clientResponse;
     }
 
-    //Create
+    //Create client, client detail and address
+    @Override
+    @Transactional
+    public ClientResponse createClient(ClientRequest clientRequest) {
+        Client client  = clientMapper.convertDtoToEntity(clientRequest);
+
+        //set address and client detail in client
+        List<Address> address = client.getAddresses();
+        ClientDetail clientDetail = client.getClientDetail();
+
+        client.setAddresses(address);
+        client.setClientDetail(clientDetail);
+
+        //Save
+        client = clientRepository.save(client);
+
+        return clientMapper.convertEntityToDto(client);
+    }
 
     //Update
 

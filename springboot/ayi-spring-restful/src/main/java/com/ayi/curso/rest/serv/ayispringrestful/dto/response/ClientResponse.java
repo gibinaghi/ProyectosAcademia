@@ -18,8 +18,8 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @ApiModel(
-        value = "ClientResponse",
-        description = "Represents the client data back from the server"
+        value = "Client Response",
+        description = "Represents the client, client detail, invoice and address data"
 )
 public class ClientResponse implements Serializable {
 

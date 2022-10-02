@@ -13,7 +13,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Builder
 @ApiModel(
-        value = "Address and IdClient Request",
+        value = "Address Request",
         description = "Represents address data and idClient"
 )
 public class AddressWithoutClientRequest implements Serializable {

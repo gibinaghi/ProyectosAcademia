@@ -15,7 +15,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Builder
 @ApiModel(
-        value = "ClientDetailResponse",
+        value = "Client Detail Response",
         description = "Response of client detail."
 )
 public class ClientDetailResponse implements Serializable {

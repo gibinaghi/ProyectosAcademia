@@ -46,7 +46,7 @@ public class AddressServiceImpl implements IAddressService {
         return addressResponse;
     }
 
-    //Create
+    //Create address and set client
     @Override
     @Transactional
     public AddressResponse createAddress(AddressWithoutClientRequest addressRequest, Long idClient) {
@@ -57,6 +57,7 @@ public class AddressServiceImpl implements IAddressService {
         //Set client in address
         address.setClient(client);
 
+        //Save
         address = addressRepository.save(address);
 
         return addressMapper.convertEntityToDto(address);
@@ -68,11 +69,13 @@ public class AddressServiceImpl implements IAddressService {
     public AddressResponse createAddressAndClient(AddressRequest addressRequest) {
         Address address = addressMapper.convertDtoToEntity(addressRequest);
 
+        //Set client in address
         Client client = address.getClient();
 
         //BIDIRECCIONALIDAD EN LA RELACIÓN PARA ACTUALIZAR LA LISTA DE ADDRESS DEL CLIENTE??
         address.setClient(client);
 
+        //Save
         address = addressRepository.save(address);
 
         return addressMapper.convertEntityToDto(address);

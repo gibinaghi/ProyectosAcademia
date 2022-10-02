@@ -17,10 +17,10 @@ public interface IInvoiceService {
     //Get by id
     InvoiceResponse findInvoiceById(Long idInvoice) throws ReadAccessException;
 
-   /* //Create
+    //Create invoice and client detail
     InvoiceResponse createInvoice(InvoiceRequest invoiceRequest);
 
-    //Update
+    /*//Update
     InvoiceResponse updateInvoiceById(Long idInvoice, InvoiceRequest invoiceRequest);*/
 
     //Delete

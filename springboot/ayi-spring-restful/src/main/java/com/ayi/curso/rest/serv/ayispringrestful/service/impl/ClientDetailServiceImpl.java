@@ -1,8 +1,11 @@
 package com.ayi.curso.rest.serv.ayispringrestful.service.impl;
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressRequest;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressWithoutClientRequest;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientDetailRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientDetailResponse;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Address;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Client;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.ClientDetail;
@@ -45,7 +48,23 @@ public class ClientDetailServiceImpl implements IClientDetailService {
         return clientDetailResponse;
     }
 
-    //Create
+    //Create client detail and client
+    @Override
+    @Transactional
+    public ClientDetailResponse createClientDetail(ClientDetailRequest clientDetailRequest) {
+        ClientDetail clientDetail = clientDetailMapper.convertDtoToEntity(clientDetailRequest);
+
+
+        //Set client in client detail
+        Client client = clientDetail.getClient();
+
+        clientDetail.setClient(client);
+
+        //Save
+        clientDetail = clientDetailRepository.save(clientDetail);
+
+        return clientDetailMapper.convertEntityToDto(clientDetail);
+    }
 
     //Update
 
