@@ -25,7 +25,7 @@ public class InvoiceControllerImpl {
     //Get all
 
     //Get by id
-    @GetMapping(value = "/getInvoiceById/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/invoiceById/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(
             value = "Retrieves data associated to Master List by Id",
             httpMethod = "GET",
@@ -59,7 +59,10 @@ public class InvoiceControllerImpl {
 
     //Delete
     @DeleteMapping("/{id}")
-    @ApiOperation(value = "Delete a invoice by id",httpMethod = "DELETE")
+    @ApiOperation(
+            value = "Delete a invoice by id",
+            httpMethod = "DELETE"
+    )
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "Success. Invoice deleted by id"),
             @ApiResponse(code = 404, message = "Invoice not found"),

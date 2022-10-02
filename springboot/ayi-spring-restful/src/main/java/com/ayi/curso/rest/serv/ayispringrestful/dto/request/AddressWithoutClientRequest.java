@@ -2,11 +2,7 @@ package com.ayi.curso.rest.serv.ayispringrestful.dto.request;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -17,11 +13,10 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Builder
 @ApiModel(
-        value = "Address Request",
-        description = "Represents address data"
+        value = "Address and IdClient Request",
+        description = "Represents address data and idClient"
 )
-public class AddressRequest implements Serializable {
-
+public class AddressWithoutClientRequest implements Serializable {
     @NotNull(message = "Street can not be null.")
     @ApiModelProperty(position = 1, required = true, notes = "Not null value, street is required")
     private String street;
@@ -47,8 +42,4 @@ public class AddressRequest implements Serializable {
     @NotNull(message = "Country can not be null.")
     @ApiModelProperty(position = 7, required = true, notes = "Not null value, country is required")
     private String country;
-
-    @NotNull(message = "Client can not be null")
-    @ApiModelProperty(position = 8, required = true, notes = "Not null value, client is required.")
-    private ClientRequest client;
 }

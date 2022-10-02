@@ -1,5 +1,6 @@
 package com.ayi.curso.rest.serv.ayispringrestful.service.impl;
 
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressWithoutClientRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Address;
@@ -48,20 +49,30 @@ public class AddressServiceImpl implements IAddressService {
     //Create
     @Override
     @Transactional
-    public AddressResponse createAddress(AddressRequest addressRequest) {
-        Address address = addressMapper.convertDtoToEntity(addressRequest);
+    public AddressResponse createAddress(AddressWithoutClientRequest addressRequest, Long idClient) {
+        Address address = addressMapper.convertDtoToEntityWithoutClient(addressRequest);
 
-        //Find client entity for id
-        //Long clientId = address.getClient().getIdClient();
-        //Optional<Address> clientEntity = clientRepository.findById(clientId);
+        Client client = clientRepository.findById(idClient).get();
+
+        //Set client in address
+        address.setClient(client);
+
+        address = addressRepository.save(address);
+
+        return addressMapper.convertEntityToDto(address);
+    }
+
+    //Create address and client
+    @Override
+    @Transactional
+    public AddressResponse createAddressAndClient(AddressRequest addressRequest) {
+        Address address = addressMapper.convertDtoToEntity(addressRequest);
 
         Client client = address.getClient();
 
         //BIDIRECCIONALIDAD EN LA RELACIÓN PARA ACTUALIZAR LA LISTA DE ADDRESS DEL CLIENTE??
         address.setClient(client);
 
-        //Set Client entity in Address
-        //address.setClient(clientEntity);
         address = addressRepository.save(address);
 
         return addressMapper.convertEntityToDto(address);

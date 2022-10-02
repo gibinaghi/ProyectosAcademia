@@ -1,6 +1,7 @@
 package com.ayi.curso.rest.serv.ayispringrestful.controller;
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressRequest;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressWithoutClientRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.ReadAccessException;
 import com.ayi.curso.rest.serv.ayispringrestful.service.IAddressService;
@@ -25,7 +26,7 @@ public class AddressController {
     //Get all
 
     //Get by id
-    @GetMapping(value = "/getAddressById/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/addressById/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(
             value = "Retrieves data associated to Master List by Id",
             httpMethod = "GET",
@@ -55,7 +56,7 @@ public class AddressController {
 
     //Create
     @PostMapping(
-            value = "/create-address",
+            value = "/createAddress",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(
@@ -72,9 +73,34 @@ public class AddressController {
     })
     public ResponseEntity<AddressResponse> createAddress(
             @ApiParam(value = "data of address", required = true)
+            @RequestBody AddressWithoutClientRequest request, Long idClient
+    ) {
+        AddressResponse addressResponse = addressService.createAddress(request, idClient);
+        return new ResponseEntity<>(addressResponse, HttpStatus.CREATED);
+    }
+
+    //Create address and client
+    @PostMapping(
+            value = "/createAddressAndClient",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(
+            value = "Retrieves a address created",
+            httpMethod = "POST",
+            response = AddressResponse.class
+    )
+    @ApiResponses(value = {
+            @ApiResponse(code = 201,
+                    message = "Body content with all information about address",
+                    response = AddressResponse.class),
+            @ApiResponse(code = 400,
+                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data form")
+    })
+    public ResponseEntity<AddressResponse> createAddressAndClient(
+            @ApiParam(value = "data of address", required = true)
             @RequestBody AddressRequest request
     ) {
-        AddressResponse addressResponse = addressService.createAddress(request);
+        AddressResponse addressResponse = addressService.createAddressAndClient(request);
         return new ResponseEntity<>(addressResponse, HttpStatus.CREATED);
     }
 
@@ -82,7 +108,10 @@ public class AddressController {
 
     //Delete
     @DeleteMapping("/{id}")
-    @ApiOperation(value = "Delete a address by id",httpMethod = "DELETE")
+    @ApiOperation(
+            value = "Delete a address by id",
+            httpMethod = "DELETE"
+    )
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "Success. Address deleted by id"),
             @ApiResponse(code = 404, message = "Address not found"),

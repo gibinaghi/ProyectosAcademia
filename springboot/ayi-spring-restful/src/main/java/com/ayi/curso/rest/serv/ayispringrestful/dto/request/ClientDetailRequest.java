@@ -18,7 +18,7 @@ import java.io.Serializable;
 @Builder
 @ApiModel(
         value = "ClientDetailRequest",
-        description = "Represents the data needed to creat Clients details"
+        description = "Represents the data needed to created Clients details"
 )
 public class ClientDetailRequest implements Serializable {
 

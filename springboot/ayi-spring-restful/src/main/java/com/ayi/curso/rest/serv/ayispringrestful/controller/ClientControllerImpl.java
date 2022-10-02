@@ -24,7 +24,7 @@ public class ClientControllerImpl {
     //Get all
 
     //Get by id
-    @GetMapping(value = "/getClientById/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/clientById/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(
             value = "Retrieves data associated to Master List by Id",
             httpMethod = "GET",
@@ -58,7 +58,10 @@ public class ClientControllerImpl {
 
     //Delete
     @DeleteMapping("/{id}")
-    @ApiOperation(value = "Delete a client by id",httpMethod = "DELETE")
+    @ApiOperation(
+            value = "Delete a client by id",
+            httpMethod = "DELETE"
+    )
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "Success. Client deleted by id"),
             @ApiResponse(code = 404, message = "Client not found"),
