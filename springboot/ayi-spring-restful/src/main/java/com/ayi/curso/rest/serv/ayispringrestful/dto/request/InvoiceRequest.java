@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
 @Getter
@@ -23,6 +24,7 @@ import java.io.Serializable;
 public class InvoiceRequest implements Serializable {
 
     @NotNull(message = "Description can not be null.")
+    @Pattern(regexp = "[a-zA-Z ]{2,100}", message = "Only allows letters, minimum 2, maximum 100")
     @ApiModelProperty(position = 1, required = true, notes = "Invoice description.")
     private String description;
 

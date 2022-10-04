@@ -25,10 +25,12 @@ import java.util.List;
 public class ClientRequest implements Serializable {
 
     @NotNull(message = "Name can not be null.")
+    @Pattern(regexp = "[a-zA-Z ]{2,50}", message = "Only allows letters, minimum 2, maximum 50")
     @ApiModelProperty(position = 1, required = true, notes = "Non empty value, The first name is required.")
     private String name;
 
     @NotNull(message = "Lastname can not be null.")
+    @Pattern(regexp = "[a-zA-Z ]{2,20}", message = "Only allows letters, minimum 2, maximum 20")
     @ApiModelProperty(position = 2, required = true, notes = "Non empty value, The last name is required.")
     private String lastname;
 
@@ -36,7 +38,7 @@ public class ClientRequest implements Serializable {
     @Pattern(regexp = "[0-9]{8}", message = "The format document is 11222333")
     //@Pattern(regexp = "/^(\d{2}\.{1}\d{3}\.\d{3})|(\d{2}\s{1}\d{3}\s\d{3})$/g", message = "The format document is 11.111.111")
     @ApiModelProperty(position = 3, required = true, notes = "Non negative value, The document number is required.")
-    private String documentNumber;
+    private String documentNumber;  //integer
 
     @NotNull(message = "Client detail can not be null.")
     @ApiModelProperty(position = 4, required = true, notes = "Non empty value, The client detail is required.")

@@ -72,7 +72,6 @@ public class AddressServiceImpl implements IAddressService {
         //Set client in address
         Client client = address.getClient();
 
-        //BIDIRECCIONALIDAD EN LA RELACIÓN PARA ACTUALIZAR LA LISTA DE ADDRESS DEL CLIENTE??
         address.setClient(client);
 
         //Save

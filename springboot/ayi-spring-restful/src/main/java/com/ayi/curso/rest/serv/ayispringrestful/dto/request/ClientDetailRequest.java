@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 
 @Getter
@@ -27,6 +28,7 @@ public class ClientDetailRequest implements Serializable {
     private Boolean prime;
 
     @ApiModelProperty(position = 2, notes = "Acumulated points of the client")
+    @Pattern(regexp = "[0-9]{3}", message = "Only number, 3 digits")
     private Long acumulatedPoints;
 
     //    @NotNull(message = "Client can not be null.")
