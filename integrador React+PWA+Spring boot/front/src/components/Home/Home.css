@@ -1,0 +1,27 @@
+h2 {
+    margin-bottom: 5%;
+}
+
+section {
+    padding-left: 20%;
+    line-height: 5px;
+    padding-top: 0px;
+    margin-left: 2%;
+}
+
+p {
+    line-height: 20px;
+}
+
+ul {
+    line-height: 20px;
+}
+
+
+img {
+    clear: both;
+    float: right;
+    height: 321px;
+    width: 444px;
+    margin-right: 10%;
+}
