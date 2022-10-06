@@ -19,6 +19,9 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
+import static com.ayi.curso.rest.serv.ayispringrestful.constants.Exceptions.EXCEPTION_ID_NOT_FOUND;
+import static com.ayi.curso.rest.serv.ayispringrestful.constants.Exceptions.EXCEPTION_ID_NULL;
+
 @Service
 @AllArgsConstructor
 public class ClientDetailServiceImpl implements IClientDetailService {
@@ -33,7 +36,7 @@ public class ClientDetailServiceImpl implements IClientDetailService {
     @Transactional
     public ClientDetailResponse findClientDetailById(Long idClientDetail) throws ReadAccessException {
         if(idClientDetail == null || idClientDetail < 0){
-            throw new ReadAccessException("El id es nulo o vacío.");
+            throw new ReadAccessException(EXCEPTION_ID_NULL);
         }
 
 
@@ -41,7 +44,7 @@ public class ClientDetailServiceImpl implements IClientDetailService {
         Optional<ClientDetail> entityClientDetail = clientDetailRepository.findById(idClientDetail);
 
         if (!entityClientDetail.isPresent()) {
-            throw new ReadAccessException("Error. ID not found.");
+            throw new ReadAccessException(EXCEPTION_ID_NOT_FOUND);
         }
 
         clientDetailResponse = clientDetailMapper.convertEntityToDto(entityClientDetail.get());
@@ -76,7 +79,7 @@ public class ClientDetailServiceImpl implements IClientDetailService {
         if (entityClientDetail.isPresent()) {
             clientDetailRepository.deleteById(idClientDetail);
         } else {
-            throw new RuntimeException("Error. ID not found.");
+            throw new RuntimeException(EXCEPTION_ID_NOT_FOUND);
         }
     }
 }

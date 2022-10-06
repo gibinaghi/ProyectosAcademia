@@ -16,6 +16,9 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
+import static com.ayi.curso.rest.serv.ayispringrestful.constants.Exceptions.EXCEPTION_ID_NOT_FOUND;
+import static com.ayi.curso.rest.serv.ayispringrestful.constants.Exceptions.EXCEPTION_ID_NULL;
+
 @Service
 @AllArgsConstructor
 public class AddressServiceImpl implements IAddressService {
@@ -31,7 +34,7 @@ public class AddressServiceImpl implements IAddressService {
     @Transactional
     public AddressResponse findAddressById(Long idAddress) throws ReadAccessException {
         if(idAddress == null || idAddress < 0){
-            throw new ReadAccessException("El id es nulo o vacío.");
+            throw new ReadAccessException(EXCEPTION_ID_NULL);
         }
 
 
@@ -39,7 +42,7 @@ public class AddressServiceImpl implements IAddressService {
         Optional<Address> entityAddress = addressRepository.findById(idAddress);
 
         if (!entityAddress.isPresent()) {
-            throw new ReadAccessException("Error. ID not found.");
+            throw new ReadAccessException(EXCEPTION_ID_NOT_FOUND);
         }
 
         addressResponse = addressMapper.convertEntityToDto(entityAddress.get());
@@ -90,7 +93,7 @@ public class AddressServiceImpl implements IAddressService {
         if (entityAddress.isPresent()) {
             addressRepository.deleteById(idAddress);
         } else {
-            throw new RuntimeException("Error. ID not found.");
+            throw new RuntimeException(EXCEPTION_ID_NOT_FOUND);
         }
     }
 

@@ -1,10 +1,7 @@
 package com.ayi.curso.rest.serv.ayispringrestful.service.impl;
 
-import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.InvoiceRequest;
-import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.InvoiceResponse;
-import com.ayi.curso.rest.serv.ayispringrestful.entity.Address;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Client;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.ClientDetail;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Invoice;
@@ -16,8 +13,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static com.ayi.curso.rest.serv.ayispringrestful.constants.Exceptions.*;
 
 @Service
 @AllArgsConstructor
@@ -27,13 +27,33 @@ public class InvoiceServiceImpl implements IInvoiceService {
     private IInvoiceMapper invoiceMapper;
 
     //Get all
+    //traer factura, cliente y direccion
+    @Override
+    @Transactional
+    public List<InvoiceResponse> findAllInvoice() throws ReadAccessException {
+
+        List<Invoice> invoiceEntityList = invoiceRepository.findAll();
+
+        if(invoiceEntityList == null) {            //.lenght == 0
+            throw new ReadAccessException(EXCEPTION_LIST_NULL);
+        }
+
+        List<InvoiceResponse> invoiceListResponse = new ArrayList<>();
+        invoiceEntityList.forEach(invoice -> {
+            InvoiceResponse invoiceResponse = invoiceMapper.convertEntityToDto(invoice);
+            invoiceListResponse.add(invoiceResponse);
+        });
+
+        return invoiceListResponse ;
+    }
+
 
     //Get by id
     @Override
     @Transactional
     public InvoiceResponse findInvoiceById(Long idInvoice) throws ReadAccessException {
         if(idInvoice == null || idInvoice < 0){
-            throw new ReadAccessException("El id es nulo o vacío.");
+            throw new ReadAccessException(EXCEPTION_ID_NOT_FOUND );
         }
 
 
@@ -41,7 +61,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
         Optional<Invoice> entityInvoice = invoiceRepository.findById(idInvoice);
 
         if (!entityInvoice.isPresent()) {
-            throw new ReadAccessException("Error. ID not found.");
+            throw new ReadAccessException(EXCEPTION_ID_NULL);
         }
 
         invoiceResponse= invoiceMapper.convertEntityToDto(entityInvoice.get());
@@ -77,7 +97,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
         if (entityInvoice.isPresent()) {
             invoiceRepository.deleteById(idInvoice);
         } else {
-            throw new RuntimeException("Error. ID not found.");
+            throw new RuntimeException(EXCEPTION_ID_NULL);
         }
     }
 }

@@ -11,8 +11,8 @@ import java.util.List;
 
 @Service
 public interface IInvoiceService {
-    /*//Get all
-    List<InvoiceResponse> findAllInvoice() throws ReadAccessException;*/
+    //Get all
+    List<InvoiceResponse> findAllInvoice() throws ReadAccessException;
 
     //Get by id
     InvoiceResponse findInvoiceById(Long idInvoice) throws ReadAccessException;

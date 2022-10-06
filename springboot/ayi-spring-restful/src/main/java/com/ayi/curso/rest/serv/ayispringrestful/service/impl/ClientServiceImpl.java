@@ -19,6 +19,9 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
+import static com.ayi.curso.rest.serv.ayispringrestful.constants.Exceptions.EXCEPTION_ID_NOT_FOUND;
+import static com.ayi.curso.rest.serv.ayispringrestful.constants.Exceptions.EXCEPTION_ID_NULL;
+
 @Service
 @AllArgsConstructor
 public class ClientServiceImpl implements IClientService {
@@ -33,7 +36,7 @@ public class ClientServiceImpl implements IClientService {
     @Transactional
     public ClientResponse findClientById(Long idClient) throws ReadAccessException {
         if(idClient == null || idClient < 0){
-            throw new ReadAccessException("El id es nulo o vacío.");
+            throw new ReadAccessException(EXCEPTION_ID_NULL);
         }
 
 
@@ -41,7 +44,7 @@ public class ClientServiceImpl implements IClientService {
         Optional<Client> entityClient = clientRepository.findById(idClient);
 
         if (!entityClient.isPresent()) {
-            throw new ReadAccessException("Error. ID not found.");
+            throw new ReadAccessException(EXCEPTION_ID_NOT_FOUND );
         }
 
         clientResponse = clientMapper.convertEntityToDto(entityClient.get());
@@ -77,7 +80,7 @@ public class ClientServiceImpl implements IClientService {
         if (entityClient.isPresent()) {
             clientRepository.deleteById(idClient);
         } else {
-            throw new RuntimeException("Error. ID not found.");
+            throw new RuntimeException(EXCEPTION_ID_NOT_FOUND );
         }
     }
 }
