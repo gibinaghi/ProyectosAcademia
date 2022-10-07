@@ -11,13 +11,13 @@ import java.util.List;
 
 @Service
 public interface IInvoiceService {
-    //Get all
+    //Get all invoice, client, detail cliente and address
     List<InvoiceResponse> findAllInvoice() throws ReadAccessException;
 
     //Get by id
     InvoiceResponse findInvoiceById(Long idInvoice) throws ReadAccessException;
 
-    //Create invoice and client detail
+    //Create invoice, client, detail client, address
     InvoiceResponse createInvoice(InvoiceRequest invoiceRequest);
 
     /*//Update

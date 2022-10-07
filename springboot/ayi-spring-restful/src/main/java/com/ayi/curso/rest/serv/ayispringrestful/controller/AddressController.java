@@ -28,7 +28,7 @@ public class AddressController {
     //Get by id
     @GetMapping(value = "/addressById/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(
-            value = "Retrieves data associated to Master List by Id",
+            value = "SHow address by Id",
             httpMethod = "GET",
             response = AddressResponse.class)
     @ApiResponses(value = {

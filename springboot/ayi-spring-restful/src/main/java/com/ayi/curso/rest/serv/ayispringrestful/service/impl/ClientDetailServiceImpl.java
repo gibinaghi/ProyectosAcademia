@@ -1,12 +1,7 @@
 package com.ayi.curso.rest.serv.ayispringrestful.service.impl;
 
-import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressRequest;
-import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressWithoutClientRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientDetailRequest;
-import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientDetailResponse;
-import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientResponse;
-import com.ayi.curso.rest.serv.ayispringrestful.entity.Address;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Client;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.ClientDetail;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.ReadAccessException;
@@ -17,10 +12,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
-import static com.ayi.curso.rest.serv.ayispringrestful.constants.Exceptions.EXCEPTION_ID_NOT_FOUND;
-import static com.ayi.curso.rest.serv.ayispringrestful.constants.Exceptions.EXCEPTION_ID_NULL;
+import static com.ayi.curso.rest.serv.ayispringrestful.constants.Exceptions.*;
 
 @Service
 @AllArgsConstructor
@@ -30,6 +26,24 @@ public class ClientDetailServiceImpl implements IClientDetailService {
     private IClientDetailMapper clientDetailMapper;
 
     //Get all
+    @Override
+    @Transactional
+    public List<ClientDetailResponse> findAllClientDetail() throws ReadAccessException {
+
+        List<ClientDetail> clientEntityList = clientDetailRepository.findAll();
+
+        if(clientEntityList== null) {            //.lenght == 0
+            throw new ReadAccessException(EXCEPTION_LIST_NULL);
+        }
+
+        List<ClientDetailResponse> clientListResponse = new ArrayList<>();
+        clientEntityList.forEach(client -> {
+            ClientDetailResponse clientResponse = clientDetailMapper.convertEntityToDto(client);
+            clientListResponse.add(clientResponse);
+        });
+
+        return clientListResponse ;
+    }
 
     //Get by id
     @Override
@@ -52,6 +66,7 @@ public class ClientDetailServiceImpl implements IClientDetailService {
     }
 
     //Create client detail and client
+    //falta crear la direccion o asignarle una direccion
     @Override
     @Transactional
     public ClientDetailResponse createClientDetail(ClientDetailRequest clientDetailRequest) {
@@ -72,6 +87,7 @@ public class ClientDetailServiceImpl implements IClientDetailService {
     //Update
 
     //Delete
+    //falta borrar tambien direccion y detalle cliente
     @Override
     public void deleteClientDetail(Long idClientDetail){
         Optional<ClientDetail> entityClientDetail = clientDetailRepository.findById(idClientDetail);

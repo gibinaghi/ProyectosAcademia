@@ -26,8 +26,8 @@ public class InvoiceServiceImpl implements IInvoiceService {
 
     private IInvoiceMapper invoiceMapper;
 
-    //Get all
-    //traer factura, cliente y direccion
+    //Get all invoice, client, detail cliente and address
+    //agregar falta paginación
     @Override
     @Transactional
     public List<InvoiceResponse> findAllInvoice() throws ReadAccessException {
@@ -68,7 +68,9 @@ public class InvoiceServiceImpl implements IInvoiceService {
         return invoiceResponse;
     }
 
-    //Create invoice and client detail
+    //Create invoice and set client, detail client and anddress
+
+    //Create invoice, client, detail client, address
     @Override
     @Transactional
     public InvoiceResponse createInvoice(InvoiceRequest invoiceRequest){
@@ -88,6 +90,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
     }
 
     //Update
+    //debe ser un patch - crear dto
 
     //Delete
     @Override

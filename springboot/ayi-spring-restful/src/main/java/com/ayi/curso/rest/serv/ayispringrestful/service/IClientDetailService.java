@@ -11,8 +11,8 @@ import java.util.List;
 
 @Service
 public interface IClientDetailService {
-    /*//Get all
-    List<ClientDetailResponse> findAllClientDetail() throws ReadAccessException;*/
+    //Get all
+    List<ClientDetailResponse> findAllClientDetail() throws ReadAccessException;
 
     //Get by id
     ClientDetailResponse findClientDetailById(Long idClientDetail) throws ReadAccessException;

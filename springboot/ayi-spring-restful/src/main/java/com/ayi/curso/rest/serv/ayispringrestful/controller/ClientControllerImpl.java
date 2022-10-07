@@ -28,7 +28,7 @@ public class ClientControllerImpl {
     //Get by id
     @GetMapping(value = "/clientById/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(
-            value = "Retrieves data associated to Master List by Id",
+            value = "Show client by Id",
             httpMethod = "GET",
             response = ClientResponse.class)
     @ApiResponses(value = {
@@ -66,7 +66,7 @@ public class ClientControllerImpl {
     )
     @ApiResponses(value = {
             @ApiResponse(code = 201,
-                    message = "Body content with all information about address",
+                    message = "Body content with all information about client",
                     response = AddressResponse.class),
             @ApiResponse(code = 400,
                     message = "Describes errors on invalid payload received, e.g: missing fields, invalid data form")
