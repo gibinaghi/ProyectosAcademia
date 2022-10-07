@@ -6,14 +6,14 @@ function Dashboard() {
   return (
     <header>
     <p class="titulo"> iLibs</p>
-    <nav>
-        <ul class="list-group menu-collapsed">
-            <li><a class="list-group-item list-group-item-action active" aria-current="true"> Principal </a></li>
-            <li><a class="list-group-item list-group-item-action active" aria-current="true"> Prestamos </a></li>
-            <li><a class="list-group-item list-group-item-action active" aria-current="true"> Devoluciones </a></li>
-            <li><a class="list-group-item list-group-item-action active" aria-current="true"> Usuarios </a></li>
-            <li><a class="list-group-item list-group-item-action active" aria-current="true"> Libros </a></li>
-            <li><a class="list-group-item list-group-item-action active" aria-current="true"> Reportes </a></li>
+    <nav class="nav">
+        <ul class="list-group menu-collapsed ul">
+            <li class="list"><a href='/' class="list-group-item  menu" aria-current="true"> Principal </a></li>
+            <li class="list"><a href='/lendings' class="list-group-item  menu" aria-current="true"> Prestamos </a></li>
+            <li class="list"><a href='/retuns' class="list-group-item  menu" aria-current="true"> Devoluciones </a></li>
+            <li class="list"><a href='/users' class="list-group-item  menu" aria-current="true"> Usuarios </a></li>
+            <li class="list"><a href='/books' class="list-group-item  menu" aria-current="true"> Libros </a></li>
+            <li class="list"><a href='repots' class="list-group-item  menu" aria-current="true"> Reportes </a></li>
         </ul>
     </nav>
 </header>

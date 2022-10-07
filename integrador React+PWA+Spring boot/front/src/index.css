@@ -2,7 +2,7 @@
 
 body {
   margin: 0;
-  font-family: 'Comforter Brush', cursive;
+  font-family: 'Courier New', Courier, monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

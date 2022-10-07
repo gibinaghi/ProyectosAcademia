@@ -1,10 +1,10 @@
 import React from 'react'
-import '../../assets/styles/Reports.css';
+import '../../assets/styles/StyleGeneral.css';
 
 function Reports() {
   return (
     <div class="container">
-        <h2>Reportes</h2>
+        <h2 class="title">Reportes</h2>
 
         <table class="table table-bordered">
             <thead class="thead-dark">
@@ -25,7 +25,7 @@ function Reports() {
             </tbody>
         </table>
 
-        <button type="button" class="btn btn-primary btn-lg action">Actualizar</button>
+        <button type="button" class="btn btn-primary action">Actualizar</button>
     </div> 
   )
 }

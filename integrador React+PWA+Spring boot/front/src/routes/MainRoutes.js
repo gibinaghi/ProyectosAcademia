@@ -11,7 +11,7 @@ import User from '../components/User/User';
 import UserCreate from '../components/User/UserCreate';
 import UserUpdate from '../components/User/UserUpdate';
 import Lending from '../components/Lending/Lending';
-import Report from '../components/Reports/Report';
+import Reports from '../components/Reports/Reports';
 import Return from '../components/Return/Return';
 
 function MainRoutes() {
@@ -30,7 +30,7 @@ function MainRoutes() {
             <Route path="/update-book" element={<BookUpdate />} />
             <Route path="/lendings" element={<Lending />} />
             <Route path="/retuns" element={<Return />} />
-            <Route path="/repots" element={<Report />} />
+            <Route path="/repots" element={<Reports />} />
         </Routes>
     </div>
   )
