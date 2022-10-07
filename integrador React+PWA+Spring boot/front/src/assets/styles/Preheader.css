@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Comforter+Brush&display=swap');
+
+.sectionpreheader {
+    padding-left: 35%;
+    background: white;
+    max-width: 80%;
+    margin-left: -13%;
+    margin-right: -10%;
+    padding-bottom: -10px;
+    padding-top: 20px;
+}
+
+.preheader {
+    color: rgb(65, 63, 63);;
+    margin-top: 0px;
+    font-size: 20px;
+    font-family: 'Comforter Brush', cursive;
+    padding-top: 1px;
+    padding-bottom: 1px;
+}

@@ -1,5 +1,8 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React from 'react'
-import { Image, TextInput } from 'react-native';
+import { TextInput } from 'react-native';
+import libroImg from '../../assets/img/prestamo.png';
+import '../../assets/styles/Lending.css';
 
 function Lending() {
   return (
@@ -20,7 +23,7 @@ function Lending() {
           </form>
       </div>
         <div class="col-4 foto">
-            <Image src="assets/img/prestamo.gif"/>
+            <img src={libroImg}/>
         </div> 
     </div>  
 </div>

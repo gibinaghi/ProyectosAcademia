@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Comforter+Brush&family=Crimson+Text:ital@1&display=swap');
+
+.title{
+    font-family: 'Courier New', Courier, monospace;
+    margin-bottom: 5%;
+    color: rgb(17, 89, 223);
+    text-decoration: underline;
+}
+
+section {
+    font-family: 'Courier New', Courier, monospace;
+    padding-left: 20%;
+    line-height: 5px;
+    padding-top: 0px;
+    margin-left: 2%;
+}
+
+.parrafo {
+    font-family: 'Courier New', Courier, monospace;
+    line-height: 20px;
+    color: rgb(65, 63, 63);
+    float: left;
+    margin-left: 2%;
+    margin-right: 20%;
+    margin-bottom: 5%;
+    align-content: center;
+}
+
+ul {
+    line-height: 20px;
+    color: rgb(65, 63, 63);
+}
+
+
+img {
+    clear: both;
+    float: right;
+    height: 444px;
+    width: 444px;
+    margin-right: 10%;
+}

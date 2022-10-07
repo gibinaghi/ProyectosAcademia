@@ -1,5 +1,8 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React from 'react'
-import { Image, TextInput } from 'react-native';
+import { TextInput } from 'react-native';
+import '../../assets/styles/Retun.css';
+import libroImg from '../../assets/img/libro.png';
 
 function Return() {
   return (
@@ -21,7 +24,7 @@ function Return() {
                 
           </div>
           <div class="col-4 foto">
-              <Image/>
+              <img src={libroImg}/>
           </div>
       </div>  
   </div>

@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Comforter+Brush&family=Crimson+Text:ital@1&display=swap');
+
+.titleHeadboard {
+    font-family: 'Courier New', Courier, monospace;
+    padding-left: 35%;
+    background: rgb(17, 89, 223);
+    max-width: 100%;
+    margin-left: -13%;
+    margin-right: -10%;
+    margin-bottom: 5%;
+    margin-top: 1%;
+}
+
+.pHeadboard {
+    color: white;
+    margin-top: 0px;
+    font-size: 15px;
+    font-family: 'Courier New', Courier, monospace;
+    padding-top: 1%;
+    padding-bottom: 0%;
+}
+
+.h3Headboard {
+    margin-top: 10px;
+    color: white;
+    font-family: 'Courier New', Courier, monospace;
+    padding-top: 1%;
+    padding-bottom: 1%;
+}

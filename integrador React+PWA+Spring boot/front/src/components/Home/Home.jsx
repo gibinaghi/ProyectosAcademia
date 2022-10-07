@@ -1,15 +1,17 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React from 'react'
-//import { Image } from 'react-native';
+import libroImg from '../../assets/img/libro.png';
+import '../../assets/styles/Home.css';
 
 function Home() {
   return (
-    <div class="container">
-    <h2>Bienvenido</h2>
-    <p> Sistema de Gestion para Biblioteca Publica. 
+    <section class="container">
+    <h2 class="title">Bienvenido</h2>
+    <p class="parrafo"> Sistema de Gestion para Biblioteca Publica. 
         Controle y administre de forma optica y facil el flujo de prestamos y devoluciones de Libros.
         Esta herramienta le permitira llevar un control completo y detallado de su Biblioteca, 
         tendra acceso a herramientas especiales para tareas especificas, como lo son: </p>
-    {//<Image src="assets/img/libro.jpg"/>}
+    <img src={libroImg}/>
     <ul>
         <li>Préstamos</li>
         <li>Devoluciones</li>
@@ -18,7 +20,7 @@ function Home() {
         <li>Eliminar todo tipo de Registros</li>
         <li>Seccion de Reportes de acciones en el sistema</li>
     </ul>
-</div>
+</section>
   )
 }
 

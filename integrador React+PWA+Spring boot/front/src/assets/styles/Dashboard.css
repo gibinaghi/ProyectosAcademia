@@ -1,18 +1,14 @@
-p {
+@import url('https://fonts.googleapis.com/css2?family=Comforter+Brush&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comforter+Brush&family=Crimson+Text:ital@1&display=swap');
+
+.titulo {
     float: left;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 25px;
-    margin: 5%;
+    font-family: 'Comforter Brush', cursive;
+    font-size: 40px;
     color: #fff;
     align-content: center;
     border-width: 150px;
     padding-left: 40%;
-}
-
-hr {
-    height: 5px;
-    width: 50%;
-    background-color: white;
 }
 
 header {
@@ -40,7 +36,7 @@ nav ul {
 
 nav ul li {
     float: left;
-    font-family: Arial, sans-serif;
+    font-family: 'Courier New', Courier, monospace;
     font-size: 15px;
 }
 
