@@ -6,11 +6,13 @@ import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.ReadAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public interface IAddressService {
 
-    /*//Get all
-    List<AddressResponse> findAllAddress()  throws ReadAccessException;*/
+    //Get all
+    List<AddressResponse> findAllAddress()  throws ReadAccessException;
 
     //Get by id
     AddressResponse findAddressById(Long idAddress) throws ReadAccessException;

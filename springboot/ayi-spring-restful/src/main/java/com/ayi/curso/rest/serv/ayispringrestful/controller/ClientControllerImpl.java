@@ -3,6 +3,7 @@ package com.ayi.curso.rest.serv.ayispringrestful.controller;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientDetailResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.ReadAccessException;
 import com.ayi.curso.rest.serv.ayispringrestful.service.IClientService;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @AllArgsConstructor
@@ -24,6 +26,37 @@ public class ClientControllerImpl {
     private IClientService clientService;
 
     //Get all
+    @GetMapping(value = "/getAllClient")
+    @ApiOperation(
+            value = "Retrieves List of all client",
+            httpMethod = "GET",
+            response = ClientResponse[].class
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    code = 200,
+                    message = "Shows the list of detail",
+                    response = ClientResponse[].class
+            ),
+            @ApiResponse(code = 404, message = "Client not found"),
+            @ApiResponse(code = 400 , message = "Bad request/Invalid field")})
+    public ResponseEntity<?> findAllDetail(){
+
+        List<ClientResponse> clientReponse = null;
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            clientReponse  = clientService.findAllClient();
+        } catch (ReadAccessException e) {
+            response.put("Mensaje", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }catch (Exception ex) {
+            response.put("Código de error", 400);
+            response.put("Mensaje", ex.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok(clientReponse);
+    }
 
     //Get by id
     @GetMapping(value = "/clientById/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})

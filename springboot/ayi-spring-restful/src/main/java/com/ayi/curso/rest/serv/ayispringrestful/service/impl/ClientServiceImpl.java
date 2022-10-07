@@ -16,11 +16,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.ayi.curso.rest.serv.ayispringrestful.constants.Exceptions.EXCEPTION_ID_NOT_FOUND;
-import static com.ayi.curso.rest.serv.ayispringrestful.constants.Exceptions.EXCEPTION_ID_NULL;
+import static com.ayi.curso.rest.serv.ayispringrestful.constants.Exceptions.*;
 
 @Service
 @AllArgsConstructor
@@ -30,6 +30,24 @@ public class ClientServiceImpl implements IClientService {
     private IClientMapper clientMapper;
 
     //Get all
+    @Override
+    @Transactional
+    public List<ClientResponse> findAllClient() throws ReadAccessException {
+
+        List<Client> clientEntityList = clientRepository.findAll();
+
+        if(clientEntityList== null) {            //.lenght == 0
+            throw new ReadAccessException(EXCEPTION_LIST_NULL);
+        }
+
+        List<ClientResponse> clientListResponse = new ArrayList<>();
+        clientEntityList.forEach(client -> {
+            ClientResponse clientResponse = clientMapper.convertEntityToDto(client);
+            clientListResponse.add(clientResponse);
+        });
+
+        return clientListResponse ;
+    }
 
     //Get by id
     @Override

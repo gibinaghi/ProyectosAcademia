@@ -3,6 +3,7 @@ package com.ayi.curso.rest.serv.ayispringrestful.controller;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressWithoutClientRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientDetailResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.ReadAccessException;
 import com.ayi.curso.rest.serv.ayispringrestful.service.IAddressService;
 import io.swagger.annotations.*;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @AllArgsConstructor
@@ -24,6 +26,37 @@ public class AddressController {
     private IAddressService addressService;
 
     //Get all
+    @GetMapping(value = "/getAllAddress")
+    @ApiOperation(
+            value = "Retrieves List of all address",
+            httpMethod = "GET",
+            response = AddressResponse[].class
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    code = 200,
+                    message = "Shows the list of address",
+                    response = AddressResponse[].class
+            ),
+            @ApiResponse(code = 404, message = "Detail address not found"),
+            @ApiResponse(code = 400 , message = "Bad request/Invalid field")})
+    public ResponseEntity<?> findAllAddress(){
+
+        List<AddressResponse> addressReponse = null;
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            addressReponse  = addressService.findAllAddress();
+        } catch (ReadAccessException e) {
+            response.put("Mensaje", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }catch (Exception ex) {
+            response.put("Código de error", 400);
+            response.put("Mensaje", ex.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok(addressReponse);
+    }
 
     //Get by id
     @GetMapping(value = "/addressById/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})

@@ -3,8 +3,10 @@ package com.ayi.curso.rest.serv.ayispringrestful.service.impl;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressWithoutClientRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientDetailResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Address;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Client;
+import com.ayi.curso.rest.serv.ayispringrestful.entity.ClientDetail;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.ReadAccessException;
 import com.ayi.curso.rest.serv.ayispringrestful.mapper.IAddressMapper;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.IAddressRepository;
@@ -14,10 +16,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
-import static com.ayi.curso.rest.serv.ayispringrestful.constants.Exceptions.EXCEPTION_ID_NOT_FOUND;
-import static com.ayi.curso.rest.serv.ayispringrestful.constants.Exceptions.EXCEPTION_ID_NULL;
+import static com.ayi.curso.rest.serv.ayispringrestful.constants.Exceptions.*;
 
 @Service
 @AllArgsConstructor
@@ -28,6 +31,24 @@ public class AddressServiceImpl implements IAddressService {
     private IAddressMapper addressMapper;
 
     //Get all -> agregar paginacion si alcanzo
+    @Override
+    @Transactional
+    public List<AddressResponse> findAllAddress() throws ReadAccessException {
+
+        List<Address> addressEntityList = addressRepository.findAll();
+
+        if(addressEntityList == null) {            //.lenght == 0
+            throw new ReadAccessException(EXCEPTION_LIST_NULL);
+        }
+
+        List<AddressResponse> addressListResponse = new ArrayList<>();
+        addressEntityList.forEach(address -> {
+            AddressResponse addressResponse = addressMapper.convertEntityToDto(address);
+            addressListResponse.add(addressResponse);
+        });
+
+        return addressListResponse ;
+    }
 
     //Get by id
     @Override
