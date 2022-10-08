@@ -4,6 +4,9 @@ import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressUpdateRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressWithoutClientRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
 import com.ayi.curso.rest.serv.ayispringrestful.service.IAddressService;
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
@@ -39,22 +42,9 @@ public class AddressController {
             ),
             @ApiResponse(code = 404, message = "Detail address not found"),
             @ApiResponse(code = 400 , message = "Bad request/Invalid field")})
-    public ResponseEntity<?> findAllAddress(){
-
-        List<AddressResponse> addressReponse = null;
-        Map<String, Object> response = new HashMap<>();
-
-        try {
-            addressReponse  = addressService.findAllAddress();
-        } catch (ReadAccessException e) {
-            response.put("Mensaje", e.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        }catch (Exception ex) {
-            response.put("Código de error", 400);
-            response.put("Mensaje", ex.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        }
-        return ResponseEntity.ok(addressReponse);
+    public ResponseEntity<?> findAllAddress() throws NotFoundException, InternalException {
+        List<AddressResponse> addressResponse = addressService.findAllAddress();
+        return ResponseEntity.ok(addressResponse);
     }
 
     //Get by id
@@ -69,21 +59,9 @@ public class AddressController {
             @ApiResponse(code = 400 , message = "Bad request/Invalid field")})
     public ResponseEntity<?> findAddressById(
             @ApiParam(name = "id", required = true, value = "Address Id", example = "1")
-            @PathVariable("id") Long id){
-
-        Map<String, Object> response = new HashMap<>();
-
-        try {
+            @PathVariable("id") Long id
+    ) throws BadRequestException, InternalException {
             return ResponseEntity.ok(addressService.findAddressById(id));
-        } catch (ReadAccessException e) {
-            response.put("Código de error", 404);
-            response.put("Mensaje", e.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        }catch (Exception ex) {
-            response.put("Código de error", 400);
-            response.put("Mensaje", ex.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        }
     }
 
     //Create address and set client
@@ -155,20 +133,8 @@ public class AddressController {
             @PathVariable(name = "id") Long idAddress,
             @ApiParam(value = "data of address", required = true)
             @RequestBody AddressUpdateRequest request
-    ) {
-        Map<String, Object> response = new HashMap<>();
-
-        try {
+    ) throws NotFoundException, BadRequestException, InternalException  {
             return ResponseEntity.ok(addressService.updateAddress(idAddress, request));
-        } catch (ReadAccessException e) {
-            response.put("Código de error", 404);
-            response.put("Mensaje", e.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        }catch (Exception ex) {
-            response.put("Código de error", 400);
-            response.put("Mensaje", ex.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        }
     }
 
     //Delete
@@ -184,9 +150,8 @@ public class AddressController {
     public ResponseEntity<Void> deleteAddress(
             @ApiParam(name = "id", required = true, value = "Address Id", example = "1")
             @PathVariable Long id
-    ){
+    ) throws BadRequestException, NotFoundException, InternalException {
         addressService.deleteAddress(id);
-
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

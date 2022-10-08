@@ -6,11 +6,16 @@ import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Address;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Client;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
 import com.ayi.curso.rest.serv.ayispringrestful.mapper.IAddressMapper;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.IAddressRepository;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.IClientRepository;
 import com.ayi.curso.rest.serv.ayispringrestful.service.IAddressService;
 import lombok.AllArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -31,12 +36,18 @@ public class AddressServiceImpl implements IAddressService {
     //Get all -> agregar paginacion si alcanzo
     @Override
     @Transactional
-    public List<AddressResponse> findAllAddress() {
+    public List<AddressResponse> findAllAddress()
+            throws NotFoundException, InternalException {
 
-        List<Address> addressEntityList = addressRepository.findAll();
+        List<Address> addressEntityList = null;
+        try {
+            addressEntityList = addressRepository.findAll();
+        } catch (Exception ex) {
+            throw  new InternalException(INTERNAL, ex);
+        }
 
-        if(addressEntityList == null) {            //.lenght == 0
-            throw new ReadAccessException(EXCEPTION_DATA_NULL);
+        if(CollectionUtils.isEmpty(addressEntityList)) {
+            throw new NotFoundException(EXCEPTION_DATA_NULL);
         }
 
         List<AddressResponse> addressListResponse = new ArrayList<>();
@@ -51,17 +62,20 @@ public class AddressServiceImpl implements IAddressService {
     //Get by id
     @Override
     @Transactional
-    public AddressResponse findAddressById(Long idAddress) throws ReadAccessException {
+    public AddressResponse findAddressById(Long idAddress)
+            throws BadRequestException, InternalException  {
+
         if(idAddress == null || idAddress < 0){
-            throw new ReadAccessException(EXCEPTION_ID_NULL);
+            throw new BadRequestException(EXCEPTION_ID_NOT_VALID);
         }
 
 
         AddressResponse addressResponse;
-        Optional<Address> entityAddress = addressRepository.findById(idAddress);
-
-        if (!entityAddress.isPresent()) {
-            throw new ReadAccessException(EXCEPTION_ID_NOT_FOUND);
+        Optional<Address> entityAddress = null;
+        try {
+            entityAddress = addressRepository.findById(idAddress);
+        } catch (Exception ex)  {
+            throw  new InternalException(INTERNAL, ex);
         }
 
         addressResponse = addressMapper.convertEntityToDto(entityAddress.get());
@@ -106,24 +120,44 @@ public class AddressServiceImpl implements IAddressService {
     @Override
     //@Transactional  -> que hace??
     public AddressResponse updateAddress(Long idAddress, AddressUpdateRequest addressRequest)
-            throws ReadAccessException  {
+            throws NotFoundException, InternalException, BadRequestException  {
+
         if(idAddress == null || idAddress < 0){
-            throw new ReadAccessException(EXCEPTION_ID_NOT_VALID);
+            throw new BadRequestException(EXCEPTION_ID_NOT_VALID);
         }
 
-        Address addressToUpdate = addressRepository.findById(idAddress).get();
+        Address addressToUpdate = null;
+        try {
+            addressToUpdate = addressRepository.findById(idAddress).get();
+        } catch (Exception ex)  {
+            throw  new InternalException(INTERNAL, ex);
+        }
+
         if(addressToUpdate == null){
-            throw new ReadAccessException(EXCEPTION_DATA_NULL);
+            throw new NotFoundException(EXCEPTION_DATA_NULL );
         }
 
-        //poner control de si existe y distinto de null q setee lo q existe
-        addressToUpdate.setStreet(addressRequest.getStreet());
-        addressToUpdate.setStreetNumber(addressRequest.getStreetNumber());
+        //Control data exist
+        if(StringUtils.isNotEmpty(addressRequest.getStreet())){
+            addressToUpdate.setStreet(addressRequest.getStreet());
+        }
+        if(StringUtils.isNotEmpty(addressRequest.getStreetNumber())){
+            addressToUpdate.setStreetNumber(addressRequest.getStreetNumber());
+        }
+
+        //como valido los integer que exista???
         addressToUpdate.setFloor(addressRequest.getFloor());
         addressToUpdate.setPostalCode(addressRequest.getPostalCode());
-        addressToUpdate.setDistrict(addressRequest.getDistrict());
-        addressToUpdate.setCity(addressRequest.getCity());
-        addressToUpdate.setCountry(addressRequest.getCountry());
+
+        if(StringUtils.isNotEmpty(addressRequest.getDistrict())){
+            addressToUpdate.setDistrict(addressRequest.getDistrict());
+        }
+        if(StringUtils.isNotEmpty(addressRequest.getCity())){
+            addressToUpdate.setCity(addressRequest.getCity());
+        }
+        if(StringUtils.isNotEmpty(addressRequest.getCountry())){
+            addressToUpdate.setCountry(addressRequest.getCountry());
+        }
 
         //Save update
         Address addressUpdated = addressRepository.save(addressToUpdate);
@@ -134,13 +168,24 @@ public class AddressServiceImpl implements IAddressService {
     //Delete
     //falta borrar tambien cliente y detalle cliente
     @Override
-    public void deleteAddress(Long idAddress){
-        Optional<Address> entityAddress = addressRepository.findById(idAddress);
+    public void deleteAddress(Long idAddress)
+            throws BadRequestException, InternalException, NotFoundException {
+
+        if(idAddress == null || idAddress < 0){
+            throw new BadRequestException(EXCEPTION_ID_NOT_VALID);
+        }
+
+        Optional<Address> entityAddress = null;
+        try {
+            entityAddress = addressRepository.findById(idAddress);
+        } catch (Exception ex) {
+            throw  new InternalException(INTERNAL, ex);
+        }
 
         if (entityAddress.isPresent()) {
             addressRepository.deleteById(idAddress);
         } else {
-            throw new RuntimeException(EXCEPTION_ID_NOT_FOUND);
+            throw new NotFoundException(EXCEPTION_ID_NULL);
         }
     }
 

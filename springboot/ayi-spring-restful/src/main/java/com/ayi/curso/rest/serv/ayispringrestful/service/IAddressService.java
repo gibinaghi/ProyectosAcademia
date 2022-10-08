@@ -4,6 +4,9 @@ import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressUpdateRequest
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressWithoutClientRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,10 +15,12 @@ import java.util.List;
 public interface IAddressService {
 
     //Get all
-    List<AddressResponse> findAllAddress()  throws ReadAccessException;
+    List<AddressResponse> findAllAddress()
+            throws NotFoundException, InternalException;
 
     //Get by id
-    AddressResponse findAddressById(Long idAddress) throws ReadAccessException;
+    AddressResponse findAddressById(Long idAddress)
+            throws BadRequestException, InternalException;
 
     //Create address and set client
     AddressResponse createAddress(AddressWithoutClientRequest addressRequest, Long idClient);
@@ -25,8 +30,9 @@ public interface IAddressService {
 
     //Update
     AddressResponse updateAddress(Long idAddress, AddressUpdateRequest addressRequest)
-    throws ReadAccessException ;
+            throws NotFoundException, InternalException, BadRequestException;
 
     //Delete
-    void deleteAddress(Long idAddress);
+    void deleteAddress(Long idAddress)
+            throws BadRequestException, InternalException, NotFoundException;
 }

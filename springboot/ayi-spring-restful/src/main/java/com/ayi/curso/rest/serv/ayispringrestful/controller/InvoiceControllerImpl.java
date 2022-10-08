@@ -15,9 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @AllArgsConstructor
 @RestController
@@ -43,7 +41,6 @@ public class InvoiceControllerImpl {
             @ApiResponse(code = 400 , message = "Bad request/Invalid field")})
     public ResponseEntity<?> getAllInvoice() throws NotFoundException, InternalException {
         List<InvoiceResponse> invoiceReponse = invoiceService.findAllInvoice();
-
         return ResponseEntity.ok(invoiceReponse);
     }
 
@@ -61,9 +58,7 @@ public class InvoiceControllerImpl {
             @ApiParam(name = "id", required = true, value = "Invoice detail Id", example = "1")
             @PathVariable("id") Long id
     ) throws BadRequestException, InternalException {
-
             return ResponseEntity.ok(invoiceService.findInvoiceById(id));
-
     }
 
     //Create invoice, client, detail client, address
@@ -127,9 +122,8 @@ public class InvoiceControllerImpl {
     public ResponseEntity<Void> deleteInvoice(
             @ApiParam(name = "id", required = true, value = "Invoice Id", example = "1")
             @PathVariable Long id
-    ){
+    ) throws BadRequestException, NotFoundException, InternalException {
         invoiceService.deleteInvoice(id);
-
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

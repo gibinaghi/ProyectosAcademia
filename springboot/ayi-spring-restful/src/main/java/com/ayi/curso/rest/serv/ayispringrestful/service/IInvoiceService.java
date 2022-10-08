@@ -23,10 +23,13 @@ public interface IInvoiceService {
     //Create invoice, client, detail client, address
     InvoiceResponse createInvoice(InvoiceRequest invoiceRequest);
 
+    //Create invoice and set client, detail client and address
+
     //Update
     InvoiceResponse updateInvoice(Long idInvoice, InvoiceUpdateRequest invoiceRequest)
             throws NotFoundException, InternalException, BadRequestException;
 
     //Delete
-    void deleteInvoice(Long idInvoice);
+    void deleteInvoice(Long idInvoice)
+            throws BadRequestException, InternalException, NotFoundException;
 }

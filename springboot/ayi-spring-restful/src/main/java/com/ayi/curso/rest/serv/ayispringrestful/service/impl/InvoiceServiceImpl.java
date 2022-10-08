@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,6 +65,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
     @Transactional
     public InvoiceResponse findInvoiceById(Long idInvoice)
             throws BadRequestException, InternalException {
+
         if(idInvoice == null || idInvoice < 0){
             throw new BadRequestException(EXCEPTION_ID_NOT_VALID);
         }
@@ -119,16 +121,18 @@ public class InvoiceServiceImpl implements IInvoiceService {
             throw  new InternalException(INTERNAL, ex);
         }
 
-        if(invoiceToUpdate  == null){
+        if(invoiceToUpdate == null){
             throw new NotFoundException(EXCEPTION_DATA_NULL );
         }
 
+        //Control data exist
         if(StringUtils.isNotEmpty(invoiceRequest.getDescription())){
             invoiceToUpdate.setDescription(invoiceRequest.getDescription());
         }
-
-        //como valido si existe el numero????
-        invoiceToUpdate.setTotal(invoiceRequest.getTotal());
+        //como valido si existe el double????
+        if(!invoiceRequest.getTotal().isNaN()){
+            invoiceToUpdate.setTotal(invoiceRequest.getTotal());
+        }
 
         //Save update
         Invoice invoiceUpdated = invoiceRepository.save(invoiceToUpdate);
@@ -138,13 +142,24 @@ public class InvoiceServiceImpl implements IInvoiceService {
 
     //Delete
     @Override
-    public void deleteInvoice(Long idInvoice){
-        Optional<Invoice> entityInvoice = invoiceRepository.findById(idInvoice);
+    public void deleteInvoice(Long idInvoice)
+            throws BadRequestException, InternalException, NotFoundException {
+
+        if(idInvoice == null || idInvoice < 0){
+            throw new BadRequestException(EXCEPTION_ID_NOT_VALID);
+        }
+
+        Optional<Invoice> entityInvoice;
+        try {
+            entityInvoice = invoiceRepository.findById(idInvoice);
+        } catch (Exception ex) {
+            throw  new InternalException(INTERNAL, ex);
+        }
 
         if (entityInvoice.isPresent()) {
             invoiceRepository.deleteById(idInvoice);
         } else {
-            throw new RuntimeException(EXCEPTION_ID_NULL);
+            throw new NotFoundException(EXCEPTION_ID_NULL);
         }
     }
 }
