@@ -9,10 +9,10 @@ function Reports() {
         <table class="table table-bordered">
             <thead class="thead-dark">
             <tr>
-                <th scope="col">User Id</th>
-                <th scope="col">Book Id</th>
-                <th scope="col">Fecha de salida</th>
-                <th scope="col">Fecha de entrega</th>
+                <th scope="col">Cod usuario</th>
+                <th scope="col">Cod libro</th>
+                <th scope="col">Fecha de prestamo</th>
+                <th scope="col">Fecha de devolución</th>
             </tr>
             </thead>
             <tbody >

@@ -1,6 +1,7 @@
 package com.ayi.curso.rest.serv.ayispringrestful.service.impl;
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.InvoiceRequest;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.InvoiceUpdateRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.InvoiceResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Client;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.ClientDetail;
@@ -90,7 +91,19 @@ public class InvoiceServiceImpl implements IInvoiceService {
     }
 
     //Update
-    //debe ser un patch - crear dto
+    //se puede actualizar el clientes id???
+    @Override
+    //@Transactional  -> que hace??
+    public InvoiceResponse updateInvoice(Long idInvoice, InvoiceUpdateRequest invoiceRequest) {
+        Invoice invoiceToUpdate = invoiceRepository.findById(idInvoice).get();
+
+        invoiceToUpdate.setDescription(invoiceRequest.getDescription());
+        invoiceToUpdate.setTotal(invoiceRequest.getTotal());
+
+        Invoice invoiceUpdated = invoiceRepository.save(invoiceToUpdate);
+
+        return invoiceMapper.convertEntityToDto(invoiceUpdated);
+    }
 
     //Delete
     @Override

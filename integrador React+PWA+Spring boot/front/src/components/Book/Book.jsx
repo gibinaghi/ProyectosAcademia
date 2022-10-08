@@ -1,12 +1,13 @@
 import React from 'react'
 import '../../assets/styles/StyleGeneral.css';
+import { Link } from "react-router-dom";
 
 function Book() {
   return (
     <div class="container">
     <h2 class="title">Libros</h2>
 
-    <div class="input-group mb-3">
+    <div class="input-group mb-3 texto-search">
       <input
         type="text"
         class="form-control"
@@ -23,14 +24,12 @@ function Book() {
     <table class="table table-bordered">
       <thead class="thead-dark">
         <tr>
-        <th scope="col">Id</th>
-            <th scope="col">Titulo</th>
-            <th scope="col">Fecha</th>
+        <th scope="col">Cod</th>
+            <th scope="col">Título</th>
             <th scope="col">Autor</th>
             <th scope="col">Categoria</th>
             <th scope="col">Edición</th>
             <th scope="col">Idioma</th>
-            <th scope="col">Descripción</th>
             <th scope="col">Stock</th>
             <th scope="col">Disponible</th>
             <th scope="col">Operaciones</th>
@@ -46,11 +45,13 @@ function Book() {
           <td>Nombre</td>
           <td>Nombre</td>
           <td>Nombre</td>
-          <td>Nombre</td>
-          <td>Nombre</td>
           <td>
-             <button type="button" class="btn btn-primary action">Editar</button>
-             <button type="button" class="btn btn-primary action">Borrar</button>
+            <button type="button" class="btn btn-primary action">
+              <Link to="/update-book" class="colorBtnText">Editar</Link> 
+             </button>
+             <button type="button" class="btn btn-primary action">
+              <Link to="/books" class="colorBtnText">Borrar</Link>
+             </button>
            </td>
         </tr>
       </tbody>
@@ -60,7 +61,7 @@ function Book() {
       type="button"
       class="btn btn-primary action"
     >
-      Nuevo
+      <Link to="/create-book" class="colorBtnText">Nuevo</Link> 
     </button>
 </div>
   )

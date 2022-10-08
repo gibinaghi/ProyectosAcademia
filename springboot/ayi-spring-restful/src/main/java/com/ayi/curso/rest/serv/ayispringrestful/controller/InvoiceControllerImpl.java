@@ -2,6 +2,7 @@ package com.ayi.curso.rest.serv.ayispringrestful.controller;
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.InvoiceRequest;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.InvoiceUpdateRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.InvoiceResponse;
@@ -114,6 +115,28 @@ public class InvoiceControllerImpl {
     }
 
     //Update
+    @PatchMapping(value = "/updateInvoice/{id}")
+    @ApiOperation(
+            value = "Retrieves an invoice updated",
+            httpMethod = "PATCH",
+            response = InvoiceResponse.class
+    )
+    @ApiResponses(value = {
+            @ApiResponse(code = 200,
+                    message = "Body content with all information about an invoice updated",
+                    response = InvoiceResponse.class),
+            @ApiResponse(code = 400,
+                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data form")
+    })
+    public ResponseEntity<InvoiceResponse> updateInvoice(
+            @ApiParam(value = "id of invoice to update", required = true, example = "1")
+            @PathVariable(name = "id") Long idInvoice,
+            @ApiParam(value = "data of invoice", required = true)
+            @RequestBody InvoiceUpdateRequest request
+    ) {
+        InvoiceResponse invoiceResponse = invoiceService.updateInvoice(idInvoice, request);
+        return new ResponseEntity<>(invoiceResponse, HttpStatus.CREATED);
+    }
 
     //Delete
     @DeleteMapping("/{id}")

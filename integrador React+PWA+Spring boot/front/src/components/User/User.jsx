@@ -1,12 +1,13 @@
 import React from 'react'
 import '../../assets/styles/StyleGeneral.css';
+import { Link } from "react-router-dom";
 
 function User() {
   return (
     <div class="container">
     <h2 class="title">Usuarios</h2>
 
-    <div class="input-group mb-3">
+    <div class="input-group mb-3 texto-search">
       <input
         type="text"
         class="form-control"
@@ -23,10 +24,9 @@ function User() {
     <table class="table table-bordered">
       <thead class="thead-dark">
         <tr>
-          <th scope="col">Id</th>
-          <th scope="col">Nombre</th>
-          <th scope="col">Apellido M</th>
-          <th scope="col">Apellido P</th>
+          <th scope="col">Cod usuario</th>
+          <th scope="col">Nombre y Apellido</th>
+          <th scope="col">DNI</th>
           <th scope="col">Domicilio</th>
           <th scope="col">Teléfono</th>
           <th scope="col">Operaciones</th>
@@ -39,10 +39,13 @@ function User() {
           <td>Nombre</td>
           <td>Nombre</td>
           <td>Nombre</td>
-          <td>Nombre</td>
           <td>
-             <button type="button" class="btn btn-primary action">Editar</button>
-             <button type="button" class="btn btn-primary action">Borrar</button>
+             <button type="button" class="btn btn-primary action">
+              <Link to="/update-user" class="colorBtnText">Editar</Link> 
+             </button>
+             <button type="button" class="btn btn-primary action">
+              <Link to="/users" class="colorBtnText">Borrar</Link>
+             </button>
            </td>
         </tr>
       </tbody>
@@ -52,7 +55,7 @@ function User() {
       type="button"
       class="btn btn-primary action"
     >
-      Nuevo
+      <Link to="/create-user" class="colorBtnText">Nuevo</Link> 
     </button>
 </div>
   )

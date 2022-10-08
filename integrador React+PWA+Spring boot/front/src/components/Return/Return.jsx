@@ -3,6 +3,7 @@ import React from 'react'
 import '../../assets/styles/Return.css';
 import libroImg from '../../assets/img/libro.png';
 import '../../assets/styles/StyleGeneral.css';
+import { Link } from "react-router-dom";
 
 function Return() {
   return (
@@ -12,14 +13,16 @@ function Return() {
           <div class="col-8">
               <form>
                   <div class="form-group">
-                    <label>Folio usuario</label>
-                    <input type="text" class="form-control" placeholder="Ingrese el folio del usuario" formControlName="user_id"/>
+                    <label>DNI del usuario</label>
+                    <input type="text" class="form-control" placeholder="Ingrese el DNI del usuario" formControlName="user_id"/>
                   </div>
                   <div class="form-group">
-                    <label>Libro Id</label>
-                    <input type="text" class="form-control" placeholder="Ingrese el Id del libro a prestar" formControlName="book_id"/>
+                    <label>Código de libro</label>
+                    <input type="text" class="form-control" placeholder="Ingrese el código del libro a prestar" formControlName="book_id"/>
                   </div>
-                  <button type="submit" class="btn btn-primary action" >Devolver</button>
+                  <button type="submit" class="btn btn-primary action" >
+                    <Link to="/reports" class="colorBtnText">Devolver</Link> 
+                  </button>
                 </form>
                 
           </div>

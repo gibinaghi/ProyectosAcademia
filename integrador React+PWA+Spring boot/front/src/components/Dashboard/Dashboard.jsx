@@ -13,7 +13,7 @@ function Dashboard() {
             <li class="list"><a href='/retuns' class="list-group-item  menu" aria-current="true"> Devoluciones </a></li>
             <li class="list"><a href='/users' class="list-group-item  menu" aria-current="true"> Usuarios </a></li>
             <li class="list"><a href='/books' class="list-group-item  menu" aria-current="true"> Libros </a></li>
-            <li class="list"><a href='repots' class="list-group-item  menu" aria-current="true"> Reportes </a></li>
+            <li class="list"><a href='/reports' class="list-group-item  menu" aria-current="true"> Reportes </a></li>
         </ul>
     </nav>
 </header>

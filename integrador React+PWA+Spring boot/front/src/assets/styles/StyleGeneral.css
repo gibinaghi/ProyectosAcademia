@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Comforter+Brush&family=Crimson+Text:ital@1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Comforter+Brush&display=swap');
 
 .title{
     margin-bottom: 5%;
@@ -24,6 +25,11 @@ section {
     font-family: 'Courier New', Courier, monospace;
 }
 
+.colorBtnText {
+    color: white;
+    text-decoration: none;
+}
+
 .container {
     padding-left: 20%;
     padding-top: 0px;
@@ -38,3 +44,22 @@ section {
 .table {
     font-family: 'Courier New', Courier, monospace;
 }
+
+.texto-search {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.footer {
+    clear: right;
+    float: both;
+    padding-left: 35%;
+    background: white;
+    max-width: 100%;
+    margin-left: -13%;
+    padding-top: 20px;
+    padding-bottom: 10px;
+    color: rgb(65, 63, 63);;
+    font-size: 20px;
+    font-family: 'Comforter Brush', cursive;
+}
+

@@ -18,7 +18,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Builder
 @ApiModel(
-        value = "Address and client Request",
+        value = "Create - Address and client Request",
         description = "Represents address and client data"
 )
 public class AddressRequest implements Serializable {

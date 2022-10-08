@@ -13,6 +13,7 @@ import UserUpdate from '../components/User/UserUpdate';
 import Lending from '../components/Lending/Lending';
 import Reports from '../components/Reports/Reports';
 import Return from '../components/Return/Return';
+import Footer from '../components/Footer/Footer';
 
 function MainRoutes() {
   return (
@@ -30,8 +31,9 @@ function MainRoutes() {
             <Route path="/update-book" element={<BookUpdate />} />
             <Route path="/lendings" element={<Lending />} />
             <Route path="/retuns" element={<Return />} />
-            <Route path="/repots" element={<Reports />} />
+            <Route path="/reports" element={<Reports />} />
         </Routes>
+        <Footer />
     </div>
   )
 }

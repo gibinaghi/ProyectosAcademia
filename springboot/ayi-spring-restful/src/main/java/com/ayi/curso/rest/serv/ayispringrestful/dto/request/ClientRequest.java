@@ -19,7 +19,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @ApiModel(
-        value = "Client Request",
+        value = "Create - Client Request",
         description = "Represents client, client detail and address data"
 )
 public class ClientRequest implements Serializable {
