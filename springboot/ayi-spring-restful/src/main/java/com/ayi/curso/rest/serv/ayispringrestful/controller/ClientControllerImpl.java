@@ -5,7 +5,6 @@ import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientUpdateRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientDetailResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientResponse;
-import com.ayi.curso.rest.serv.ayispringrestful.exceptions.ReadAccessException;
 import com.ayi.curso.rest.serv.ayispringrestful.service.IClientService;
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;

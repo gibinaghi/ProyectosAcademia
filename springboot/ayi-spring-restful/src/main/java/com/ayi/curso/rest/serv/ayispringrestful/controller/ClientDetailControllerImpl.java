@@ -2,11 +2,9 @@ package com.ayi.curso.rest.serv.ayispringrestful.controller;
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientDetaiUpdatelRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientDetailRequest;
-import com.ayi.curso.rest.serv.ayispringrestful.dto.request.InvoiceUpdateRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientDetailResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.InvoiceResponse;
-import com.ayi.curso.rest.serv.ayispringrestful.exceptions.ReadAccessException;
 import com.ayi.curso.rest.serv.ayispringrestful.service.IClientDetailService;
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;

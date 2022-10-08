@@ -1,14 +1,11 @@
 package com.ayi.curso.rest.serv.ayispringrestful.service.impl;
 
-import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientDetaiUpdatelRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientUpdateRequest;
-import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientDetailResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Address;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Client;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.ClientDetail;
-import com.ayi.curso.rest.serv.ayispringrestful.exceptions.ReadAccessException;
 import com.ayi.curso.rest.serv.ayispringrestful.mapper.IClientMapper;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.IClientRepository;
 import com.ayi.curso.rest.serv.ayispringrestful.service.IClientService;

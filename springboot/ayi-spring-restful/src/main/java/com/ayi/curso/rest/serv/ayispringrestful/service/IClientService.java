@@ -3,7 +3,6 @@ package com.ayi.curso.rest.serv.ayispringrestful.service;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientUpdateRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientResponse;
-import com.ayi.curso.rest.serv.ayispringrestful.exceptions.ReadAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

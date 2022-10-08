@@ -6,8 +6,6 @@ import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Address;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Client;
-import com.ayi.curso.rest.serv.ayispringrestful.entity.Invoice;
-import com.ayi.curso.rest.serv.ayispringrestful.exceptions.ReadAccessException;
 import com.ayi.curso.rest.serv.ayispringrestful.mapper.IAddressMapper;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.IAddressRepository;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.IClientRepository;
@@ -33,7 +31,7 @@ public class AddressServiceImpl implements IAddressService {
     //Get all -> agregar paginacion si alcanzo
     @Override
     @Transactional
-    public List<AddressResponse> findAllAddress() throws ReadAccessException {
+    public List<AddressResponse> findAllAddress() {
 
         List<Address> addressEntityList = addressRepository.findAll();
 

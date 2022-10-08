@@ -5,7 +5,6 @@ import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientDetailRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientDetailResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Client;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.ClientDetail;
-import com.ayi.curso.rest.serv.ayispringrestful.exceptions.ReadAccessException;
 import com.ayi.curso.rest.serv.ayispringrestful.mapper.IClientDetailMapper;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.IClientDetailRepository;
 import com.ayi.curso.rest.serv.ayispringrestful.service.IClientDetailService;

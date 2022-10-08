@@ -4,7 +4,9 @@ import com.ayi.curso.rest.serv.ayispringrestful.dto.request.InvoiceRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.InvoiceUpdateRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.InvoiceResponse;
-import com.ayi.curso.rest.serv.ayispringrestful.exceptions.ReadAccessException;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
 import com.ayi.curso.rest.serv.ayispringrestful.service.IInvoiceService;
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
@@ -39,21 +41,9 @@ public class InvoiceControllerImpl {
             ),
             @ApiResponse(code = 404, message = "Invoice not found"),
             @ApiResponse(code = 400 , message = "Bad request/Invalid field")})
-    public ResponseEntity<?> getAllInvoice(){
+    public ResponseEntity<?> getAllInvoice() throws NotFoundException, InternalException {
+        List<InvoiceResponse> invoiceReponse = invoiceService.findAllInvoice();
 
-        List<InvoiceResponse> invoiceReponse = null;
-        Map<String, Object> response = new HashMap<>();
-
-        try {
-            invoiceReponse = invoiceService.findAllInvoice();
-        } catch (ReadAccessException e) {
-            response.put("Mensaje", e.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        }catch (Exception ex) {
-            response.put("Código de error", 400);
-            response.put("Mensaje", ex.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        }
         return ResponseEntity.ok(invoiceReponse);
     }
 
@@ -67,23 +57,13 @@ public class InvoiceControllerImpl {
             @ApiResponse(code = 200,message = "Success. Invoice detail found by ID."),
             @ApiResponse(code = 404, message = "Invoice detail not found"),
             @ApiResponse(code = 400 , message = "Bad request/Invalid field")})
-    public ResponseEntity<?> findInvoiceById(
+    public ResponseEntity<?> findInvoiceById (
             @ApiParam(name = "id", required = true, value = "Invoice detail Id", example = "1")
-            @PathVariable("id") Long id){
+            @PathVariable("id") Long id
+    ) throws BadRequestException, InternalException {
 
-        Map<String, Object> response = new HashMap<>();
-
-        try {
             return ResponseEntity.ok(invoiceService.findInvoiceById(id));
-        } catch (ReadAccessException e) {
-            response.put("Código de error", 404);
-            response.put("Mensaje", e.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        }catch (Exception ex) {
-            response.put("Código de error", 400);
-            response.put("Mensaje", ex.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        }
+
     }
 
     //Create invoice, client, detail client, address
@@ -130,20 +110,8 @@ public class InvoiceControllerImpl {
             @PathVariable(name = "id") Long idInvoice,
             @ApiParam(value = "data of invoice", required = true)
             @RequestBody InvoiceUpdateRequest request
-    ) {
-        Map<String, Object> response = new HashMap<>();
-
-        try {
+    ) throws NotFoundException, BadRequestException, InternalException {
             return ResponseEntity.ok(invoiceService.updateInvoice(idInvoice, request));
-        } catch (ReadAccessException e) {
-            response.put("Código de error", 404);
-            response.put("Mensaje", e.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        }catch (Exception ex) {
-            response.put("Código de error", 400);
-            response.put("Mensaje", ex.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        }
     }
 
     //Delete

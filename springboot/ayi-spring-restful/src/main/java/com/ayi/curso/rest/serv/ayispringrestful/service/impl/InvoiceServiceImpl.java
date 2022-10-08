@@ -6,11 +6,15 @@ import com.ayi.curso.rest.serv.ayispringrestful.dto.response.InvoiceResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Client;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.ClientDetail;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Invoice;
-import com.ayi.curso.rest.serv.ayispringrestful.exceptions.ReadAccessException;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
 import com.ayi.curso.rest.serv.ayispringrestful.mapper.IInvoiceMapper;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.IInvoiceRepository;
 import com.ayi.curso.rest.serv.ayispringrestful.service.IInvoiceService;
 import lombok.AllArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -31,12 +35,18 @@ public class InvoiceServiceImpl implements IInvoiceService {
     //agregar falta paginación
     @Override
     @Transactional
-    public List<InvoiceResponse> findAllInvoice() throws ReadAccessException {
+    public List<InvoiceResponse> findAllInvoice()
+            throws NotFoundException, InternalException {
 
-        List<Invoice> invoiceEntityList = invoiceRepository.findAll();
+        List<Invoice> invoiceEntityList = null;
+        try {
+            invoiceEntityList = invoiceRepository.findAll();
+        } catch (Exception ex) {
+        throw  new InternalException(INTERNAL, ex);
+        }
 
-        if(invoiceEntityList == null) {            //.lenght == 0
-            throw new ReadAccessException(EXCEPTION_DATA_NULL);
+        if(CollectionUtils.isEmpty(invoiceEntityList)) {
+            throw new NotFoundException(EXCEPTION_DATA_NULL);
         }
 
         List<InvoiceResponse> invoiceListResponse = new ArrayList<>();
@@ -52,17 +62,18 @@ public class InvoiceServiceImpl implements IInvoiceService {
     //Get by id
     @Override
     @Transactional
-    public InvoiceResponse findInvoiceById(Long idInvoice) throws ReadAccessException {
+    public InvoiceResponse findInvoiceById(Long idInvoice)
+            throws BadRequestException, InternalException {
         if(idInvoice == null || idInvoice < 0){
-            throw new ReadAccessException(EXCEPTION_ID_NOT_VALID);
+            throw new BadRequestException(EXCEPTION_ID_NOT_VALID);
         }
 
-
         InvoiceResponse invoiceResponse;
-        Optional<Invoice> entityInvoice = invoiceRepository.findById(idInvoice);
-
-        if (!entityInvoice.isPresent()) {
-            throw new ReadAccessException(EXCEPTION_DATA_NULL);
+        Optional<Invoice> entityInvoice = null;
+        try {
+            entityInvoice = invoiceRepository.findById(idInvoice);
+        } catch (Exception ex)  {
+            throw  new InternalException(INTERNAL, ex);
         }
 
         invoiceResponse= invoiceMapper.convertEntityToDto(entityInvoice.get());
@@ -95,18 +106,28 @@ public class InvoiceServiceImpl implements IInvoiceService {
     @Override
     //@Transactional  -> que hace??
     public InvoiceResponse updateInvoice(Long idInvoice, InvoiceUpdateRequest invoiceRequest)
-            throws ReadAccessException  {
+            throws NotFoundException, InternalException, BadRequestException {
+
         if(idInvoice == null || idInvoice < 0){
-            throw new ReadAccessException(EXCEPTION_ID_NOT_VALID);
+            throw new BadRequestException(EXCEPTION_ID_NOT_VALID);
         }
 
-        Invoice invoiceToUpdate = invoiceRepository.findById(idInvoice).get();
+        Invoice invoiceToUpdate = null;
+        try {
+            invoiceToUpdate = invoiceRepository.findById(idInvoice).get();
+        } catch (Exception ex)  {
+            throw  new InternalException(INTERNAL, ex);
+        }
+
         if(invoiceToUpdate  == null){
-            throw new ReadAccessException(EXCEPTION_DATA_NULL);
+            throw new NotFoundException(EXCEPTION_DATA_NULL );
         }
 
-        //poner control de si existe y distinto de null q setee lo q existe
-        invoiceToUpdate.setDescription(invoiceRequest.getDescription());
+        if(StringUtils.isNotEmpty(invoiceRequest.getDescription())){
+            invoiceToUpdate.setDescription(invoiceRequest.getDescription());
+        }
+
+        //como valido si existe el numero????
         invoiceToUpdate.setTotal(invoiceRequest.getTotal());
 
         //Save update

@@ -4,7 +4,6 @@ import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressUpdateRequest
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressWithoutClientRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
-import com.ayi.curso.rest.serv.ayispringrestful.exceptions.ReadAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
