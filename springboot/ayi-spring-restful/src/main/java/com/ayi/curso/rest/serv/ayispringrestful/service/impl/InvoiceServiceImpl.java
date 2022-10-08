@@ -36,7 +36,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
         List<Invoice> invoiceEntityList = invoiceRepository.findAll();
 
         if(invoiceEntityList == null) {            //.lenght == 0
-            throw new ReadAccessException(EXCEPTION_LIST_NULL);
+            throw new ReadAccessException(EXCEPTION_DATA_NULL);
         }
 
         List<InvoiceResponse> invoiceListResponse = new ArrayList<>();
@@ -54,7 +54,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
     @Transactional
     public InvoiceResponse findInvoiceById(Long idInvoice) throws ReadAccessException {
         if(idInvoice == null || idInvoice < 0){
-            throw new ReadAccessException(EXCEPTION_ID_NOT_FOUND );
+            throw new ReadAccessException(EXCEPTION_ID_NOT_VALID);
         }
 
 
@@ -62,7 +62,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
         Optional<Invoice> entityInvoice = invoiceRepository.findById(idInvoice);
 
         if (!entityInvoice.isPresent()) {
-            throw new ReadAccessException(EXCEPTION_ID_NULL);
+            throw new ReadAccessException(EXCEPTION_DATA_NULL);
         }
 
         invoiceResponse= invoiceMapper.convertEntityToDto(entityInvoice.get());
@@ -94,12 +94,22 @@ public class InvoiceServiceImpl implements IInvoiceService {
     //se puede actualizar el clientes id???
     @Override
     //@Transactional  -> que hace??
-    public InvoiceResponse updateInvoice(Long idInvoice, InvoiceUpdateRequest invoiceRequest) {
-        Invoice invoiceToUpdate = invoiceRepository.findById(idInvoice).get();
+    public InvoiceResponse updateInvoice(Long idInvoice, InvoiceUpdateRequest invoiceRequest)
+            throws ReadAccessException  {
+        if(idInvoice == null || idInvoice < 0){
+            throw new ReadAccessException(EXCEPTION_ID_NOT_VALID);
+        }
 
+        Invoice invoiceToUpdate = invoiceRepository.findById(idInvoice).get();
+        if(invoiceToUpdate  == null){
+            throw new ReadAccessException(EXCEPTION_DATA_NULL);
+        }
+
+        //poner control de si existe y distinto de null q setee lo q existe
         invoiceToUpdate.setDescription(invoiceRequest.getDescription());
         invoiceToUpdate.setTotal(invoiceRequest.getTotal());
 
+        //Save update
         Invoice invoiceUpdated = invoiceRepository.save(invoiceToUpdate);
 
         return invoiceMapper.convertEntityToDto(invoiceUpdated);

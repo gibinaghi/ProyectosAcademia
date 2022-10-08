@@ -1,12 +1,12 @@
 package com.ayi.curso.rest.serv.ayispringrestful.service.impl;
 
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressUpdateRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressWithoutClientRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
-import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientDetailResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Address;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Client;
-import com.ayi.curso.rest.serv.ayispringrestful.entity.ClientDetail;
+import com.ayi.curso.rest.serv.ayispringrestful.entity.Invoice;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.ReadAccessException;
 import com.ayi.curso.rest.serv.ayispringrestful.mapper.IAddressMapper;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.IAddressRepository;
@@ -38,7 +38,7 @@ public class AddressServiceImpl implements IAddressService {
         List<Address> addressEntityList = addressRepository.findAll();
 
         if(addressEntityList == null) {            //.lenght == 0
-            throw new ReadAccessException(EXCEPTION_LIST_NULL);
+            throw new ReadAccessException(EXCEPTION_DATA_NULL);
         }
 
         List<AddressResponse> addressListResponse = new ArrayList<>();
@@ -105,6 +105,33 @@ public class AddressServiceImpl implements IAddressService {
     }
 
     //Update
+    @Override
+    //@Transactional  -> que hace??
+    public AddressResponse updateAddress(Long idAddress, AddressUpdateRequest addressRequest)
+            throws ReadAccessException  {
+        if(idAddress == null || idAddress < 0){
+            throw new ReadAccessException(EXCEPTION_ID_NOT_VALID);
+        }
+
+        Address addressToUpdate = addressRepository.findById(idAddress).get();
+        if(addressToUpdate == null){
+            throw new ReadAccessException(EXCEPTION_DATA_NULL);
+        }
+
+        //poner control de si existe y distinto de null q setee lo q existe
+        addressToUpdate.setStreet(addressRequest.getStreet());
+        addressToUpdate.setStreetNumber(addressRequest.getStreetNumber());
+        addressToUpdate.setFloor(addressRequest.getFloor());
+        addressToUpdate.setPostalCode(addressRequest.getPostalCode());
+        addressToUpdate.setDistrict(addressRequest.getDistrict());
+        addressToUpdate.setCity(addressRequest.getCity());
+        addressToUpdate.setCountry(addressRequest.getCountry());
+
+        //Save update
+        Address addressUpdated = addressRepository.save(addressToUpdate);
+
+        return addressMapper.convertEntityToDto(addressUpdated);
+    }
 
     //Delete
     //falta borrar tambien cliente y detalle cliente

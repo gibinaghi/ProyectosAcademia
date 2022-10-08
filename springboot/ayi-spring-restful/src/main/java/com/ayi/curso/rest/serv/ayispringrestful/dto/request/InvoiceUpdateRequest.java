@@ -19,10 +19,10 @@ import java.io.Serializable;
 )
 public class InvoiceUpdateRequest implements Serializable {
     @Pattern(regexp = "[a-zA-Z ]{2,100}", message = "Only allows letters, minimum 2, maximum 100")
-    @ApiModelProperty(position = 1, required = true, notes = "Invoice description.")
+    @ApiModelProperty(position = 1, required = true, notes = "The description is optional")
     private String description;
 
-    @ApiModelProperty(position = 2, required = true, notes = "Non negative value, total can not be null")
+    @ApiModelProperty(position = 2, required = true, notes = "The total is optional")
     private Double total;
 
 }

@@ -1,5 +1,6 @@
 package com.ayi.curso.rest.serv.ayispringrestful.service.impl;
 
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientDetaiUpdatelRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientDetailRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientDetailResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Client;
@@ -33,7 +34,7 @@ public class ClientDetailServiceImpl implements IClientDetailService {
         List<ClientDetail> clientEntityList = clientDetailRepository.findAll();
 
         if(clientEntityList== null) {            //.lenght == 0
-            throw new ReadAccessException(EXCEPTION_LIST_NULL);
+            throw new ReadAccessException(EXCEPTION_DATA_NULL);
         }
 
         List<ClientDetailResponse> clientListResponse = new ArrayList<>();
@@ -85,6 +86,22 @@ public class ClientDetailServiceImpl implements IClientDetailService {
     }
 
     //Update
+    @Override
+    public ClientDetailResponse updateClientDetail(
+            Long idClientDetail, ClientDetaiUpdatelRequest clientDetailRequest)
+            throws ReadAccessException {
+        ClientDetail clientToUpdate = clientDetailRepository.findById(idClientDetail).get();
+        //control si no exite el id
+
+        //poner control de si existe y distinto de null q setee lo q existe
+        clientToUpdate.setPrime(clientDetailRequest.getPrime());
+        clientToUpdate.setAcumulatedPoints(clientDetailRequest.getAcumulatedPoints());
+
+        //Save update
+        ClientDetail clientUpdated = clientDetailRepository.save(clientToUpdate);
+
+        return clientDetailMapper.convertEntityToDto(clientUpdated);
+    }
 
     //Delete
     //falta borrar tambien direccion y detalle cliente

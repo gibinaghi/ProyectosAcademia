@@ -1,9 +1,11 @@
 package com.ayi.curso.rest.serv.ayispringrestful.controller;
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressRequest;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressUpdateRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressWithoutClientRequest;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientDetaiUpdatelRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
-import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientDetailResponse;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.response.InvoiceResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.ReadAccessException;
 import com.ayi.curso.rest.serv.ayispringrestful.service.IAddressService;
 import io.swagger.annotations.*;
@@ -138,6 +140,39 @@ public class AddressController {
     }
 
     //Update
+    @PatchMapping(value = "/updateAddress/{id}")
+    @ApiOperation(
+            value = "Retrieves an address updated",
+            httpMethod = "PATCH",
+            response = AddressResponse.class
+    )
+    @ApiResponses(value = {
+            @ApiResponse(code = 200,
+                    message = "Body content with all information about an address updated",
+                    response = AddressResponse.class),
+            @ApiResponse(code = 400,
+                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data form")
+    })
+    public ResponseEntity<?> updateAddress(
+            @ApiParam(value = "id of address to update", required = true, example = "1")
+            @PathVariable(name = "id") Long idAddress,
+            @ApiParam(value = "data of address", required = true)
+            @RequestBody AddressUpdateRequest request
+    ) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            return ResponseEntity.ok(addressService.updateAddress(idAddress, request));
+        } catch (ReadAccessException e) {
+            response.put("Código de error", 404);
+            response.put("Mensaje", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }catch (Exception ex) {
+            response.put("Código de error", 400);
+            response.put("Mensaje", ex.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
 
     //Delete
     @DeleteMapping("/{id}")

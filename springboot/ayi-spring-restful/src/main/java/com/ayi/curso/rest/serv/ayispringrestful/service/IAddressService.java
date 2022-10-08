@@ -1,5 +1,6 @@
 package com.ayi.curso.rest.serv.ayispringrestful.service;
 
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressUpdateRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressWithoutClientRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
@@ -23,8 +24,9 @@ public interface IAddressService {
     //Create address and client
     AddressResponse createAddressAndClient(AddressRequest addressRequest);
 
-    /*//Update
-    AddressResponse updateAddressById(Long idAddress, AddressRequest addressRequest);*/
+    //Update
+    AddressResponse updateAddress(Long idAddress, AddressUpdateRequest addressRequest)
+    throws ReadAccessException ;
 
     //Delete
     void deleteAddress(Long idAddress);

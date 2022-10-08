@@ -20,7 +20,7 @@ public interface IInvoiceService {
     InvoiceResponse createInvoice(InvoiceRequest invoiceRequest);
 
     //Update
-    InvoiceResponse updateInvoice(Long idInvoice, InvoiceUpdateRequest invoiceRequest);
+    InvoiceResponse updateInvoice(Long idInvoice, InvoiceUpdateRequest invoiceRequest) throws ReadAccessException ;
 
     //Delete
     void deleteInvoice(Long idInvoice);

@@ -1,13 +1,10 @@
 package com.ayi.curso.rest.serv.ayispringrestful.controller;
 
-import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.InvoiceRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.InvoiceUpdateRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
-import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.InvoiceResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.ReadAccessException;
-import com.ayi.curso.rest.serv.ayispringrestful.service.IClientDetailService;
 import com.ayi.curso.rest.serv.ayispringrestful.service.IInvoiceService;
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
@@ -128,14 +125,25 @@ public class InvoiceControllerImpl {
             @ApiResponse(code = 400,
                     message = "Describes errors on invalid payload received, e.g: missing fields, invalid data form")
     })
-    public ResponseEntity<InvoiceResponse> updateInvoice(
+    public ResponseEntity<?> updateInvoice(
             @ApiParam(value = "id of invoice to update", required = true, example = "1")
             @PathVariable(name = "id") Long idInvoice,
             @ApiParam(value = "data of invoice", required = true)
             @RequestBody InvoiceUpdateRequest request
     ) {
-        InvoiceResponse invoiceResponse = invoiceService.updateInvoice(idInvoice, request);
-        return new ResponseEntity<>(invoiceResponse, HttpStatus.CREATED);
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            return ResponseEntity.ok(invoiceService.updateInvoice(idInvoice, request));
+        } catch (ReadAccessException e) {
+            response.put("Código de error", 404);
+            response.put("Mensaje", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }catch (Exception ex) {
+            response.put("Código de error", 400);
+            response.put("Mensaje", ex.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
     }
 
     //Delete

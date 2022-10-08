@@ -1,9 +1,8 @@
 package com.ayi.curso.rest.serv.ayispringrestful.service;
 
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientDetaiUpdatelRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientDetailRequest;
-import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientDetailResponse;
-import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.ReadAccessException;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +19,10 @@ public interface IClientDetailService {
     //Create client detail and client
     ClientDetailResponse createClientDetail(ClientDetailRequest clientDetailRequest);
 
-    /*//Update
-    ClientDetailResponse updateClientDetailById(Long idClientDetail, ClientDetailRequest clientDetailRequest);*/
+    //Update
+    ClientDetailResponse updateClientDetail(
+            Long idClientDetail, ClientDetaiUpdatelRequest clientDetailRequest)
+            throws ReadAccessException ;
 
     //Delete
     void deleteClientDetail(Long idClientDetail);

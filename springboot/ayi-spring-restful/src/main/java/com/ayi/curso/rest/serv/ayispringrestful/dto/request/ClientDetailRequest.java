@@ -24,14 +24,14 @@ import java.io.Serializable;
 public class ClientDetailRequest implements Serializable {
 
     @NotNull(message = "Prime value can not be null.")
-    @ApiModelProperty(position = 1, required = true, notes = "Boolean data")
+    @ApiModelProperty(position = 1, required = true, notes = "Not null value, prime is required")
     private Boolean prime;
 
-    @ApiModelProperty(position = 2, notes = "Acumulated points of the client")
+    @ApiModelProperty(position = 2, notes = "The acumulated point is optional")
     @Pattern(regexp = "[0-9]{3}", message = "Only number, 3 digits")
     private Long acumulatedPoints;
 
-    //    @NotNull(message = "Client can not be null.")
-    @ApiModelProperty(position = 3, required = true, notes = "Client owner of the points")
+    @NotNull(message = "Client can not be null.")
+    @ApiModelProperty(position = 3, required = true, notes = "Not null value, client is required")
     private ClientRequest client;
 }

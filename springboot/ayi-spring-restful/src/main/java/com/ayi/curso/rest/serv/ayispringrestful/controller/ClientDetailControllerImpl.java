@@ -1,9 +1,10 @@
 package com.ayi.curso.rest.serv.ayispringrestful.controller;
 
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientDetaiUpdatelRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientDetailRequest;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.InvoiceUpdateRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientDetailResponse;
-import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.InvoiceResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.ReadAccessException;
 import com.ayi.curso.rest.serv.ayispringrestful.service.IClientDetailService;
@@ -113,6 +114,39 @@ public class ClientDetailControllerImpl {
     }
 
     //Update
+    @PatchMapping(value = "/updateClientDetail/{id}")
+    @ApiOperation(
+            value = "Retrieves an client detail updated",
+            httpMethod = "PATCH",
+            response = InvoiceResponse.class
+    )
+    @ApiResponses(value = {
+            @ApiResponse(code = 200,
+                    message = "Body content with all information about an client detail updated",
+                    response = InvoiceResponse.class),
+            @ApiResponse(code = 400,
+                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data form")
+    })
+    public ResponseEntity<?> updateClientDetail(
+            @ApiParam(value = "id of client detail to update", required = true, example = "1")
+            @PathVariable(name = "id") Long idClientDetail,
+            @ApiParam(value = "data of client detail", required = true)
+            @RequestBody ClientDetaiUpdatelRequest request
+    ) {
+        Map<String, Object> response = new HashMap<>();
+
+        try {
+            return ResponseEntity.ok(clientDetailService.updateClientDetail(idClientDetail, request));
+        } catch (ReadAccessException e) {
+            response.put("Código de error", 404);
+            response.put("Mensaje", e.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }catch (Exception ex) {
+            response.put("Código de error", 400);
+            response.put("Mensaje", ex.getMessage());
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
 
     //Delete
     @DeleteMapping("/{id}")

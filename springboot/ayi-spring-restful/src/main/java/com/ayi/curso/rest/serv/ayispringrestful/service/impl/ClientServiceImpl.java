@@ -1,8 +1,8 @@
 package com.ayi.curso.rest.serv.ayispringrestful.service.impl;
 
-import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressRequest;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientDetaiUpdatelRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientRequest;
-import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientUpdateRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientDetailResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Address;
@@ -37,7 +37,7 @@ public class ClientServiceImpl implements IClientService {
         List<Client> clientEntityList = clientRepository.findAll();
 
         if(clientEntityList== null) {            //.lenght == 0
-            throw new ReadAccessException(EXCEPTION_LIST_NULL);
+            throw new ReadAccessException(EXCEPTION_DATA_NULL);
         }
 
         List<ClientResponse> clientListResponse = new ArrayList<>();
@@ -89,6 +89,22 @@ public class ClientServiceImpl implements IClientService {
     }
 
     //Update
+    @Override
+    public ClientResponse updateClient(Long idClient, ClientUpdateRequest clientRequest)
+            throws ReadAccessException {
+        Client clientToUpdate = clientRepository.findById(idClient).get();
+        //control si no exite el id
+
+        //poner control de si existe y distinto de null q setee lo q existe
+        clientToUpdate.setName(clientRequest.getName());
+        clientToUpdate.setLastname(clientRequest.getLastname());
+        clientToUpdate.setDocumentNumber(clientRequest.getDocumentNumber());
+
+        //Save update
+        Client clientUpdated = clientRepository.save(clientToUpdate);
+
+        return clientMapper.convertEntityToDto(clientUpdated);
+    }
 
     //Delete
     @Override
