@@ -19,7 +19,7 @@ import java.io.Serializable;
 )
 public class ClientDetaiUpdatelRequest implements Serializable {
 
-    @ApiModelProperty(position = 1, required = true, notes = "The prime is optional")
+    @ApiModelProperty(position = 1, notes = "The prime is optional")
     private Boolean prime;
 
     @ApiModelProperty(position = 2, notes = "The acumulated point is optional")

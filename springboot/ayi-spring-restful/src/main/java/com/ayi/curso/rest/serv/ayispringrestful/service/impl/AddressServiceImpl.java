@@ -43,7 +43,7 @@ public class AddressServiceImpl implements IAddressService {
         try {
             addressEntityList = addressRepository.findAll();
         } catch (Exception ex) {
-            throw  new InternalException(INTERNAL, ex);
+            throw new InternalException(INTERNAL, ex);
         }
 
         if(CollectionUtils.isEmpty(addressEntityList)) {
@@ -69,13 +69,12 @@ public class AddressServiceImpl implements IAddressService {
             throw new BadRequestException(EXCEPTION_ID_NOT_VALID);
         }
 
-
         AddressResponse addressResponse;
         Optional<Address> entityAddress = null;
         try {
             entityAddress = addressRepository.findById(idAddress);
         } catch (Exception ex)  {
-            throw  new InternalException(INTERNAL, ex);
+            throw new InternalException(INTERNAL, ex);
         }
 
         addressResponse = addressMapper.convertEntityToDto(entityAddress.get());
@@ -85,10 +84,25 @@ public class AddressServiceImpl implements IAddressService {
     //Create address and set client
     @Override
     @Transactional
-    public AddressResponse createAddress(AddressWithoutClientRequest addressRequest, Long idClient) {
+    public AddressResponse createAddress(AddressWithoutClientRequest addressRequest, Long idClient)
+            throws BadRequestException, InternalException {
+
+        if(idClient == null || idClient < 0){
+            throw new BadRequestException(EXCEPTION_ID_NOT_VALID);
+        }
+
         Address address = addressMapper.convertDtoToEntityWithoutClient(addressRequest);
 
-        Client client = clientRepository.findById(idClient).get();
+        Client client = null;
+        try {
+            client = clientRepository.findById(idClient).get();
+        } catch (Exception ex)  {
+            throw new InternalException(INTERNAL, ex);
+        }
+
+        if(client == null){
+            throw new BadRequestException(EXCEPTION_ID_NOT_VALID);
+        }
 
         //Set client in address
         address.setClient(client);
@@ -130,7 +144,7 @@ public class AddressServiceImpl implements IAddressService {
         try {
             addressToUpdate = addressRepository.findById(idAddress).get();
         } catch (Exception ex)  {
-            throw  new InternalException(INTERNAL, ex);
+            throw new InternalException(INTERNAL, ex);
         }
 
         if(addressToUpdate == null){
@@ -180,7 +194,7 @@ public class AddressServiceImpl implements IAddressService {
         try {
             entityAddress = addressRepository.findById(idAddress);
         } catch (Exception ex) {
-            throw  new InternalException(INTERNAL, ex);
+            throw new InternalException(INTERNAL, ex);
         }
 
         if (entityAddress.isPresent()) {

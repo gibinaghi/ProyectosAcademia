@@ -1,6 +1,7 @@
 package com.ayi.curso.rest.serv.ayispringrestful.mapper.impl;
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.InvoiceRequest;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.InvoiceWithoutClientRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.InvoiceResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Invoice;
 import com.ayi.curso.rest.serv.ayispringrestful.mapper.IInvoiceMapper;
@@ -13,6 +14,11 @@ import org.springframework.stereotype.Component;
 public class InvoiceMapperImpl implements IInvoiceMapper {
 
     private final ModelMapper modelMapper;
+
+    @Override
+    public Invoice convertDtoToEntityWithoutInvoice(InvoiceWithoutClientRequest request) {
+        return modelMapper.map(request, Invoice.class);
+    }
 
     @Override
     public Invoice convertDtoToEntity(InvoiceRequest request) {

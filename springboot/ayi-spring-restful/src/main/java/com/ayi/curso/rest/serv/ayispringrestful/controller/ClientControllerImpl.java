@@ -39,7 +39,8 @@ public class ClientControllerImpl {
                     response = ClientResponse[].class
             ),
             @ApiResponse(code = 404, message = "Client not found"),
-            @ApiResponse(code = 400 , message = "Bad request/Invalid field")})
+            //@ApiResponse(code = 400 , message = "Bad request/Invalid field")
+    })
     public ResponseEntity<?> findAllDetail() throws NotFoundException, InternalException {
         List<ClientResponse> clientResponse = clientService.findAllClient();
         return ResponseEntity.ok(clientResponse);
@@ -53,7 +54,7 @@ public class ClientControllerImpl {
             response = ClientResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200,message = "Success. Client found by ID."),
-            @ApiResponse(code = 404, message = "Client not found"),
+            //@ApiResponse(code = 404, message = "Client not found"),
             @ApiResponse(code = 400 , message = "Bad request/Invalid field")})
     public ResponseEntity<?> findClientById(
             @ApiParam(name = "id", required = true, value = "Client Id", example = "1")
@@ -99,7 +100,8 @@ public class ClientControllerImpl {
                     message = "Body content with all information about an client updated",
                     response = ClientDetailResponse.class),
             @ApiResponse(code = 400,
-                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data form")
+                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data form"),
+            @ApiResponse(code = 404, message = "Client not found"),
     })
     public ResponseEntity<?> updateClient(
             @ApiParam(value = "id of client to update", required = true, example = "1")

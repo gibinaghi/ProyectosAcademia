@@ -39,7 +39,8 @@ public class AddressController {
                     response = AddressResponse[].class
             ),
             @ApiResponse(code = 404, message = "Detail address not found"),
-            @ApiResponse(code = 400 , message = "Bad request/Invalid field")})
+            //@ApiResponse(code = 400 , message = "Bad request/Invalid field")
+    })
     public ResponseEntity<?> findAllAddress() throws NotFoundException, InternalException {
         List<AddressResponse> addressResponse = addressService.findAllAddress();
         return ResponseEntity.ok(addressResponse);
@@ -53,8 +54,9 @@ public class AddressController {
             response = AddressResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200,message = "Success. Address found by ID."),
-            @ApiResponse(code = 404, message = "Address not found"),
-            @ApiResponse(code = 400 , message = "Bad request/Invalid field")})
+            //@ApiResponse(code = 404, message = "Address not found"),
+            @ApiResponse(code = 400 , message = "Bad request/Invalid field")
+    })
     public ResponseEntity<?> findAddressById(
             @ApiParam(name = "id", required = true, value = "Address Id", example = "1")
             @PathVariable("id") Long id
@@ -82,7 +84,7 @@ public class AddressController {
     public ResponseEntity<AddressResponse> createAddress(
             @ApiParam(value = "data of address", required = true)
             @RequestBody AddressWithoutClientRequest request, Long idClient
-    ) {
+    ) throws BadRequestException, InternalException {
         AddressResponse addressResponse = addressService.createAddress(request, idClient);
         return new ResponseEntity<>(addressResponse, HttpStatus.CREATED);
     }
@@ -124,7 +126,8 @@ public class AddressController {
                     message = "Body content with all information about an address updated",
                     response = AddressResponse.class),
             @ApiResponse(code = 400,
-                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data form")
+                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data form"),
+            @ApiResponse(code = 404, message = "Address not found"),
     })
     public ResponseEntity<?> updateAddress(
             @ApiParam(value = "id of address to update", required = true, example = "1")

@@ -2,6 +2,7 @@ package com.ayi.curso.rest.serv.ayispringrestful.service;
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.InvoiceRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.InvoiceUpdateRequest;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.InvoiceWithoutClientRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.InvoiceResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
@@ -24,6 +25,8 @@ public interface IInvoiceService {
     InvoiceResponse createInvoice(InvoiceRequest invoiceRequest);
 
     //Create invoice and set client, detail client and address
+    InvoiceResponse createInvoiceSetClient(InvoiceWithoutClientRequest invoiceRequest, Long idClient)
+            throws BadRequestException, InternalException;
 
     //Update
     InvoiceResponse updateInvoice(Long idInvoice, InvoiceUpdateRequest invoiceRequest)

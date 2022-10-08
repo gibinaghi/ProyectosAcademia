@@ -23,18 +23,17 @@ public class AddressWithoutClientRequest implements Serializable {
     @ApiModelProperty(position = 1, required = true, notes = "Not null value, street is required")
     private String street;
 
-    //@Null -> como digo que es opcional???, default null
-    @ApiModelProperty(position = 2, required = true, notes = "Street number is optional")
+    @ApiModelProperty(position = 2, notes = "Street number is optional.")
     @Pattern(regexp = "[a-zA-Z ]{2,20}", message = "Only allows letters, minimum 2, maximum 20")
     private String streetNumber;
 
-    @ApiModelProperty(position = 3, required = true, notes = "Floor is optional")
+    @ApiModelProperty(position = 3, notes = "Floor is optional. Not negative value")
     @Pattern(regexp = "[0-9]{2}", message = "Only number, 2 digits")
     private Integer floor;
 
-    @NotNull(message = "Postal code can not be null")
+    @NotNull(message = "Postal code can not be null or negative")
     @Pattern(regexp = "[0-9]{4}", message = "Only number, 4 digits")
-    @ApiModelProperty(position = 4, required = true, notes = "Not null value, postal code is required")
+    @ApiModelProperty(position = 4, required = true, notes = "Not null or negative value, postal code is required")
     private Integer postalCode;
 
     @NotNull(message = "District can not be null.")

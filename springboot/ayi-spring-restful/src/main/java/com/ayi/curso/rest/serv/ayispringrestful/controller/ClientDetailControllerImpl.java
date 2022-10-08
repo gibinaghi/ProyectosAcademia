@@ -39,10 +39,11 @@ public class ClientDetailControllerImpl {
                     response = ClientDetailResponse[].class
             ),
             @ApiResponse(code = 404, message = "Detail client not found"),
-            @ApiResponse(code = 400 , message = "Bad request/Invalid field")})
+            //@ApiResponse(code = 400 , message = "Bad request/Invalid field")
+    })
     public ResponseEntity<?> findAllClientDetail() throws NotFoundException, InternalException {
-        List<ClientDetailResponse> clientReponse = clientDetailService.findAllClientDetail();
-        return ResponseEntity.ok(clientReponse);
+        List<ClientDetailResponse> clientResponse = clientDetailService.findAllClientDetail();
+        return ResponseEntity.ok(clientResponse);
     }
 
     //Get by id
@@ -53,7 +54,7 @@ public class ClientDetailControllerImpl {
             response = ClientDetailResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200,message = "Success. Client detail found by ID."),
-            @ApiResponse(code = 404, message = "Client detail not found"),
+            //@ApiResponse(code = 404, message = "Client detail not found"),
             @ApiResponse(code = 400 , message = "Bad request/Invalid field")})
     public ResponseEntity<?> findClientDetailById(
             @ApiParam(name = "id", required = true, value = "Client detail Id", example = "1")
@@ -99,7 +100,8 @@ public class ClientDetailControllerImpl {
                     message = "Body content with all information about an client detail updated",
                     response = InvoiceResponse.class),
             @ApiResponse(code = 400,
-                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data form")
+                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data form"),
+            @ApiResponse(code = 404, message = "Client detail not found"),
     })
     public ResponseEntity<?> updateClientDetail(
             @ApiParam(value = "id of client detail to update", required = true, example = "1")

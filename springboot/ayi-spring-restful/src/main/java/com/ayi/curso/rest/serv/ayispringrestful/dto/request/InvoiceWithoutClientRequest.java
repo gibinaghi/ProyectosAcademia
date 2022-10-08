@@ -14,15 +14,16 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Builder
 @ApiModel(
-        value = "Update - Invoice Request",
-        description = "Represents invoice data"
+        value = "Create - Invoice Request and set client",
+        description = "Represents invoice data and idClient"
 )
-public class InvoiceUpdateRequest implements Serializable {
+public class InvoiceWithoutClientRequest implements Serializable {
+    @NotNull(message = "Description can not be null.")
     @Pattern(regexp = "[a-zA-Z ]{2,100}", message = "Only allows letters, minimum 2, maximum 100")
-    @ApiModelProperty(position = 1, notes = "The description is optional")
+    @ApiModelProperty(position = 1, required = true, notes = "Not null value, is required")
     private String description;
 
-    @ApiModelProperty(position = 2, notes = "The total is optional")
+    @NotNull(message = "Non negative value, total can not be null")
+    @ApiModelProperty(position = 2, required = true, notes = "Non negative value, total can not be null, is required")
     private Double total;
-
 }

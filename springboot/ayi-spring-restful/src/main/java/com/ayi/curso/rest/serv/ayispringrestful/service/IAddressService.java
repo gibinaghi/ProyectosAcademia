@@ -23,7 +23,8 @@ public interface IAddressService {
             throws BadRequestException, InternalException;
 
     //Create address and set client
-    AddressResponse createAddress(AddressWithoutClientRequest addressRequest, Long idClient);
+    AddressResponse createAddress(AddressWithoutClientRequest addressRequest, Long idClient)
+            throws BadRequestException, InternalException;
 
     //Create address and client
     AddressResponse createAddressAndClient(AddressRequest addressRequest);

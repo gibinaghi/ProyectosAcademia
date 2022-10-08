@@ -2,6 +2,7 @@ package com.ayi.curso.rest.serv.ayispringrestful.service.impl;
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.InvoiceRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.InvoiceUpdateRequest;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.InvoiceWithoutClientRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.InvoiceResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Client;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.ClientDetail;
@@ -10,6 +11,7 @@ import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
 import com.ayi.curso.rest.serv.ayispringrestful.mapper.IInvoiceMapper;
+import com.ayi.curso.rest.serv.ayispringrestful.repository.IClientRepository;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.IInvoiceRepository;
 import com.ayi.curso.rest.serv.ayispringrestful.service.IInvoiceService;
 import lombok.AllArgsConstructor;
@@ -29,6 +31,7 @@ import static com.ayi.curso.rest.serv.ayispringrestful.constants.Exceptions.*;
 @AllArgsConstructor
 public class InvoiceServiceImpl implements IInvoiceService {
     private IInvoiceRepository invoiceRepository;
+    private IClientRepository clientRepository;
 
     private IInvoiceMapper invoiceMapper;
 
@@ -83,6 +86,36 @@ public class InvoiceServiceImpl implements IInvoiceService {
     }
 
     //Create invoice and set client, detail client and anddress
+    @Override
+    @Transactional
+    public InvoiceResponse createInvoiceSetClient(InvoiceWithoutClientRequest invoiceRequest, Long idClient)
+            throws BadRequestException, InternalException {
+
+        if(idClient == null || idClient < 0){
+            throw new BadRequestException(EXCEPTION_ID_NOT_VALID);
+        }
+
+        Invoice invoice = invoiceMapper.convertDtoToEntityWithoutInvoice(invoiceRequest);
+
+        Client client = null;
+        try {
+            client = clientRepository.findById(idClient).get();
+        } catch (Exception ex)  {
+            throw new InternalException(INTERNAL, ex);
+        }
+
+        if(client == null){
+            throw new BadRequestException(EXCEPTION_ID_NOT_VALID);
+        }
+
+        //Set client in address
+        invoice.setClient(client);
+
+        //Save
+        invoice = invoiceRepository.save(invoice);
+
+        return invoiceMapper.convertEntityToDto(invoice);
+    }
 
     //Create invoice, client, detail client, address
     @Override
