@@ -129,8 +129,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
         if(StringUtils.isNotEmpty(invoiceRequest.getDescription())){
             invoiceToUpdate.setDescription(invoiceRequest.getDescription());
         }
-        //como valido si existe el double????
-        if(!invoiceRequest.getTotal().isNaN()){
+        if(null != invoiceRequest.getTotal()){
             invoiceToUpdate.setTotal(invoiceRequest.getTotal());
         }
 

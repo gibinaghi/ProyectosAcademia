@@ -144,11 +144,12 @@ public class AddressServiceImpl implements IAddressService {
         if(StringUtils.isNotEmpty(addressRequest.getStreetNumber())){
             addressToUpdate.setStreetNumber(addressRequest.getStreetNumber());
         }
-
-        //como valido los integer que exista???
-        addressToUpdate.setFloor(addressRequest.getFloor());
-        addressToUpdate.setPostalCode(addressRequest.getPostalCode());
-
+        if(null != addressRequest.getFloor()){
+            addressToUpdate.setFloor(addressRequest.getFloor());
+        }
+        if(null != addressRequest.getPostalCode()){
+            addressToUpdate.setPostalCode(addressRequest.getPostalCode());
+        }
         if(StringUtils.isNotEmpty(addressRequest.getDistrict())){
             addressToUpdate.setDistrict(addressRequest.getDistrict());
         }

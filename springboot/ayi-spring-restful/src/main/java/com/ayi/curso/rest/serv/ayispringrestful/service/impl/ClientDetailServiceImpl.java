@@ -5,10 +5,15 @@ import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientDetailRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientDetailResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Client;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.ClientDetail;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
 import com.ayi.curso.rest.serv.ayispringrestful.mapper.IClientDetailMapper;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.IClientDetailRepository;
 import com.ayi.curso.rest.serv.ayispringrestful.service.IClientDetailService;
 import lombok.AllArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -28,12 +33,18 @@ public class ClientDetailServiceImpl implements IClientDetailService {
     //Get all
     @Override
     @Transactional
-    public List<ClientDetailResponse> findAllClientDetail() throws ReadAccessException {
+    public List<ClientDetailResponse> findAllClientDetail()
+            throws NotFoundException, InternalException {
 
-        List<ClientDetail> clientEntityList = clientDetailRepository.findAll();
+        List<ClientDetail> clientEntityList = null;
+        try {
+            clientEntityList = clientDetailRepository.findAll();
+        } catch (Exception ex) {
+            throw  new InternalException(INTERNAL, ex);
+        }
 
-        if(clientEntityList== null) {            //.lenght == 0
-            throw new ReadAccessException(EXCEPTION_DATA_NULL);
+        if(CollectionUtils.isEmpty(clientEntityList)) {
+            throw new NotFoundException(EXCEPTION_DATA_NULL);
         }
 
         List<ClientDetailResponse> clientListResponse = new ArrayList<>();
@@ -48,17 +59,19 @@ public class ClientDetailServiceImpl implements IClientDetailService {
     //Get by id
     @Override
     @Transactional
-    public ClientDetailResponse findClientDetailById(Long idClientDetail) throws ReadAccessException {
+    public ClientDetailResponse findClientDetailById(Long idClientDetail)
+            throws BadRequestException, InternalException {
+
         if(idClientDetail == null || idClientDetail < 0){
-            throw new ReadAccessException(EXCEPTION_ID_NULL);
+            throw new BadRequestException(EXCEPTION_ID_NOT_VALID);
         }
 
-
         ClientDetailResponse clientDetailResponse;
-        Optional<ClientDetail> entityClientDetail = clientDetailRepository.findById(idClientDetail);
-
-        if (!entityClientDetail.isPresent()) {
-            throw new ReadAccessException(EXCEPTION_ID_NOT_FOUND);
+        Optional<ClientDetail> entityClientDetail = null;
+        try {
+            entityClientDetail = clientDetailRepository.findById(idClientDetail);
+        } catch (Exception ex)  {
+            throw  new InternalException(INTERNAL, ex);
         }
 
         clientDetailResponse = clientDetailMapper.convertEntityToDto(entityClientDetail.get());
@@ -71,7 +84,6 @@ public class ClientDetailServiceImpl implements IClientDetailService {
     @Transactional
     public ClientDetailResponse createClientDetail(ClientDetailRequest clientDetailRequest) {
         ClientDetail clientDetail = clientDetailMapper.convertDtoToEntity(clientDetailRequest);
-
 
         //Set client in client detail
         Client client = clientDetail.getClient();
@@ -88,13 +100,30 @@ public class ClientDetailServiceImpl implements IClientDetailService {
     @Override
     public ClientDetailResponse updateClientDetail(
             Long idClientDetail, ClientDetaiUpdatelRequest clientDetailRequest)
-            throws ReadAccessException {
-        ClientDetail clientToUpdate = clientDetailRepository.findById(idClientDetail).get();
-        //control si no exite el id
+            throws NotFoundException, InternalException, BadRequestException {
 
-        //poner control de si existe y distinto de null q setee lo q existe
-        clientToUpdate.setPrime(clientDetailRequest.getPrime());
-        clientToUpdate.setAcumulatedPoints(clientDetailRequest.getAcumulatedPoints());
+        if(idClientDetail == null || idClientDetail < 0){
+            throw new BadRequestException(EXCEPTION_ID_NOT_VALID);
+        }
+
+        ClientDetail clientToUpdate = null;
+        try {
+            clientToUpdate = clientDetailRepository.findById(idClientDetail).get();
+        } catch (Exception ex)  {
+            throw  new InternalException(INTERNAL, ex);
+        }
+
+        if(clientToUpdate == null){
+            throw new NotFoundException(EXCEPTION_DATA_NULL );
+        }
+
+        //Control data exist
+        if(null != clientDetailRequest.getPrime()){
+            clientToUpdate.setPrime(clientDetailRequest.getPrime());
+        }
+        if(null != clientDetailRequest.getAcumulatedPoints()){
+            clientToUpdate.setAcumulatedPoints(clientDetailRequest.getAcumulatedPoints());
+        }
 
         //Save update
         ClientDetail clientUpdated = clientDetailRepository.save(clientToUpdate);
@@ -105,13 +134,24 @@ public class ClientDetailServiceImpl implements IClientDetailService {
     //Delete
     //falta borrar tambien direccion y detalle cliente
     @Override
-    public void deleteClientDetail(Long idClientDetail){
-        Optional<ClientDetail> entityClientDetail = clientDetailRepository.findById(idClientDetail);
+    public void deleteClientDetail(Long idClientDetail)
+            throws BadRequestException, InternalException, NotFoundException {
+
+        if(idClientDetail == null || idClientDetail < 0){
+            throw new BadRequestException(EXCEPTION_ID_NOT_VALID);
+        }
+
+        Optional<ClientDetail> entityClientDetail;
+        try {
+            entityClientDetail = clientDetailRepository.findById(idClientDetail);
+        } catch (Exception ex) {
+            throw  new InternalException(INTERNAL, ex);
+        }
 
         if (entityClientDetail.isPresent()) {
             clientDetailRepository.deleteById(idClientDetail);
         } else {
-            throw new RuntimeException(EXCEPTION_ID_NOT_FOUND);
+            throw new NotFoundException(EXCEPTION_ID_NULL);
         }
     }
 }

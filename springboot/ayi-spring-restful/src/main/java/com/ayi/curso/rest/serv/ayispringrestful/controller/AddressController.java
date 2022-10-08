@@ -15,9 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @AllArgsConstructor
 @RestController
@@ -133,7 +131,7 @@ public class AddressController {
             @PathVariable(name = "id") Long idAddress,
             @ApiParam(value = "data of address", required = true)
             @RequestBody AddressUpdateRequest request
-    ) throws NotFoundException, BadRequestException, InternalException  {
+    ) throws NotFoundException, BadRequestException, InternalException {
             return ResponseEntity.ok(addressService.updateAddress(idAddress, request));
     }
 

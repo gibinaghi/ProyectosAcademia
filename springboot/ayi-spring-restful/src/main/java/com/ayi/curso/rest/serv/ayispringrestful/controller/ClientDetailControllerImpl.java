@@ -5,6 +5,9 @@ import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientDetailRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientDetailResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.InvoiceResponse;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
 import com.ayi.curso.rest.serv.ayispringrestful.service.IClientDetailService;
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
@@ -13,9 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @AllArgsConstructor
 @RestController
@@ -39,21 +40,8 @@ public class ClientDetailControllerImpl {
             ),
             @ApiResponse(code = 404, message = "Detail client not found"),
             @ApiResponse(code = 400 , message = "Bad request/Invalid field")})
-    public ResponseEntity<?> findAllClientDetail(){
-
-        List<ClientDetailResponse> clientReponse = null;
-        Map<String, Object> response = new HashMap<>();
-
-        try {
-            clientReponse  = clientDetailService.findAllClientDetail();
-        } catch (ReadAccessException e) {
-            response.put("Mensaje", e.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        }catch (Exception ex) {
-            response.put("Código de error", 400);
-            response.put("Mensaje", ex.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<?> findAllClientDetail() throws NotFoundException, InternalException {
+        List<ClientDetailResponse> clientReponse = clientDetailService.findAllClientDetail();
         return ResponseEntity.ok(clientReponse);
     }
 
@@ -69,21 +57,9 @@ public class ClientDetailControllerImpl {
             @ApiResponse(code = 400 , message = "Bad request/Invalid field")})
     public ResponseEntity<?> findClientDetailById(
             @ApiParam(name = "id", required = true, value = "Client detail Id", example = "1")
-            @PathVariable("id") Long id){
-
-        Map<String, Object> response = new HashMap<>();
-
-        try {
+            @PathVariable("id") Long id
+    ) throws BadRequestException, InternalException {
             return ResponseEntity.ok(clientDetailService.findClientDetailById(id));
-        } catch (ReadAccessException e) {
-            response.put("Código de error", 404);
-            response.put("Mensaje", e.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        }catch (Exception ex) {
-            response.put("Código de error", 400);
-            response.put("Mensaje", ex.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        }
     }
 
     //Create client detail and client
@@ -130,20 +106,8 @@ public class ClientDetailControllerImpl {
             @PathVariable(name = "id") Long idClientDetail,
             @ApiParam(value = "data of client detail", required = true)
             @RequestBody ClientDetaiUpdatelRequest request
-    ) {
-        Map<String, Object> response = new HashMap<>();
-
-        try {
+    ) throws NotFoundException, BadRequestException, InternalException {
             return ResponseEntity.ok(clientDetailService.updateClientDetail(idClientDetail, request));
-        } catch (ReadAccessException e) {
-            response.put("Código de error", 404);
-            response.put("Mensaje", e.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-        }catch (Exception ex) {
-            response.put("Código de error", 400);
-            response.put("Mensaje", ex.getMessage());
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        }
     }
 
     //Delete
@@ -159,9 +123,8 @@ public class ClientDetailControllerImpl {
     public ResponseEntity<Void> deleteClientDetail(
             @ApiParam(name = "id", required = true, value = "Client detail Id", example = "1")
             @PathVariable Long id
-    ){
+    ) throws BadRequestException, NotFoundException, InternalException {
         clientDetailService.deleteClientDetail(id);
-
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

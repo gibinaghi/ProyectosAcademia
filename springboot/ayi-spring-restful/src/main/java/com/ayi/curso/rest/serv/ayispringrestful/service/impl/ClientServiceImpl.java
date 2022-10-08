@@ -6,10 +6,15 @@ import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Address;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Client;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.ClientDetail;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
 import com.ayi.curso.rest.serv.ayispringrestful.mapper.IClientMapper;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.IClientRepository;
 import com.ayi.curso.rest.serv.ayispringrestful.service.IClientService;
 import lombok.AllArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -29,12 +34,18 @@ public class ClientServiceImpl implements IClientService {
     //Get all
     @Override
     @Transactional
-    public List<ClientResponse> findAllClient() throws ReadAccessException {
+    public List<ClientResponse> findAllClient()
+            throws NotFoundException, InternalException {
 
-        List<Client> clientEntityList = clientRepository.findAll();
+        List<Client> clientEntityList = null;
+        try {
+            clientEntityList = clientRepository.findAll();
+        } catch (Exception ex) {
+            throw  new InternalException(INTERNAL, ex);
+        }
 
-        if(clientEntityList== null) {            //.lenght == 0
-            throw new ReadAccessException(EXCEPTION_DATA_NULL);
+        if(CollectionUtils.isEmpty(clientEntityList)) {
+            throw new NotFoundException(EXCEPTION_DATA_NULL);
         }
 
         List<ClientResponse> clientListResponse = new ArrayList<>();
@@ -49,17 +60,19 @@ public class ClientServiceImpl implements IClientService {
     //Get by id
     @Override
     @Transactional
-    public ClientResponse findClientById(Long idClient) throws ReadAccessException {
+    public ClientResponse findClientById(Long idClient)
+            throws BadRequestException, InternalException {
+
         if(idClient == null || idClient < 0){
-            throw new ReadAccessException(EXCEPTION_ID_NULL);
+            throw new BadRequestException(EXCEPTION_ID_NOT_VALID);
         }
 
-
         ClientResponse clientResponse;
-        Optional<Client> entityClient = clientRepository.findById(idClient);
-
-        if (!entityClient.isPresent()) {
-            throw new ReadAccessException(EXCEPTION_ID_NOT_FOUND );
+        Optional<Client> entityClient = null;
+        try {
+            entityClient = clientRepository.findById(idClient);
+        } catch (Exception ex)  {
+            throw  new InternalException(INTERNAL, ex);
         }
 
         clientResponse = clientMapper.convertEntityToDto(entityClient.get());
@@ -88,14 +101,33 @@ public class ClientServiceImpl implements IClientService {
     //Update
     @Override
     public ClientResponse updateClient(Long idClient, ClientUpdateRequest clientRequest)
-            throws ReadAccessException {
-        Client clientToUpdate = clientRepository.findById(idClient).get();
-        //control si no exite el id
+            throws NotFoundException, InternalException, BadRequestException {
 
-        //poner control de si existe y distinto de null q setee lo q existe
-        clientToUpdate.setName(clientRequest.getName());
-        clientToUpdate.setLastname(clientRequest.getLastname());
-        clientToUpdate.setDocumentNumber(clientRequest.getDocumentNumber());
+        if(idClient == null || idClient < 0){
+            throw new BadRequestException(EXCEPTION_ID_NOT_VALID);
+        }
+
+        Client clientToUpdate = null;
+        try {
+            clientToUpdate = clientRepository.findById(idClient).get();
+        } catch (Exception ex)  {
+            throw  new InternalException(INTERNAL, ex);
+        }
+
+        if(clientToUpdate == null){
+            throw new NotFoundException(EXCEPTION_DATA_NULL );
+        }
+
+        //Control data exist
+        if(StringUtils.isNotEmpty(clientRequest.getName())){
+            clientToUpdate.setName(clientRequest.getName());
+        }
+        if(StringUtils.isNotEmpty(clientRequest.getLastname())){
+            clientToUpdate.setLastname(clientRequest.getLastname());
+        }
+        if(StringUtils.isNotEmpty(clientRequest.getDocumentNumber())){
+            clientToUpdate.setDocumentNumber(clientRequest.getDocumentNumber());
+        }
 
         //Save update
         Client clientUpdated = clientRepository.save(clientToUpdate);
@@ -105,13 +137,24 @@ public class ClientServiceImpl implements IClientService {
 
     //Delete
     @Override
-    public void deleteClient(Long idClient){
-        Optional<Client> entityClient = clientRepository.findById(idClient);
+    public void deleteClient(Long idClient)
+            throws BadRequestException, InternalException, NotFoundException {
+
+        if(idClient == null || idClient < 0){
+            throw new BadRequestException(EXCEPTION_ID_NOT_VALID);
+        }
+
+        Optional<Client> entityClient;
+        try {
+            entityClient = clientRepository.findById(idClient);
+        } catch (Exception ex) {
+            throw  new InternalException(INTERNAL, ex);
+        }
 
         if (entityClient.isPresent()) {
             clientRepository.deleteById(idClient);
         } else {
-            throw new RuntimeException(EXCEPTION_ID_NOT_FOUND );
+            throw new NotFoundException(EXCEPTION_ID_NULL);
         }
     }
 }
