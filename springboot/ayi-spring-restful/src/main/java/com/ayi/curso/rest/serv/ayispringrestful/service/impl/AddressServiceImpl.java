@@ -1,8 +1,9 @@
 package com.ayi.curso.rest.serv.ayispringrestful.service.impl;
 
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressCreateRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressUpdateRequest;
-import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressWithoutClientRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressRequest;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Address;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Client;
@@ -33,7 +34,7 @@ public class AddressServiceImpl implements IAddressService {
 
     private IAddressMapper addressMapper;
 
-    //Get all -> agregar paginacion si alcanzo
+    //Get all
     @Override
     @Transactional
     public List<AddressResponse> findAllAddress()
@@ -63,7 +64,7 @@ public class AddressServiceImpl implements IAddressService {
     @Override
     @Transactional
     public AddressResponse findAddressById(Long idAddress)
-            throws BadRequestException, InternalException  {
+            throws BadRequestException, InternalException, NotFoundException  {
 
         if(idAddress == null || idAddress < 0){
             throw new BadRequestException(EXCEPTION_ID_NOT_VALID);
@@ -77,6 +78,10 @@ public class AddressServiceImpl implements IAddressService {
             throw new InternalException(INTERNAL, ex);
         }
 
+        if(!entityAddress.isPresent()){
+            throw new NotFoundException(EXCEPTION_ID_NOT_FOUND);
+        }
+
         addressResponse = addressMapper.convertEntityToDto(entityAddress.get());
         return addressResponse;
     }
@@ -84,14 +89,14 @@ public class AddressServiceImpl implements IAddressService {
     //Create address and set client
     @Override
     @Transactional
-    public AddressResponse createAddress(AddressWithoutClientRequest addressRequest, Long idClient)
+    public AddressResponse createAddress(AddressRequest addressRequest, Long idClient)
             throws BadRequestException, InternalException {
 
         if(idClient == null || idClient < 0){
             throw new BadRequestException(EXCEPTION_ID_NOT_VALID);
         }
 
-        Address address = addressMapper.convertDtoToEntityWithoutClient(addressRequest);
+        Address address = addressMapper.convertDtoToEntity(addressRequest);
 
         Client client = null;
         try {
@@ -116,18 +121,23 @@ public class AddressServiceImpl implements IAddressService {
     //Create address and client
     @Override
     @Transactional
-    public AddressResponse createAddressAndClient(AddressRequest addressRequest) {
-        Address address = addressMapper.convertDtoToEntity(addressRequest);
+    public AddressResponse createAddressAndClient(AddressCreateRequest addressRequest) {
+        //Map client
+        Address addressEntity = addressMapper.convertDtoToEntityCreate(addressRequest);
 
-        //Set client in address
-        Client client = address.getClient();
-
-        address.setClient(client);
+        //Create address
+        addressEntity.setStreet(addressRequest.getAddressRequest().getStreet());
+        addressEntity.setStreetNumber(addressRequest.getAddressRequest().getStreetNumber());
+        addressEntity.setFloor(addressRequest.getAddressRequest().getFloor());
+        addressEntity.setPostalCode(addressRequest.getAddressRequest().getPostalCode());
+        addressEntity.setDistrict(addressRequest.getAddressRequest().getDistrict());
+        addressEntity.setCity(addressRequest.getAddressRequest().getCity());
+        addressEntity.setCountry(addressRequest.getAddressRequest().getCountry());
 
         //Save
-        address = addressRepository.save(address);
+        addressEntity = addressRepository.save(addressEntity);
 
-        return addressMapper.convertEntityToDto(address);
+        return addressMapper.convertEntityToDto(addressEntity);
     }
 
     //Update
@@ -181,7 +191,6 @@ public class AddressServiceImpl implements IAddressService {
     }
 
     //Delete
-    //falta borrar tambien cliente y detalle cliente
     @Override
     public void deleteAddress(Long idAddress)
             throws BadRequestException, InternalException, NotFoundException {

@@ -1,7 +1,7 @@
 package com.ayi.curso.rest.serv.ayispringrestful.mapper.impl;
 
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressCreateRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressRequest;
-import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressWithoutClientRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Address;
 import com.ayi.curso.rest.serv.ayispringrestful.mapper.IAddressMapper;
@@ -13,8 +13,9 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class AddressMapperImpl implements IAddressMapper {
     private final ModelMapper modelMapper;
+
     @Override
-    public Address convertDtoToEntityWithoutClient(AddressWithoutClientRequest request) {
+    public Address convertDtoToEntityCreate(AddressCreateRequest request) {
 
         return modelMapper.map(request, Address.class);
     }

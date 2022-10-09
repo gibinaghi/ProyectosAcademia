@@ -1,8 +1,8 @@
 package com.ayi.curso.rest.serv.ayispringrestful.controller;
 
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.InvoiceCreateRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.InvoiceRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.InvoiceUpdateRequest;
-import com.ayi.curso.rest.serv.ayispringrestful.dto.request.InvoiceWithoutClientRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.InvoiceResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
@@ -21,13 +21,13 @@ import java.util.List;
 @RestController
 @Api(value = "Invoice Api", tags = {"Invoice Service"})
 @RequestMapping(value = "/invoice", produces = {MediaType.APPLICATION_JSON_VALUE})
-public class InvoiceControllerImpl {
+public class InvoiceController {
     private IInvoiceService invoiceService;
 
-    //Get all invoice, client, detail cliente and address
+    //Get all
     @GetMapping(value = "/getAllInvoice")
     @ApiOperation(
-            value = "Retrieves List of all Invoice",
+            value = "List of all Invoice",
             httpMethod = "GET",
             response = InvoiceResponse[].class
     )
@@ -53,23 +53,23 @@ public class InvoiceControllerImpl {
             response = InvoiceResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200,message = "Success. Invoice detail found by ID."),
-            //@ApiResponse(code = 404, message = "Invoice detail not found"),
+            @ApiResponse(code = 404, message = "Invoice detail not found"),
             @ApiResponse(code = 400 , message = "Bad request/Invalid field")
     })
     public ResponseEntity<?> findInvoiceById (
             @ApiParam(name = "id", required = true, value = "Invoice detail Id", example = "1")
             @PathVariable("id") Long id
-    ) throws BadRequestException, InternalException {
+    ) throws BadRequestException, InternalException, NotFoundException {
             return ResponseEntity.ok(invoiceService.findInvoiceById(id));
     }
 
-    //Create invoice and set client, detail client and anddress
+    //Create invoice and set client, detail client and address
     @PostMapping(
             value = "/createInvoiceSetClient",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(
-            value = "Retrieves a invoice created",
+            value = "Create invoice and set client, detail client and address",
             httpMethod = "POST",
             response = InvoiceResponse.class
     )
@@ -82,9 +82,9 @@ public class InvoiceControllerImpl {
     })
     public ResponseEntity<InvoiceResponse> createInvoiceSetClient(
             @ApiParam(value = "data of invoice", required = true)
-            @RequestBody InvoiceWithoutClientRequest request, Long idInvoice
+            @RequestBody InvoiceRequest request, Long idClient
     ) throws BadRequestException, InternalException {
-        InvoiceResponse invoiceResponse = invoiceService.createInvoiceSetClient(request, idInvoice);
+        InvoiceResponse invoiceResponse = invoiceService.createInvoiceSetClient(request, idClient);
         return new ResponseEntity<>(invoiceResponse, HttpStatus.CREATED);
     }
 
@@ -94,7 +94,7 @@ public class InvoiceControllerImpl {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(
-            value = "Retrieves a invoice created",
+            value = "Create invoice, client, detail client and address",
             httpMethod = "POST",
             response = InvoiceResponse.class
     )
@@ -107,7 +107,7 @@ public class InvoiceControllerImpl {
     })
     public ResponseEntity<InvoiceResponse> createInvoice(
             @ApiParam(value = "data of invoice", required = true)
-            @RequestBody InvoiceRequest request
+            @RequestBody InvoiceCreateRequest request
     ) {
         InvoiceResponse invoiceResponse = invoiceService.createInvoice(request);
         return new ResponseEntity<>(invoiceResponse, HttpStatus.CREATED);

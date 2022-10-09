@@ -1,6 +1,7 @@
 package com.ayi.curso.rest.serv.ayispringrestful.service.impl;
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientDetaiUpdatelRequest;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientDetailCreateRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientDetailRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientDetailResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Client;
@@ -60,7 +61,7 @@ public class ClientDetailServiceImpl implements IClientDetailService {
     @Override
     @Transactional
     public ClientDetailResponse findClientDetailById(Long idClientDetail)
-            throws BadRequestException, InternalException {
+            throws BadRequestException, InternalException, NotFoundException {
 
         if(idClientDetail == null || idClientDetail < 0){
             throw new BadRequestException(EXCEPTION_ID_NOT_VALID);
@@ -71,7 +72,11 @@ public class ClientDetailServiceImpl implements IClientDetailService {
         try {
             entityClientDetail = clientDetailRepository.findById(idClientDetail);
         } catch (Exception ex)  {
-            throw  new InternalException(INTERNAL, ex);
+            throw new InternalException(INTERNAL, ex);
+        }
+
+        if(!entityClientDetail.isPresent()){
+            throw new NotFoundException(EXCEPTION_ID_NOT_FOUND);
         }
 
         clientDetailResponse = clientDetailMapper.convertEntityToDto(entityClientDetail.get());
@@ -79,21 +84,19 @@ public class ClientDetailServiceImpl implements IClientDetailService {
     }
 
     //Create client detail and client
-    //falta crear la direccion o asignarle una direccion
     @Override
     @Transactional
-    public ClientDetailResponse createClientDetail(ClientDetailRequest clientDetailRequest) {
-        ClientDetail clientDetail = clientDetailMapper.convertDtoToEntity(clientDetailRequest);
+    public ClientDetailResponse createClientDetail(ClientDetailCreateRequest clientDetailRequest) {
+        ClientDetail clientDetailEntity = clientDetailMapper.convertDtoToEntityCreate(clientDetailRequest);
 
-        //Set client in client detail
-        Client client = clientDetail.getClient();
-
-        clientDetail.setClient(client);
+        //Create client detail
+        clientDetailEntity.setPrime(clientDetailRequest.getClientDetailRequest().getPrime());
+        clientDetailEntity.setAcumulatedPoints(clientDetailRequest.getClientDetailRequest().getAcumulatedPoints());
 
         //Save
-        clientDetail = clientDetailRepository.save(clientDetail);
+        clientDetailEntity = clientDetailRepository.save(clientDetailEntity);
 
-        return clientDetailMapper.convertEntityToDto(clientDetail);
+        return clientDetailMapper.convertEntityToDto(clientDetailEntity);
     }
 
     //Update
@@ -132,7 +135,6 @@ public class ClientDetailServiceImpl implements IClientDetailService {
     }
 
     //Delete
-    //falta borrar tambien direccion y detalle cliente
     @Override
     public void deleteClientDetail(Long idClientDetail)
             throws BadRequestException, InternalException, NotFoundException {

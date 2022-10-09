@@ -16,7 +16,7 @@ import java.io.Serializable;
         value = "Update - Address Request",
         description = "Represents address data"
 )
-public class AddressUpdateRequest implements Serializable {
+public class AddressUpdateRequest {
 
     @Pattern(regexp = "[a-zA-Z ]{2,20}", message = "Only allows letters, minimum 2, maximum 20")
     @ApiModelProperty(position = 1, notes = "The street is optional")

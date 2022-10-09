@@ -2,6 +2,7 @@ package com.ayi.curso.rest.serv.ayispringrestful.dto.response;
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientDetailResponse;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -21,7 +22,8 @@ import java.util.List;
         value = "Client Response",
         description = "Represents the client, client detail, invoice and address data"
 )
-public class ClientResponse implements Serializable {
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public class ClientResponse {
 
     @ApiModelProperty(position = 1, notes = "Client id.")
     private Long idClient;
@@ -42,5 +44,5 @@ public class ClientResponse implements Serializable {
     private List<AddressResponse> addresses;
 
     @ApiModelProperty(position = 7, notes = "The invoices of the client.")
-    private List<AddressResponse> invoices;
+    private List<InvoiceResponse> invoices;
 }

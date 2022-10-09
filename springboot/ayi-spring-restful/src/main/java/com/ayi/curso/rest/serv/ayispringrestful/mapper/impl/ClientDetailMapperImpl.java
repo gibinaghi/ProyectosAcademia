@@ -1,5 +1,6 @@
 package com.ayi.curso.rest.serv.ayispringrestful.mapper.impl;
 
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientDetailCreateRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientDetailRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientDetailResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.ClientDetail;
@@ -13,6 +14,11 @@ import org.springframework.stereotype.Component;
 public class ClientDetailMapperImpl implements IClientDetailMapper {
 
     private final ModelMapper modelMapper;
+
+    @Override
+    public ClientDetail convertDtoToEntityCreate(ClientDetailCreateRequest request) {
+        return modelMapper.map(request, ClientDetail.class);
+    }
 
     @Override
     public ClientDetail convertDtoToEntity(ClientDetailRequest request) {

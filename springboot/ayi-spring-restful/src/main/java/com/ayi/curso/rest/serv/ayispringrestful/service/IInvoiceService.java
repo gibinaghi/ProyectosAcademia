@@ -1,8 +1,8 @@
 package com.ayi.curso.rest.serv.ayispringrestful.service;
 
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.InvoiceCreateRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.InvoiceRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.InvoiceUpdateRequest;
-import com.ayi.curso.rest.serv.ayispringrestful.dto.request.InvoiceWithoutClientRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.InvoiceResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
@@ -13,19 +13,19 @@ import java.util.List;
 
 @Service
 public interface IInvoiceService {
-    //Get all invoice, client, detail cliente and address
+    //Get all
     List<InvoiceResponse> findAllInvoice()
             throws NotFoundException, InternalException;
 
     //Get by id
     InvoiceResponse findInvoiceById(Long idInvoice)
-            throws BadRequestException, InternalException;
+            throws BadRequestException, InternalException, NotFoundException;
 
     //Create invoice, client, detail client, address
-    InvoiceResponse createInvoice(InvoiceRequest invoiceRequest);
+    InvoiceResponse createInvoice(InvoiceCreateRequest invoiceRequest);
 
     //Create invoice and set client, detail client and address
-    InvoiceResponse createInvoiceSetClient(InvoiceWithoutClientRequest invoiceRequest, Long idClient)
+    InvoiceResponse createInvoiceSetClient(InvoiceRequest invoiceRequest, Long idClient)
             throws BadRequestException, InternalException;
 
     //Update

@@ -31,7 +31,7 @@ public class ExceptionHandlerControllerAdvice extends ResponseEntityExceptionHan
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
     }
 
-    @ExceptionHandler({InternalException.class})
+    @ExceptionHandler({BadRequestException.class})
     public final ResponseEntity<ErrorKeyMessage> handleBadRequestException(
             Exception ex, WebRequest request) {
         ErrorKeyMessage errorMessage =

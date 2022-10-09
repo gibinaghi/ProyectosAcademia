@@ -1,5 +1,6 @@
 package com.ayi.curso.rest.serv.ayispringrestful.service;
 
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientCreateRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientUpdateRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientResponse;
@@ -19,10 +20,10 @@ public interface IClientService {
 
     //Get by id
     ClientResponse findClientById(Long idClient)
-            throws BadRequestException, InternalException;
+            throws BadRequestException, InternalException, NotFoundException;
 
     //Create client, client detail and address
-    ClientResponse createClient(ClientRequest clientRequest);
+    ClientResponse createClient(ClientCreateRequest clientRequest);
 
    //Update
     ClientResponse updateClient(Long idClient, ClientUpdateRequest clientRequest)

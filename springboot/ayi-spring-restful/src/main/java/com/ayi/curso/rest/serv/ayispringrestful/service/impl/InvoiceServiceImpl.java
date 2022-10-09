@@ -1,9 +1,10 @@
 package com.ayi.curso.rest.serv.ayispringrestful.service.impl;
 
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.InvoiceCreateRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.InvoiceRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.InvoiceUpdateRequest;
-import com.ayi.curso.rest.serv.ayispringrestful.dto.request.InvoiceWithoutClientRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.InvoiceResponse;
+import com.ayi.curso.rest.serv.ayispringrestful.entity.Address;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Client;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.ClientDetail;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Invoice;
@@ -21,7 +22,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,8 +35,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
 
     private IInvoiceMapper invoiceMapper;
 
-    //Get all invoice, client, detail cliente and address
-    //agregar falta paginación
+    //Get all
     @Override
     @Transactional
     public List<InvoiceResponse> findAllInvoice()
@@ -62,12 +61,11 @@ public class InvoiceServiceImpl implements IInvoiceService {
         return invoiceListResponse ;
     }
 
-
     //Get by id
     @Override
     @Transactional
     public InvoiceResponse findInvoiceById(Long idInvoice)
-            throws BadRequestException, InternalException {
+            throws BadRequestException, InternalException, NotFoundException {
 
         if(idInvoice == null || idInvoice < 0){
             throw new BadRequestException(EXCEPTION_ID_NOT_VALID);
@@ -78,7 +76,11 @@ public class InvoiceServiceImpl implements IInvoiceService {
         try {
             entityInvoice = invoiceRepository.findById(idInvoice);
         } catch (Exception ex)  {
-            throw  new InternalException(INTERNAL, ex);
+            throw new InternalException(INTERNAL, ex);
+        }
+
+        if(!entityInvoice.isPresent()){
+            throw new NotFoundException(EXCEPTION_ID_NOT_FOUND);
         }
 
         invoiceResponse= invoiceMapper.convertEntityToDto(entityInvoice.get());
@@ -88,14 +90,14 @@ public class InvoiceServiceImpl implements IInvoiceService {
     //Create invoice and set client, detail client and anddress
     @Override
     @Transactional
-    public InvoiceResponse createInvoiceSetClient(InvoiceWithoutClientRequest invoiceRequest, Long idClient)
+    public InvoiceResponse createInvoiceSetClient(InvoiceRequest invoiceRequest, Long idClient)
             throws BadRequestException, InternalException {
 
         if(idClient == null || idClient < 0){
             throw new BadRequestException(EXCEPTION_ID_NOT_VALID);
         }
 
-        Invoice invoice = invoiceMapper.convertDtoToEntityWithoutInvoice(invoiceRequest);
+        Invoice invoice = invoiceMapper.convertDtoToEntity(invoiceRequest);
 
         Client client = null;
         try {
@@ -120,24 +122,39 @@ public class InvoiceServiceImpl implements IInvoiceService {
     //Create invoice, client, detail client, address
     @Override
     @Transactional
-    public InvoiceResponse createInvoice(InvoiceRequest invoiceRequest){
-        Invoice invoice = invoiceMapper.convertDtoToEntity(invoiceRequest);
+    public InvoiceResponse createInvoice(InvoiceCreateRequest invoiceRequest){
+        Invoice invoiceEntity = invoiceMapper.convertDtoToEntityCreate(invoiceRequest);
 
-        //Set client detail in invoice
-        Client client = invoice.getClient();
-        ClientDetail clientDetail = client.getClientDetail();
+        //Create invoice
+        invoiceEntity.setDescription(invoiceRequest.getInvoiceRequest().getDescription());
+        invoiceEntity.setTotal(invoiceRequest.getInvoiceRequest().getTotal());
 
-        client.setClientDetail(clientDetail);
-        invoice.setClient(client);
+        //Create address
+        Address address = new Address();
+        address.setStreet(invoiceRequest.getAddressRequest().getStreet());
+        address.setStreetNumber(invoiceRequest.getAddressRequest().getStreetNumber());
+        address.setFloor(invoiceRequest.getAddressRequest().getFloor());
+        address.setPostalCode(invoiceRequest.getAddressRequest().getPostalCode());
+        address.setDistrict(invoiceRequest.getAddressRequest().getDistrict());
+        address.setCity(invoiceRequest.getAddressRequest().getCity());
+        address.setCountry(invoiceRequest.getAddressRequest().getCountry());
+
+        List<Address> addressList = new ArrayList<>();
+        addressList.add(address);
+
+        //aca borrar el client del mapper
+        Client client = new Client();
+        client.setAddresses(addressList);
+
+        invoiceEntity.setClient(client);
 
         //Save
-        invoice = invoiceRepository.save(invoice);
+        invoiceEntity = invoiceRepository.save(invoiceEntity);
 
-        return invoiceMapper.convertEntityToDto(invoice);
+        return invoiceMapper.convertEntityToDto(invoiceEntity);
     }
 
     //Update
-    //se puede actualizar el clientes id???
     @Override
     //@Transactional  -> que hace??
     public InvoiceResponse updateInvoice(Long idInvoice, InvoiceUpdateRequest invoiceRequest)

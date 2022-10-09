@@ -1,6 +1,7 @@
 package com.ayi.curso.rest.serv.ayispringrestful.service;
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientDetaiUpdatelRequest;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientDetailCreateRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientDetailRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientDetailResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
@@ -18,10 +19,10 @@ public interface IClientDetailService {
 
     //Get by id
     ClientDetailResponse findClientDetailById(Long idClientDetail)
-            throws BadRequestException, InternalException;
+            throws BadRequestException, InternalException, NotFoundException;
 
     //Create client detail and client
-    ClientDetailResponse createClientDetail(ClientDetailRequest clientDetailRequest);
+    ClientDetailResponse createClientDetail(ClientDetailCreateRequest clientDetailRequest);
 
     //Update
     ClientDetailResponse updateClientDetail(

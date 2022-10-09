@@ -26,6 +26,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "address")
 public class Address implements Serializable {
+    //serializable para que se conecte a la BBDD
 
     private static final Long serialVersionUID = 1L;
 

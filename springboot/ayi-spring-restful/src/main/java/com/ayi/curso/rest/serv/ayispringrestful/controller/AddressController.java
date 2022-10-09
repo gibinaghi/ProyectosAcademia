@@ -1,8 +1,8 @@
 package com.ayi.curso.rest.serv.ayispringrestful.controller;
 
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressCreateRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressUpdateRequest;
-import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressWithoutClientRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
@@ -28,7 +28,7 @@ public class AddressController {
     //Get all
     @GetMapping(value = "/getAllAddress")
     @ApiOperation(
-            value = "Retrieves List of all address",
+            value = "List all address.",
             httpMethod = "GET",
             response = AddressResponse[].class
     )
@@ -49,18 +49,18 @@ public class AddressController {
     //Get by id
     @GetMapping(value = "/addressById/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
     @ApiOperation(
-            value = "SHow address by Id",
+            value = "Show address by Id.",
             httpMethod = "GET",
             response = AddressResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200,message = "Success. Address found by ID."),
-            //@ApiResponse(code = 404, message = "Address not found"),
+            @ApiResponse(code = 404, message = "Address not found"),
             @ApiResponse(code = 400 , message = "Bad request/Invalid field")
     })
     public ResponseEntity<?> findAddressById(
             @ApiParam(name = "id", required = true, value = "Address Id", example = "1")
             @PathVariable("id") Long id
-    ) throws BadRequestException, InternalException {
+    ) throws BadRequestException, InternalException, NotFoundException {
             return ResponseEntity.ok(addressService.findAddressById(id));
     }
 
@@ -70,7 +70,7 @@ public class AddressController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(
-            value = "Retrieves a address created",
+            value = "Create address and set client",
             httpMethod = "POST",
             response = AddressResponse.class
     )
@@ -83,7 +83,7 @@ public class AddressController {
     })
     public ResponseEntity<AddressResponse> createAddress(
             @ApiParam(value = "data of address", required = true)
-            @RequestBody AddressWithoutClientRequest request, Long idClient
+            @RequestBody AddressRequest request, Long idClient
     ) throws BadRequestException, InternalException {
         AddressResponse addressResponse = addressService.createAddress(request, idClient);
         return new ResponseEntity<>(addressResponse, HttpStatus.CREATED);
@@ -95,7 +95,7 @@ public class AddressController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(
-            value = "Retrieves a address created",
+            value = "Create address and client",
             httpMethod = "POST",
             response = AddressResponse.class
     )
@@ -108,7 +108,7 @@ public class AddressController {
     })
     public ResponseEntity<AddressResponse> createAddressAndClient(
             @ApiParam(value = "data of address", required = true)
-            @RequestBody AddressRequest request
+            @RequestBody AddressCreateRequest request
     ) {
         AddressResponse addressResponse = addressService.createAddressAndClient(request);
         return new ResponseEntity<>(addressResponse, HttpStatus.CREATED);
@@ -117,7 +117,7 @@ public class AddressController {
     //Update
     @PatchMapping(value = "/updateAddress/{id}")
     @ApiOperation(
-            value = "Retrieves an address updated",
+            value = "Show an address updated.",
             httpMethod = "PATCH",
             response = AddressResponse.class
     )

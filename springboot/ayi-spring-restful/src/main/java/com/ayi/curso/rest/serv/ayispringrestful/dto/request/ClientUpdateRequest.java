@@ -18,7 +18,7 @@ import java.util.List;
         value = "Update- Client Request",
         description = "Represents client data"
 )
-public class ClientUpdateRequest implements Serializable {
+public class ClientUpdateRequest {
 
     @Pattern(regexp = "[a-zA-Z ]{2,50}", message = "Only allows letters, minimum 2, maximum 50")
     @ApiModelProperty(position = 1, notes = "The first name is optional.")

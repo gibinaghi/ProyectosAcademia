@@ -18,10 +18,10 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Builder
 @ApiModel(
-        value = "Create - Invoice Request",
-        description = "Represents invoice and client data"
+        value = "Data Invoice",
+        description = "Represents invoice data"
 )
-public class InvoiceRequest implements Serializable {
+public class InvoiceRequest {
 
     @NotNull(message = "Description can not be null.")
     @Pattern(regexp = "[a-zA-Z ]{2,100}", message = "Only allows letters, minimum 2, maximum 100")
@@ -31,9 +31,5 @@ public class InvoiceRequest implements Serializable {
     @NotNull(message = "Non negative value, total can not be null")
     @ApiModelProperty(position = 2, required = true, notes = "Non negative value, total can not be null, is required")
     private Double total;
-
-    @NotNull(message = "Client can not be null")
-    @ApiModelProperty(position = 3, required = true, notes = "Client who owns the invoice. Not null value, is required")
-    private ClientRequest client;
 }
 

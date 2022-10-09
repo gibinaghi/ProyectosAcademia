@@ -7,10 +7,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import java.io.Serializable;
 
 @Getter
 @Setter
@@ -18,10 +18,10 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Builder
 @ApiModel(
-        value = "Create - Address and client Request",
-        description = "Represents address and client data"
+        value = "Data Address",
+        description = "Represents address data"
 )
-public class AddressRequest implements Serializable {
+public class AddressRequest {
 
     @NotNull(message = "Street can not be null.")
     @Pattern(regexp = "[a-zA-Z ]{2,20}", message = "Only allows letters, minimum 2, maximum 20")
@@ -55,8 +55,4 @@ public class AddressRequest implements Serializable {
     @Pattern(regexp = "[a-zA-Z ]{2,20}", message = "Only allows letters, minimum 2, maximum 20")
     @ApiModelProperty(position = 7, required = true, notes = "Not null value, country is required")
     private String country;
-
-    @NotNull(message = "Client can not be null")
-    @ApiModelProperty(position = 8, required = true, notes = "Not null value, client is required.")
-    private ClientRequest client;
 }

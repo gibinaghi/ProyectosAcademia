@@ -17,7 +17,7 @@ import java.io.Serializable;
         value = "Update - Client detail Request",
         description = "Represents client detail"
 )
-public class ClientDetaiUpdatelRequest implements Serializable {
+public class ClientDetaiUpdatelRequest {
 
     @ApiModelProperty(position = 1, notes = "The prime is optional")
     private Boolean prime;

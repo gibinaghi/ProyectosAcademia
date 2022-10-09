@@ -7,10 +7,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
-import java.io.Serializable;
 import java.util.List;
 
 @Getter
@@ -19,11 +19,10 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @ApiModel(
-        value = "Create - Client Request",
-        description = "Represents client, client detail and address data"
+        value = "Data Client",
+        description = "Represents client"
 )
-public class ClientRequest implements Serializable {
-
+public class ClientRequest {
     @NotNull(message = "Name can not be null.")
     @Pattern(regexp = "[a-zA-Z ]{2,50}", message = "Only allows letters, minimum 2, maximum 50")
     @ApiModelProperty(position = 1, required = true, notes = "Non empty value, The first name is required.")
@@ -39,12 +38,4 @@ public class ClientRequest implements Serializable {
     //@Pattern(regexp = "/^(\d{2}\.{1}\d{3}\.\d{3})|(\d{2}\s{1}\d{3}\s\d{3})$/g", message = "The format document is 11.111.111")
     @ApiModelProperty(position = 3, required = true, notes = "Non negative value, The document number is required.")
     private String documentNumber;  //integer
-
-    @NotNull(message = "Client detail can not be null.")
-    @ApiModelProperty(position = 4, required = true, notes = "Non empty value, The client detail is required.")
-    private ClientDetailRequest clientDetail;
-
-    @NotNull(message = "Address can not be null.")
-    @ApiModelProperty(position = 5, required = true, notes = "Non empty value, The address is required.")
-    private List<AddressRequest> addresses;
 }

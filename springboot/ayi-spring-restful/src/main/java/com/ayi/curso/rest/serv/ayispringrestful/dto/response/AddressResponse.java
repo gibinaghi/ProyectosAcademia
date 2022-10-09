@@ -1,6 +1,7 @@
 package com.ayi.curso.rest.serv.ayispringrestful.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -19,7 +20,8 @@ import java.io.Serializable;
         value = "Address Response",
         description = "Response of address and client."
 )
-public class AddressResponse implements Serializable {
+@JsonInclude(JsonInclude.Include.NON_EMPTY)
+public class AddressResponse {
 
     @ApiModelProperty(position = 1, notes = "Address id.")
     private Long idAddress;
@@ -45,7 +47,6 @@ public class AddressResponse implements Serializable {
     @ApiModelProperty(position = 8, notes = "Country name.")
     private String country;
 
-    //@JsonIgnore  -> que hace??
     @ApiModelProperty(position = 9, notes = "Client.")
     private ClientResponse client;
 }

@@ -1,7 +1,7 @@
 package com.ayi.curso.rest.serv.ayispringrestful.controller;
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientDetaiUpdatelRequest;
-import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientDetailRequest;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientDetailCreateRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientDetailResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.InvoiceResponse;
@@ -22,13 +22,13 @@ import java.util.List;
 @RestController
 @Api(value = "Client detail Api", tags = {"Client detail Service"})
 @RequestMapping(value = "/client-detail", produces = {MediaType.APPLICATION_JSON_VALUE})
-public class ClientDetailControllerImpl {
+public class ClientDetailController {
     private IClientDetailService clientDetailService;
 
     //Get all
     @GetMapping(value = "/getAllClientDetail")
     @ApiOperation(
-            value = "Retrieves List of all detail client",
+            value = "List of all detail client",
             httpMethod = "GET",
             response = ClientDetailResponse[].class
     )
@@ -54,12 +54,12 @@ public class ClientDetailControllerImpl {
             response = ClientDetailResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200,message = "Success. Client detail found by ID."),
-            //@ApiResponse(code = 404, message = "Client detail not found"),
+            @ApiResponse(code = 404, message = "Client detail not found"),
             @ApiResponse(code = 400 , message = "Bad request/Invalid field")})
     public ResponseEntity<?> findClientDetailById(
             @ApiParam(name = "id", required = true, value = "Client detail Id", example = "1")
             @PathVariable("id") Long id
-    ) throws BadRequestException, InternalException {
+    ) throws BadRequestException, InternalException, NotFoundException {
             return ResponseEntity.ok(clientDetailService.findClientDetailById(id));
     }
 
@@ -69,7 +69,7 @@ public class ClientDetailControllerImpl {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(
-            value = "Retrieves a client detail created",
+            value = "Create a client detail and client",
             httpMethod = "POST",
             response = AddressResponse.class
     )
@@ -82,7 +82,7 @@ public class ClientDetailControllerImpl {
     })
     public ResponseEntity<ClientDetailResponse> createClientDetail(
             @ApiParam(value = "data of client detail", required = true)
-            @RequestBody ClientDetailRequest request
+            @RequestBody ClientDetailCreateRequest request
     ) {
         ClientDetailResponse clientDetailResponse = clientDetailService.createClientDetail(request);
         return new ResponseEntity<>(clientDetailResponse, HttpStatus.CREATED);

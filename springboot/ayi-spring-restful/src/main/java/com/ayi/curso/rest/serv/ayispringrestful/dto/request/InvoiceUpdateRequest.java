@@ -17,7 +17,7 @@ import java.io.Serializable;
         value = "Update - Invoice Request",
         description = "Represents invoice data"
 )
-public class InvoiceUpdateRequest implements Serializable {
+public class InvoiceUpdateRequest {
     @Pattern(regexp = "[a-zA-Z ]{2,100}", message = "Only allows letters, minimum 2, maximum 100")
     @ApiModelProperty(position = 1, notes = "The description is optional")
     private String description;

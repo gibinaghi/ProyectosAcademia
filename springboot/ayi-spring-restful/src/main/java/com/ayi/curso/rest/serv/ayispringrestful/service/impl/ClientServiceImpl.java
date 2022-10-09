@@ -1,5 +1,6 @@
 package com.ayi.curso.rest.serv.ayispringrestful.service.impl;
 
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientCreateRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientUpdateRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientResponse;
@@ -61,7 +62,7 @@ public class ClientServiceImpl implements IClientService {
     @Override
     @Transactional
     public ClientResponse findClientById(Long idClient)
-            throws BadRequestException, InternalException {
+            throws BadRequestException, InternalException, NotFoundException {
 
         if(idClient == null || idClient < 0){
             throw new BadRequestException(EXCEPTION_ID_NOT_VALID);
@@ -72,7 +73,11 @@ public class ClientServiceImpl implements IClientService {
         try {
             entityClient = clientRepository.findById(idClient);
         } catch (Exception ex)  {
-            throw  new InternalException(INTERNAL, ex);
+            throw new InternalException(INTERNAL, ex);
+        }
+
+        if(!entityClient.isPresent()){
+            throw new NotFoundException(EXCEPTION_ID_NOT_FOUND);
         }
 
         clientResponse = clientMapper.convertEntityToDto(entityClient.get());
@@ -82,20 +87,39 @@ public class ClientServiceImpl implements IClientService {
     //Create client, client detail and address
     @Override
     @Transactional
-    public ClientResponse createClient(ClientRequest clientRequest) {
-        Client client  = clientMapper.convertDtoToEntity(clientRequest);
+    public ClientResponse createClient(ClientCreateRequest clientRequest) {
+        Client clientEntity  = clientMapper.convertDtoToEntityCreate(clientRequest);
 
-        //set address and client detail in client
-        List<Address> address = client.getAddresses();
-        ClientDetail clientDetail = client.getClientDetail();
+        //controlar que el nombre del cliente y dni no existan
 
-        client.setAddresses(address);
-        client.setClientDetail(clientDetail);
+        //Create client
+        clientEntity.setName(clientRequest.getClientRequest().getName());
+        clientEntity.setLastname(clientRequest.getClientRequest().getLastname());
+        clientEntity.setDocumentNumber(clientRequest.getClientRequest().getDocumentNumber());
+
+        //Create client detail
+        ClientDetail clientDetail = new ClientDetail();
+        clientDetail.setPrime(clientRequest.getClientDetailRequest().getPrime());
+        clientDetail.setAcumulatedPoints(clientRequest.getClientDetailRequest().getAcumulatedPoints());
+        clientEntity.setClientDetail(clientDetail);
+
+        //Create address
+        Address address = new Address();
+        address.setStreet(clientRequest.getAddressRequest().getStreet());
+        address.setStreetNumber(clientRequest.getAddressRequest().getStreetNumber());
+        address.setFloor(clientRequest.getAddressRequest().getFloor());
+        address.setPostalCode(clientRequest.getAddressRequest().getPostalCode());
+        address.setDistrict(clientRequest.getAddressRequest().getDistrict());
+        address.setCity(clientRequest.getAddressRequest().getCity());
+        address.setCountry(clientRequest.getAddressRequest().getCountry());
+        List<Address> addressList = new ArrayList<>();
+        addressList.add(address);
+        clientEntity.setAddresses(addressList);
 
         //Save
-        client = clientRepository.save(client);
+        clientEntity  = clientRepository.save(clientEntity);
 
-        return clientMapper.convertEntityToDto(client);
+        return clientMapper.convertEntityToDto(clientEntity);
     }
 
     //Update

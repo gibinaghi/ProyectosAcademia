@@ -1,6 +1,6 @@
 package com.ayi.curso.rest.serv.ayispringrestful.controller;
 
-import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientRequest;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientCreateRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientUpdateRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientDetailResponse;
@@ -22,13 +22,13 @@ import java.util.List;
 @RestController
 @Api(value = "Client Api", tags = {"Client Service"})
 @RequestMapping(value = "/client", produces = {MediaType.APPLICATION_JSON_VALUE})
-public class ClientControllerImpl {
+public class ClientController {
     private IClientService clientService;
 
     //Get all
     @GetMapping(value = "/getAllClient")
     @ApiOperation(
-            value = "Retrieves List of all client",
+            value = "List of all client",
             httpMethod = "GET",
             response = ClientResponse[].class
     )
@@ -54,12 +54,12 @@ public class ClientControllerImpl {
             response = ClientResponse.class)
     @ApiResponses(value = {
             @ApiResponse(code = 200,message = "Success. Client found by ID."),
-            //@ApiResponse(code = 404, message = "Client not found"),
+            @ApiResponse(code = 404, message = "Client not found"),
             @ApiResponse(code = 400 , message = "Bad request/Invalid field")})
     public ResponseEntity<?> findClientById(
             @ApiParam(name = "id", required = true, value = "Client Id", example = "1")
             @PathVariable("id") Long id
-    )  throws BadRequestException, InternalException {
+    )  throws BadRequestException, InternalException, NotFoundException {
             return ResponseEntity.ok(clientService.findClientById(id));
     }
 
@@ -69,7 +69,7 @@ public class ClientControllerImpl {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(
-            value = "Retrieves a client created",
+            value = "Create client, address and client detail created",
             httpMethod = "POST",
             response = AddressResponse.class
     )
@@ -82,7 +82,7 @@ public class ClientControllerImpl {
     })
     public ResponseEntity<ClientResponse> createClient(
             @ApiParam(value = "data of client", required = true)
-            @RequestBody ClientRequest request
+            @RequestBody ClientCreateRequest request
     ) {
         ClientResponse clientResponse = clientService.createClient(request);
         return new ResponseEntity<>(clientResponse, HttpStatus.CREATED);
@@ -91,7 +91,7 @@ public class ClientControllerImpl {
     //Update data in client
     @PatchMapping(value = "/updateClient/{id}")
     @ApiOperation(
-            value = "Retrieves an client updated",
+            value = "Show an client updated",
             httpMethod = "PATCH",
             response = ClientDetailResponse.class
     )
