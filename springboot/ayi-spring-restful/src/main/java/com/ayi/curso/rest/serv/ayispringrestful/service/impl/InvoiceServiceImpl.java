@@ -135,6 +135,9 @@ public class InvoiceServiceImpl implements IInvoiceService {
         ClientDetail clientDetail = clientDetailMapper.convertDtoToEntity(invoiceRequest.getClientDetailRequest());
 
         //Create client, client detail and address in Invoice
+        address.setClient(client);
+        clientDetail.setClient(client);
+
         invoiceEntity.setClient(client);
         invoiceEntity.getClient().getAddresses().add(address);
         invoiceEntity.getClient().setClientDetail(clientDetail);

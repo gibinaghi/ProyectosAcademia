@@ -95,8 +95,8 @@ public class ClientServiceImpl implements IClientService {
         //controlar que el nombre del cliente y dni no existan
 
         //Create client detail and address in Client
-        //clientDetail.setClient(clientEntity);
-        //address.setClient(clientEntity);
+        clientDetail.setClient(clientEntity);
+        address.setClient(clientEntity);
 
         clientEntity.setClientDetail(clientDetail);
         clientEntity.getAddresses().add(address);

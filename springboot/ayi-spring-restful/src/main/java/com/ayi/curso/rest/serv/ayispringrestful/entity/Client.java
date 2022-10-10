@@ -46,16 +46,16 @@ public class Client implements Serializable {
     @Column(name = "document_number")
     private String documentNumber;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "client_detail_id", referencedColumnName = "id_client_detail")
+    @OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
+    //@JoinColumn(name = "client_detail_id", referencedColumnName = "id_client_detail")
     @JsonIgnoreProperties(value = "client")
     private ClientDetail clientDetail;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties(value = "client")
     private List<Address> addresses = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties(value = "client")
     private List<Invoice> invoices = new ArrayList<>();
 }
