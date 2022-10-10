@@ -1,0 +1,33 @@
+# Se agregan las properties propias del proyecto
+#
+# MS Settings.
+#
+spring:
+  # Datasource settings, se debe agregar la informacion de la base de datos local.
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://${DB_HOST}:${DB_PORT}/${DB_DATABASE}
+    username: ${DB_USERNAME}
+    #password: ${DB_PASSWORD}
+    #DB_PORT=3306;DB_HOST=localhost;DB_USERNAME=root;DB_DATABASE=spring_dbayi
+    #si hay pass hay que agregarlo
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+    hibernate:
+      ddl-auto: create
+      ##create
+  ##sql:
+    ##init:
+      ##mode: always
+      ##data-locations: classpath:data.sql
+
+# Swagger settings.
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /swagger.json
+

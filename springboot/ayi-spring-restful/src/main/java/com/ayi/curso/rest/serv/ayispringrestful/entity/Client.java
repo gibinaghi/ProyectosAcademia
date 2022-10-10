@@ -42,7 +42,7 @@ public class Client implements Serializable {
     @Column(name = "lastname")
     private String lastname;
 
-    @Column(name = "document_number")
+    @Column(name = "document_number", unique = true)
     private String documentNumber;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "client")
