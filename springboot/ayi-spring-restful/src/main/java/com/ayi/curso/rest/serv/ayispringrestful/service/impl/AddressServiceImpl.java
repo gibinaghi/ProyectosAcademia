@@ -11,6 +11,7 @@ import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
 import com.ayi.curso.rest.serv.ayispringrestful.mapper.IAddressMapper;
+import com.ayi.curso.rest.serv.ayispringrestful.mapper.IClientMapper;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.IAddressRepository;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.IClientRepository;
 import com.ayi.curso.rest.serv.ayispringrestful.service.IAddressService;
@@ -33,6 +34,7 @@ public class AddressServiceImpl implements IAddressService {
     private IClientRepository clientRepository;
 
     private IAddressMapper addressMapper;
+    private IClientMapper clientMapper;
 
     //Get all
     @Override
@@ -122,17 +124,11 @@ public class AddressServiceImpl implements IAddressService {
     @Override
     @Transactional
     public AddressResponse createAddressAndClient(AddressCreateRequest addressRequest) {
-        //Map client
-        Address addressEntity = addressMapper.convertDtoToEntityCreate(addressRequest);
+        Address addressEntity = addressMapper.convertDtoToEntity(addressRequest.getAddressRequest());
+        Client client = clientMapper.convertDtoToEntity(addressRequest.getClientRequest());
 
-        //Create address
-        addressEntity.setStreet(addressRequest.getAddressRequest().getStreet());
-        addressEntity.setStreetNumber(addressRequest.getAddressRequest().getStreetNumber());
-        addressEntity.setFloor(addressRequest.getAddressRequest().getFloor());
-        addressEntity.setPostalCode(addressRequest.getAddressRequest().getPostalCode());
-        addressEntity.setDistrict(addressRequest.getAddressRequest().getDistrict());
-        addressEntity.setCity(addressRequest.getAddressRequest().getCity());
-        addressEntity.setCountry(addressRequest.getAddressRequest().getCountry());
+        //Create client in address
+        addressEntity.setClient(client);
 
         //Save
         addressEntity = addressRepository.save(addressEntity);

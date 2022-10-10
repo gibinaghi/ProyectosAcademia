@@ -16,11 +16,6 @@ public class ClientDetailMapperImpl implements IClientDetailMapper {
     private final ModelMapper modelMapper;
 
     @Override
-    public ClientDetail convertDtoToEntityCreate(ClientDetailCreateRequest request) {
-        return modelMapper.map(request, ClientDetail.class);
-    }
-
-    @Override
     public ClientDetail convertDtoToEntity(ClientDetailRequest request) {
         return modelMapper.map(request, ClientDetail.class);
     }

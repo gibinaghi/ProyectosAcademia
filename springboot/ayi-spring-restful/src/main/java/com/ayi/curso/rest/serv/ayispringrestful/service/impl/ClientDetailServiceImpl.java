@@ -2,7 +2,6 @@ package com.ayi.curso.rest.serv.ayispringrestful.service.impl;
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientDetaiUpdatelRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientDetailCreateRequest;
-import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientDetailRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientDetailResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Client;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.ClientDetail;
@@ -10,11 +9,11 @@ import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
 import com.ayi.curso.rest.serv.ayispringrestful.mapper.IClientDetailMapper;
+import com.ayi.curso.rest.serv.ayispringrestful.mapper.IClientMapper;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.IClientDetailRepository;
 import com.ayi.curso.rest.serv.ayispringrestful.service.IClientDetailService;
 import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -30,6 +29,7 @@ public class ClientDetailServiceImpl implements IClientDetailService {
     private IClientDetailRepository clientDetailRepository;
 
     private IClientDetailMapper clientDetailMapper;
+    private IClientMapper clientMapper;
 
     //Get all
     @Override
@@ -87,11 +87,11 @@ public class ClientDetailServiceImpl implements IClientDetailService {
     @Override
     @Transactional
     public ClientDetailResponse createClientDetail(ClientDetailCreateRequest clientDetailRequest) {
-        ClientDetail clientDetailEntity = clientDetailMapper.convertDtoToEntityCreate(clientDetailRequest);
+        ClientDetail clientDetailEntity = clientDetailMapper.convertDtoToEntity(clientDetailRequest.getClientDetailRequest());
+        Client client = clientMapper.convertDtoToEntity(clientDetailRequest.getClientRequest());
 
-        //Create client detail
-        clientDetailEntity.setPrime(clientDetailRequest.getClientDetailRequest().getPrime());
-        clientDetailEntity.setAcumulatedPoints(clientDetailRequest.getClientDetailRequest().getAcumulatedPoints());
+        //Create client in client detail
+        clientDetailEntity.setClient(client);
 
         //Save
         clientDetailEntity = clientDetailRepository.save(clientDetailEntity);

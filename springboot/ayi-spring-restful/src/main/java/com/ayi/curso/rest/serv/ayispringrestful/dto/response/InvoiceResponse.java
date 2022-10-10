@@ -1,6 +1,7 @@
 package com.ayi.curso.rest.serv.ayispringrestful.dto.response;
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientResponse;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -33,5 +34,6 @@ public class InvoiceResponse {
     private Double total;
 
     @ApiModelProperty(position = 4, required = true, notes = "Client who owns the invoice")
+    @JsonIgnoreProperties(value = "invoices")
     private ClientResponse client;
 }

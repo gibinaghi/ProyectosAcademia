@@ -1,6 +1,7 @@
 package com.ayi.curso.rest.serv.ayispringrestful.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -48,5 +49,6 @@ public class AddressResponse {
     private String country;
 
     @ApiModelProperty(position = 9, notes = "Client.")
+    @JsonIgnoreProperties(value = "addresses")
     private ClientResponse client;
 }

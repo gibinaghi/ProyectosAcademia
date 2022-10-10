@@ -11,6 +11,9 @@ import com.ayi.curso.rest.serv.ayispringrestful.entity.Invoice;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
+import com.ayi.curso.rest.serv.ayispringrestful.mapper.IAddressMapper;
+import com.ayi.curso.rest.serv.ayispringrestful.mapper.IClientDetailMapper;
+import com.ayi.curso.rest.serv.ayispringrestful.mapper.IClientMapper;
 import com.ayi.curso.rest.serv.ayispringrestful.mapper.IInvoiceMapper;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.IClientRepository;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.IInvoiceRepository;
@@ -34,6 +37,9 @@ public class InvoiceServiceImpl implements IInvoiceService {
     private IClientRepository clientRepository;
 
     private IInvoiceMapper invoiceMapper;
+    private IAddressMapper addressMapper;
+    private IClientMapper clientMapper;
+    private IClientDetailMapper clientDetailMapper;
 
     //Get all
     @Override
@@ -123,30 +129,15 @@ public class InvoiceServiceImpl implements IInvoiceService {
     @Override
     @Transactional
     public InvoiceResponse createInvoice(InvoiceCreateRequest invoiceRequest){
-        Invoice invoiceEntity = invoiceMapper.convertDtoToEntityCreate(invoiceRequest);
+        Invoice invoiceEntity = invoiceMapper.convertDtoToEntity(invoiceRequest.getInvoiceRequest());
+        Address address = addressMapper.convertDtoToEntity(invoiceRequest.getAddressRequest());
+        Client client = clientMapper.convertDtoToEntity(invoiceRequest.getClientRequest());
+        ClientDetail clientDetail = clientDetailMapper.convertDtoToEntity(invoiceRequest.getClientDetailRequest());
 
-        //Create invoice
-        invoiceEntity.setDescription(invoiceRequest.getInvoiceRequest().getDescription());
-        invoiceEntity.setTotal(invoiceRequest.getInvoiceRequest().getTotal());
-
-        //Create address
-        Address address = new Address();
-        address.setStreet(invoiceRequest.getAddressRequest().getStreet());
-        address.setStreetNumber(invoiceRequest.getAddressRequest().getStreetNumber());
-        address.setFloor(invoiceRequest.getAddressRequest().getFloor());
-        address.setPostalCode(invoiceRequest.getAddressRequest().getPostalCode());
-        address.setDistrict(invoiceRequest.getAddressRequest().getDistrict());
-        address.setCity(invoiceRequest.getAddressRequest().getCity());
-        address.setCountry(invoiceRequest.getAddressRequest().getCountry());
-
-        List<Address> addressList = new ArrayList<>();
-        addressList.add(address);
-
-        //aca borrar el client del mapper
-        Client client = new Client();
-        client.setAddresses(addressList);
-
+        //Create client, client detail and address in Invoice
         invoiceEntity.setClient(client);
+        invoiceEntity.getClient().getAddresses().add(address);
+        invoiceEntity.getClient().setClientDetail(clientDetail);
 
         //Save
         invoiceEntity = invoiceRepository.save(invoiceEntity);

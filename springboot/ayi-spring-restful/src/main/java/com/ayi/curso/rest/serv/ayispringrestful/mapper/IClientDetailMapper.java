@@ -7,7 +7,6 @@ import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientDetailRespons
 import com.ayi.curso.rest.serv.ayispringrestful.entity.ClientDetail;
 
 public interface IClientDetailMapper {
-    ClientDetail convertDtoToEntityCreate(ClientDetailCreateRequest request);
 
     ClientDetail convertDtoToEntity(ClientDetailRequest request);
 

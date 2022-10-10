@@ -16,12 +16,6 @@ public class InvoiceMapperImpl implements IInvoiceMapper {
     private final ModelMapper modelMapper;
 
     @Override
-    public Invoice convertDtoToEntityCreate(InvoiceCreateRequest request)
-    {
-        return modelMapper.map(request, Invoice.class);
-    }
-
-    @Override
     public Invoice convertDtoToEntity(InvoiceRequest request)
     {
         return modelMapper.map(request, Invoice.class);

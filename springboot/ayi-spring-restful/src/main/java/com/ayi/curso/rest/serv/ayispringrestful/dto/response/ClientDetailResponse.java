@@ -1,5 +1,6 @@
 package com.ayi.curso.rest.serv.ayispringrestful.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -32,6 +33,7 @@ public class ClientDetailResponse {
     private Long acumulatedPoints;
 
     @ApiModelProperty(position = 4, notes = "Data client.")
+    @JsonIgnoreProperties(value = "clientDetail")
     private ClientResponse clientResponse;
 
 }

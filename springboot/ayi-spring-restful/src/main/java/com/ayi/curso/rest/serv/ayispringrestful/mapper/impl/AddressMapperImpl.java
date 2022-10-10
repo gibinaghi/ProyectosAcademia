@@ -15,12 +15,6 @@ public class AddressMapperImpl implements IAddressMapper {
     private final ModelMapper modelMapper;
 
     @Override
-    public Address convertDtoToEntityCreate(AddressCreateRequest request) {
-
-        return modelMapper.map(request, Address.class);
-    }
-
-    @Override
     public Address convertDtoToEntity(AddressRequest request) {
 
         return modelMapper.map(request, Address.class);

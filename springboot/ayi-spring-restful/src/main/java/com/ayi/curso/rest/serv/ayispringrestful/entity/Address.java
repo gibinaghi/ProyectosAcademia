@@ -1,5 +1,6 @@
 package com.ayi.curso.rest.serv.ayispringrestful.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -58,6 +59,7 @@ public class Address implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "client_id")
+    @JsonIgnoreProperties(value = "addresses")
     private Client client;
 }
 

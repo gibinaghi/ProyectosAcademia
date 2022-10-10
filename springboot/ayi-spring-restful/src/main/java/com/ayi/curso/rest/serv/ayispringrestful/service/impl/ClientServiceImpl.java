@@ -7,9 +7,12 @@ import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Address;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Client;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.ClientDetail;
+import com.ayi.curso.rest.serv.ayispringrestful.entity.Invoice;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
+import com.ayi.curso.rest.serv.ayispringrestful.mapper.IAddressMapper;
+import com.ayi.curso.rest.serv.ayispringrestful.mapper.IClientDetailMapper;
 import com.ayi.curso.rest.serv.ayispringrestful.mapper.IClientMapper;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.IClientRepository;
 import com.ayi.curso.rest.serv.ayispringrestful.service.IClientService;
@@ -31,6 +34,8 @@ public class ClientServiceImpl implements IClientService {
     private IClientRepository clientRepository;
 
     private IClientMapper clientMapper;
+    private IClientDetailMapper clientDetailMapper;
+    private IAddressMapper addressMapper;
 
     //Get all
     @Override
@@ -38,12 +43,7 @@ public class ClientServiceImpl implements IClientService {
     public List<ClientResponse> findAllClient()
             throws NotFoundException, InternalException {
 
-        List<Client> clientEntityList = null;
-        try {
-            clientEntityList = clientRepository.findAll();
-        } catch (Exception ex) {
-            throw  new InternalException(INTERNAL, ex);
-        }
+        List<Client> clientEntityList = clientRepository.findAll();
 
         if(CollectionUtils.isEmpty(clientEntityList)) {
             throw new NotFoundException(EXCEPTION_DATA_NULL);
@@ -88,38 +88,23 @@ public class ClientServiceImpl implements IClientService {
     @Override
     @Transactional
     public ClientResponse createClient(ClientCreateRequest clientRequest) {
-        Client clientEntity  = clientMapper.convertDtoToEntityCreate(clientRequest);
+        Client clientEntity  = clientMapper.convertDtoToEntity(clientRequest.getClientRequest());
+        ClientDetail clientDetail = clientDetailMapper.convertDtoToEntity(clientRequest.getClientDetailRequest());
+        Address address = addressMapper.convertDtoToEntity(clientRequest.getAddressRequest());
 
         //controlar que el nombre del cliente y dni no existan
 
-        //Create client
-        clientEntity.setName(clientRequest.getClientRequest().getName());
-        clientEntity.setLastname(clientRequest.getClientRequest().getLastname());
-        clientEntity.setDocumentNumber(clientRequest.getClientRequest().getDocumentNumber());
+        //Create client detail and address in Client
+        //clientDetail.setClient(clientEntity);
+        //address.setClient(clientEntity);
 
-        //Create client detail
-        ClientDetail clientDetail = new ClientDetail();
-        clientDetail.setPrime(clientRequest.getClientDetailRequest().getPrime());
-        clientDetail.setAcumulatedPoints(clientRequest.getClientDetailRequest().getAcumulatedPoints());
         clientEntity.setClientDetail(clientDetail);
-
-        //Create address
-        Address address = new Address();
-        address.setStreet(clientRequest.getAddressRequest().getStreet());
-        address.setStreetNumber(clientRequest.getAddressRequest().getStreetNumber());
-        address.setFloor(clientRequest.getAddressRequest().getFloor());
-        address.setPostalCode(clientRequest.getAddressRequest().getPostalCode());
-        address.setDistrict(clientRequest.getAddressRequest().getDistrict());
-        address.setCity(clientRequest.getAddressRequest().getCity());
-        address.setCountry(clientRequest.getAddressRequest().getCountry());
-        List<Address> addressList = new ArrayList<>();
-        addressList.add(address);
-        clientEntity.setAddresses(addressList);
+        clientEntity.getAddresses().add(address);
 
         //Save
-        clientEntity  = clientRepository.save(clientEntity);
+        Client dataClient = clientRepository.save(clientEntity);
 
-        return clientMapper.convertEntityToDto(clientEntity);
+        return clientMapper.convertEntityToDto(dataClient);
     }
 
     //Update

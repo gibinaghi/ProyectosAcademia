@@ -2,6 +2,7 @@ package com.ayi.curso.rest.serv.ayispringrestful.dto.response;
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientDetailResponse;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -38,11 +39,14 @@ public class ClientResponse {
     private String documentNumber;
 
     @ApiModelProperty(position = 5, notes = "The client detail.")
+    @JsonIgnoreProperties(value = "client")
     private ClientDetailResponse clientDetail;
 
     @ApiModelProperty(position = 6, notes = "The addresses of the client.")
+    @JsonIgnoreProperties(value = "client")
     private List<AddressResponse> addresses;
 
     @ApiModelProperty(position = 7, notes = "The invoices of the client.")
+    @JsonIgnoreProperties(value = "client")
     private List<InvoiceResponse> invoices;
 }
