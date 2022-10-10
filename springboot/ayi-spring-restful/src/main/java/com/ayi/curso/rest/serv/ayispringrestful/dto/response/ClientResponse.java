@@ -1,7 +1,5 @@
 package com.ayi.curso.rest.serv.ayispringrestful.dto.response;
 
-import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
-import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientDetailResponse;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.annotations.ApiModel;
@@ -11,7 +9,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.io.Serializable;
 import java.util.List;
 
 @Getter

@@ -1,6 +1,5 @@
 package com.ayi.curso.rest.serv.ayispringrestful.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,15 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Getter
@@ -41,8 +32,8 @@ public class ClientDetail implements Serializable {
     @Column(name = "acumulated_points")
     private Long acumulatedPoints;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "client_id")
+    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = "clientDetail")
+    @JoinColumn(name = "id_client")
     private Client client;
 }

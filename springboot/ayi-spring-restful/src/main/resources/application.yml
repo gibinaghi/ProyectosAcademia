@@ -16,8 +16,12 @@ spring:
       hibernate:
         show_sql: true
         format_sql: true
-    ##hibernate:
-      ##ddl-auto: create
+    hibernate:
+      ddl-auto: none
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:data.sql
 
 # Swagger settings.
 springfox:
@@ -25,3 +29,4 @@ springfox:
     swagger:
       v2:
         path: /swagger.json
+

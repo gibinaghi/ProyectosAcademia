@@ -93,7 +93,7 @@ public class InvoiceServiceImpl implements IInvoiceService {
         return invoiceResponse;
     }
 
-    //Create invoice and set client, detail client and anddress
+    //Create invoice and set client, detail client and address
     @Override
     @Transactional
     public InvoiceResponse createInvoiceSetClient(InvoiceRequest invoiceRequest, Long idClient)
@@ -150,7 +150,6 @@ public class InvoiceServiceImpl implements IInvoiceService {
 
     //Update
     @Override
-    //@Transactional  -> que hace??
     public InvoiceResponse updateInvoice(Long idInvoice, InvoiceUpdateRequest invoiceRequest)
             throws NotFoundException, InternalException, BadRequestException {
 

@@ -1,6 +1,5 @@
 package com.ayi.curso.rest.serv.ayispringrestful.mapper.impl;
 
-import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientDetailCreateRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientDetailRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientDetailResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.ClientDetail;

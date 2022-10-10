@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import javax.validation.constraints.Pattern;
-import java.io.Serializable;
 
 @Getter
 @Setter

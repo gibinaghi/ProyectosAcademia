@@ -1,13 +1,11 @@
 package com.ayi.curso.rest.serv.ayispringrestful.service.impl;
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientCreateRequest;
-import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientUpdateRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.ClientResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Address;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Client;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.ClientDetail;
-import com.ayi.curso.rest.serv.ayispringrestful.entity.Invoice;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
@@ -43,7 +41,12 @@ public class ClientServiceImpl implements IClientService {
     public List<ClientResponse> findAllClient()
             throws NotFoundException, InternalException {
 
-        List<Client> clientEntityList = clientRepository.findAll();
+        List<Client> clientEntityList = null;
+        try {
+            clientEntityList = clientRepository.findAll();
+        } catch (Exception ex) {
+            throw  new InternalException(INTERNAL, ex);
+        }
 
         if(CollectionUtils.isEmpty(clientEntityList)) {
             throw new NotFoundException(EXCEPTION_DATA_NULL);
@@ -91,8 +94,6 @@ public class ClientServiceImpl implements IClientService {
         Client clientEntity  = clientMapper.convertDtoToEntity(clientRequest.getClientRequest());
         ClientDetail clientDetail = clientDetailMapper.convertDtoToEntity(clientRequest.getClientDetailRequest());
         Address address = addressMapper.convertDtoToEntity(clientRequest.getAddressRequest());
-
-        //controlar que el nombre del cliente y dni no existan
 
         //Create client detail and address in Client
         clientDetail.setClient(clientEntity);

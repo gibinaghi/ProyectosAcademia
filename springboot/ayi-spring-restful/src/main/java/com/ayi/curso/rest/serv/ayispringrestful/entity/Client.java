@@ -13,7 +13,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -46,8 +45,7 @@ public class Client implements Serializable {
     @Column(name = "document_number")
     private String documentNumber;
 
-    @OneToOne(mappedBy = "client", cascade = CascadeType.ALL)
-    //@JoinColumn(name = "client_detail_id", referencedColumnName = "id_client_detail")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "client")
     @JsonIgnoreProperties(value = "client")
     private ClientDetail clientDetail;
 

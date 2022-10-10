@@ -3,7 +3,6 @@ package com.ayi.curso.rest.serv.ayispringrestful.service.impl;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressCreateRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressUpdateRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.AddressRequest;
-import com.ayi.curso.rest.serv.ayispringrestful.dto.request.ClientRequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.AddressResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Address;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Client;
@@ -138,7 +137,6 @@ public class AddressServiceImpl implements IAddressService {
 
     //Update
     @Override
-    //@Transactional  -> que hace??
     public AddressResponse updateAddress(Long idAddress, AddressUpdateRequest addressRequest)
             throws NotFoundException, InternalException, BadRequestException  {
 
