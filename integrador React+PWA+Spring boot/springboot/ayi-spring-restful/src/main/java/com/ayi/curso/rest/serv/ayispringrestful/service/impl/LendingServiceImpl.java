@@ -50,7 +50,7 @@ public class LendingServiceImpl implements LendingService {
     }
     
     
-    // Create
+    // Create ---creo q no va
    @Override
     public Lendings saveLending(Lendings lending)
     {
@@ -84,7 +84,7 @@ public class LendingServiceImpl implements LendingService {
     @Override
     public void deleteLendingById(Long id)
     {
-    	lendingsRepository.deleteById(id);	
+        lendingsRepository.deleteById(id);
     }
 
 }

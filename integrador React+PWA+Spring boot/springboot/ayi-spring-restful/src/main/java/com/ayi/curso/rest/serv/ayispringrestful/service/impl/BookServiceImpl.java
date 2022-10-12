@@ -78,13 +78,13 @@ public class BookServiceImpl implements BookService {
     @Override
     public void deleteBookById(Long id)
     {
-    	booksRepository.deleteById(id);	
+        booksRepository.deleteById(id);
     }
 
     // Search by title
     @Override
-    public List<Users> searchByName(String name)
+    public List<Books> searchByTitle(String title)
     {
-        return (List<Users>) booksRepository.findByName(name);
+        return (List<Books>) booksRepository.findByTitle(title);
     }
 }

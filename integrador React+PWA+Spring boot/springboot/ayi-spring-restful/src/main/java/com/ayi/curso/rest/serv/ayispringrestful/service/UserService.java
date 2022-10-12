@@ -1,12 +1,16 @@
 package com.ayi.curso.rest.serv.ayispringrestful.service;
 
+import com.ayi.curso.rest.serv.ayispringrestful.dto.response.UserDTOResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Users;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
 
 import java.util.List;
 
 public interface UserService {
 	// Get all
-    List<Users> fetchUserList();
+    List<UserDTOResponse> fetchUserList()
+            throws NotFoundException, InternalException;
     
 	// Create
     Users saveUser(Users user);
