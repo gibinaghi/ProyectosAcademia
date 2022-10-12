@@ -1,8 +1,20 @@
 package com.ayi.curso.rest.serv.ayispringrestful.controller;
 
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.BookCreateDTORequest;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.response.BookDTOResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Books;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
 import com.ayi.curso.rest.serv.ayispringrestful.service.BookService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,22 +34,54 @@ import java.util.List;
 public class BooksController {
 	@Autowired
 	private BookService booksService;
-	
-	// Get all 
+
+    // Get all
     @GetMapping("/books")
-    public List<Books> fetchBookList()
+    @ApiOperation(
+            value = "List all books",
+            httpMethod = "GET",
+            response = BookDTOResponse[].class
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    code = 200,
+                    message = "Shows the list of books",
+                    response = BookDTOResponse[].class
+            ),
+            @ApiResponse(code = 404, message = "Books not found"),
+    })
+    public ResponseEntity<?> fetchBookList() throws NotFoundException, InternalException
     {
-        return booksService.fetchBookList();
+        List<BookDTOResponse> bookResponse = booksService.fetchBookList();
+        return ResponseEntity.ok(bookResponse );
     }
     
     // Create
-    @PostMapping("/book")
-    public Books saveBook(@RequestBody Books book)
-    {
-        return booksService.saveBook(book);
+    @PostMapping(
+            value = "/book",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(
+            value = "Create book",
+            httpMethod = "POST",
+            response = BookDTOResponse.class
+    )
+    @ApiResponses(value = {
+            @ApiResponse(code = 201,
+                    message = "Body content with all information about address",
+                    response = BookDTOResponse.class),
+            @ApiResponse(code = 400,
+                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data form")
+    })
+    public ResponseEntity<BookDTOResponse> createBook(
+            @ApiParam(value = "data of book", required = true)
+            @RequestBody BookCreateDTORequest request
+    ) {
+        BookDTOResponse bookResponse = booksService.createBook(request);
+        return new ResponseEntity<>(bookResponse, HttpStatus.CREATED);
     }
     
-    // Update
+    // Update --> faltan las excepciones
     @PatchMapping("/book/{id}")
     public Books updateBook(
     		@RequestBody Books book,
@@ -45,19 +89,25 @@ public class BooksController {
     {
         return booksService.updateBook(book, id);
     }
- 
+
     // Delete
     @DeleteMapping("/book/{id}")
-    public String deleteBookById(@PathVariable("id") Long id)
-    {
-    	try {
-    	booksService.deleteBookById(id);
-        return "Deleted Successfully";
-    	}catch(Exception e){
-    		return "ERROR: No deleted";
-    	}
+    @ApiOperation(
+            value = "Delete a book by id",
+            httpMethod = "DELETE"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(code = 204, message = "Success. Book deleted by id"),
+            @ApiResponse(code = 404, message = "Book not found"),
+            @ApiResponse(code = 400 , message = "Bad request/Invalid field")})
+    public ResponseEntity<Void> deleteBook(
+            @ApiParam(name = "id", required = true, value = "Book Id", example = "1")
+            @PathVariable Long id
+    ) throws BadRequestException, NotFoundException, InternalException {
+        booksService.deleteBook(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    // Search by title
+    // Search by title --> faltan las excepciones
 
 }

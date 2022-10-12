@@ -2,21 +2,24 @@ package com.ayi.curso.rest.serv.ayispringrestful.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.UserCreateDTORequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.UserDTOResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Users;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
 import com.ayi.curso.rest.serv.ayispringrestful.mapper.IUsersMapper;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.UsersRepository;
 import com.ayi.curso.rest.serv.ayispringrestful.service.UserService;
-import org.apache.catalina.User;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static com.ayi.curso.rest.serv.ayispringrestful.constants.Exceptions.EXCEPTION_DATA_NULL;
-import static com.ayi.curso.rest.serv.ayispringrestful.constants.Exceptions.INTERNAL;
+import javax.transaction.Transactional;
+
+import static com.ayi.curso.rest.serv.ayispringrestful.constants.Exceptions.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -26,39 +29,47 @@ public class UserServiceImpl implements UserService {
     private IUsersMapper usersMapper;
  
 	// Get all
-    @Override 
+    @Override
+    @Transactional
     public List<UserDTOResponse> fetchUserList()
             throws NotFoundException, InternalException
     {
-        List<Users> userEntityList = null;
+        List<Users> entityList = null;
         try {
-            userEntityList = usersRepository.findAll();
+            entityList = usersRepository.findAll();
         } catch (Exception ex) {
             throw new InternalException(INTERNAL, ex);
         }
 
-        if(CollectionUtils.isEmpty(userEntityList)) {
+        if(CollectionUtils.isEmpty(entityList)) {
             throw new NotFoundException(EXCEPTION_DATA_NULL);
         }
 
-        List<UserDTOResponse> userListResponse = new ArrayList<>();
-        userEntityList.forEach(user -> {
-            UserDTOResponse userResponse = usersMapper.convertEntityToDtoAll(user);
-            userListResponse.add(userResponse);
+        List<UserDTOResponse> listResponse = new ArrayList<>();
+        entityList.forEach(user -> {
+            UserDTOResponse userResponse = usersMapper.convertEntityToDto(user);
+            listResponse.add(userResponse);
         });
 
-        return userListResponse ;
+        return listResponse ;
     }
     
     // Create
     @Override
-    public Users saveUser(Users user)
+    @Transactional
+    public UserDTOResponse createUser(UserCreateDTORequest userRequest)
     {
-        return usersRepository.save(user);
+        Users userEntity = usersMapper.convertDtoToEntityCreate(userRequest);
+
+        //Save
+        userEntity = usersRepository.save(userEntity);
+
+        return usersMapper.convertEntityToDto(userEntity);
     }
- 
-    // Update
+
+    // Update  --> faltan las excepciones
     @Override
+    @Transactional
     public Users updateUser(Users user, Long id)
     {
         Users usDB = usersRepository.findById(id).get();
@@ -96,13 +107,30 @@ public class UserServiceImpl implements UserService {
  
     // Delete
     @Override
-    public void deleteUsertById(Long id)
-    {
-        usersRepository.deleteById(id);
+    public void deleteUser(Long idUser)
+            throws BadRequestException, InternalException, NotFoundException {
+
+        if(idUser == null || idUser < 0){
+            throw new BadRequestException(EXCEPTION_ID_NOT_VALID);
+        }
+
+        Optional<Users> entity = null;
+        try {
+            entity = usersRepository.findById(idUser);
+        } catch (Exception ex) {
+            throw new InternalException(INTERNAL, ex);
+        }
+
+        if (entity.isPresent()) {
+            usersRepository.deleteById(idUser);
+        } else {
+            throw new NotFoundException(EXCEPTION_ID_NULL);
+        }
     }
-    
-    //Search by name
+
+    //Search by name --> faltan las excepciones
     @Override
+    @Transactional
     public List<Users> searchByName(String name)
     {
         return (List<Users>) usersRepository.findByName(name);
