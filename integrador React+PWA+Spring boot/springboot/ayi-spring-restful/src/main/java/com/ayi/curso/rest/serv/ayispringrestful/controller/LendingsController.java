@@ -24,19 +24,21 @@ public class LendingsController {
 	private LendingService lendingService;
 	
 	// Get all 
-    @GetMapping("/lending")
+    @GetMapping("/lendings")
     public List<Lendings> fetchLendingList()
     {
         return lendingService.fetchLendingList();
     }
     
 	// Create
-    @PostMapping("/createlending")
+    @PostMapping("/lending")
     public Lendings createLending(@RequestBody Lendings lending, Long userId, Long bookId)
     {
         return lendingService.saveLending(lending);
     }
-    @PostMapping("/lending")
+
+    //ver esto aca abajo si va
+    /*@PostMapping("/lending")
     public Lendings saveLending(@RequestBody Lendings lending)
     {
         return lendingService.saveLending(lending);
@@ -61,6 +63,6 @@ public class LendingsController {
     	}catch(Exception e){
     		return "ERROR: No deleted";
     	}
-    }
+    }*/
 
 }

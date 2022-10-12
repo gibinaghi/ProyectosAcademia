@@ -3,6 +3,7 @@ import '../../assets/styles/StyleGeneral.css';
 import { Link } from "react-router-dom";
 
 function User() {
+
   return (
     <div class="container">
     <h2 class="title">Usuarios</h2>

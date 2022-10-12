@@ -60,8 +60,7 @@ public class UserServiceImpl implements UserService {
         if (Objects.nonNull(user.getSanc_money())) {
             usDB.setSanc_money(user.getSanc_money());
         }
-    
- 
+
         return usersRepository.save(usDB);
     }
  

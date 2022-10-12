@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Objects;
 
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Books;
+import com.ayi.curso.rest.serv.ayispringrestful.entity.Users;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.BooksRepository;
 import com.ayi.curso.rest.serv.ayispringrestful.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,5 +79,12 @@ public class BookServiceImpl implements BookService {
     public void deleteBookById(Long id)
     {
     	booksRepository.deleteById(id);	
+    }
+
+    // Search by title
+    @Override
+    public List<Users> searchByName(String name)
+    {
+        return (List<Users>) booksRepository.findByName(name);
     }
 }
