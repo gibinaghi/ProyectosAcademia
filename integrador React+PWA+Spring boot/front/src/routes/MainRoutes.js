@@ -30,6 +30,7 @@ function MainRoutes() {
             <Route path="/create-book" element={<BookCreate />} />
             <Route path="/update-book" element={<BookUpdate />} />
             <Route path="/lendings" element={<Lending />} />
+            <Route path="/delete-lending" element={<Lending />} />
             <Route path="/retuns" element={<Return />} />
             <Route path="/reports" element={<Reports />} />
         </Routes>

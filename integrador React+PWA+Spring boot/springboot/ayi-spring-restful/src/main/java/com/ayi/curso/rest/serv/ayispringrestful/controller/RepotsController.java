@@ -1,8 +1,54 @@
 package com.ayi.curso.rest.serv.ayispringrestful.controller;
 
+import com.ayi.curso.rest.serv.ayispringrestful.dto.response.LendingDTOResponse;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.response.UserDTOResponse;
+import com.ayi.curso.rest.serv.ayispringrestful.entity.Lendings;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
+import com.ayi.curso.rest.serv.ayispringrestful.service.ReportsService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import lombok.AllArgsConstructor;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@Api(value = "Report Api", tags = {"Report Service"})
+@RequestMapping(value = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
+@AllArgsConstructor
+@RestController
 public class RepotsController {
 
-    //Get all
+    private ReportsService reportService;
+
+
+    // Get all ------------> NO FUNCIONA!!!!!!
+    @GetMapping("/reports")
+    @ApiOperation(
+            value = "List all report lendings",
+            httpMethod = "GET",
+            response = LendingDTOResponse[].class
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    code = 200,
+                    message = "Shows the list of lendings",
+                    response = LendingDTOResponse[].class
+            ),
+            @ApiResponse(code = 404, message = "Report not found"),
+    })
+    public ResponseEntity<?> getAllReports() throws NotFoundException, InternalException
+    {
+        List<LendingDTOResponse> lendResponse = reportService.getAllReports();
+        return ResponseEntity.ok(lendResponse );
+    }
+
 
     //Export excel
 

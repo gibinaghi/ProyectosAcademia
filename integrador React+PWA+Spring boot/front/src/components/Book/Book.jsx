@@ -1,8 +1,21 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import '../../assets/styles/StyleGeneral.css';
 import { Link } from "react-router-dom";
+import BookService from '../../service/BookService';
 
 function Book() {
+  const [listBook, setListBook] = useState([]);
+
+  useEffect(() => {
+    BookService.getAllBooks()
+    .then((response) => {
+      setListBook(response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }, [setListBook])
+  
   return (
     <div class="container">
     <h2 class="title">Libros</h2>
@@ -24,7 +37,7 @@ function Book() {
     <table class="table table-bordered">
       <thead class="thead-dark">
         <tr>
-        <th scope="col">Cod</th>
+        <th scope="col">Cod libro</th>
             <th scope="col">Título</th>
             <th scope="col">Autor</th>
             <th scope="col">Categoria</th>
@@ -36,15 +49,16 @@ function Book() {
         </tr>
       </thead>
       <tbody>
+      {listBook.map((item) => (
         <tr>
-          <td>Nombre</td>
-          <td>Nombre</td>
-          <td>Nombre</td>
-          <td>Nombre</td>
-          <td>Nombre</td>
-          <td>Nombre</td>
-          <td>Nombre</td>
-          <td>Nombre</td>
+          <td>{item.id}</td>
+          <td>{item.title}</td>
+          <td>{item.author}</td>
+          <td>{item.category}</td>
+          <td>{item.edition}</td>
+          <td>{item.idiom}</td>
+          <td>{item.stock}</td>
+          <td>{item.available}</td>
           <td>
             <button type="button" class="btn btn-primary action">
               <Link to="/update-book" class="colorBtnText">Editar</Link> 
@@ -54,6 +68,7 @@ function Book() {
              </button>
            </td>
         </tr>
+        ))}
       </tbody>
     </table>
 

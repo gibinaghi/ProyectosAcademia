@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import javax.persistence.Column;
-import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -20,30 +19,33 @@ import javax.validation.constraints.NotNull;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class BookDTOResponse {
 
-    @ApiModelProperty(position = 1, notes = "Title")
+    @ApiModelProperty(position = 1, notes = "Id")
+    private long id;
+
+    @ApiModelProperty(position = 2, notes = "Title")
     private String title;
 
-    @ApiModelProperty(position = 2, notes = "Author")
+    @ApiModelProperty(position = 3, notes = "Author")
     @Column(name = "author")
     private String author;
 
-    @ApiModelProperty(position = 3, notes = "Category")
+    @ApiModelProperty(position = 4, notes = "Category")
     @Column(name = "category")
     private String category;
 
-    @ApiModelProperty(position = 4, notes = "Edition")
+    @ApiModelProperty(position = 5, notes = "Edition")
     @Column(name = "edition")
     private String edition;
 
-    @ApiModelProperty(position = 5, notes = "Idiom")
+    @ApiModelProperty(position = 6, notes = "Idiom")
     @Column(name = "idiom")
     private String idiom;
 
-    @ApiModelProperty(position = 6, notes = "Stock")
+    @ApiModelProperty(position = 7, notes = "Stock")
     @Column(name = "stock")
     private Integer stock;
 
-    @ApiModelProperty(position = 7, notes = "Available")
+    @ApiModelProperty(position = 8, notes = "Available")
     @Column(name = "available")
     private Integer available;
 

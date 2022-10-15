@@ -4,10 +4,7 @@ const API_URL = process.env.REACT_APP_APPIS_DEFAULT_URL;
 
 class UserService {
     async getAllUsers() {
-        const getAllUsers = await axios.get(API_URL + '/users')
-        .then(response => console.log(response.data))
-        .catch(error => console.log(error));
-        return getAllUsers;
+        return await axios.get(API_URL + '/users');
     }
 
     async createUser() {

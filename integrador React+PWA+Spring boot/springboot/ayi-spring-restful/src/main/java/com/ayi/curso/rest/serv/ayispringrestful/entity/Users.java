@@ -28,7 +28,7 @@ public class Users {
 	@Column(name = "last_name_p")
 	private String last_name;
 	
-	@Column(name = "dni")
+	@Column(name = "dni", unique = true)
 	private String dni;
 	
 	@Column(name = "address", nullable = true)

@@ -5,8 +5,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
-import javax.validation.constraints.NotNull;
-
 @Getter
 @Setter
 @AllArgsConstructor
@@ -19,19 +17,22 @@ import javax.validation.constraints.NotNull;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class UserDTOResponse {
 
-    @ApiModelProperty(position = 1, notes = "Name")
+    @ApiModelProperty(position = 1, notes = "Id")
+    private long id;
+
+    @ApiModelProperty(position = 2, notes = "Name")
     private String name;
 
-    @ApiModelProperty(position = 2, notes = "Last name")
+    @ApiModelProperty(position = 3, notes = "Last name")
     private String last_name;
 
-    @ApiModelProperty(position = 3, notes = "DNI")
+    @ApiModelProperty(position = 4, notes = "DNI")
     private String dni;
 
-    @ApiModelProperty(position = 4, notes = "Address")
+    @ApiModelProperty(position = 5, notes = "Address")
     private String address;
 
-    @ApiModelProperty(position = 5, notes = "Phone")
+    @ApiModelProperty(position = 6, notes = "Phone")
     private String phone;
 
 }

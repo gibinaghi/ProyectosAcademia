@@ -14,8 +14,8 @@ function Lending() {
       <div class="col-8">
         <form>
             <div class="form-group">
-              <label>DNI del usuario</label>
-              <input type="text" class="form-control" placeholder="Ingrese el DNI del usuario" formControlName="idUsuario"/>
+              <label>Código del usuario</label>
+              <input type="text" class="form-control" placeholder="Ingrese el código del usuario" formControlName="idUsuario"/>
             </div>
             <div class="form-group">
               <label>Código de libro</label>

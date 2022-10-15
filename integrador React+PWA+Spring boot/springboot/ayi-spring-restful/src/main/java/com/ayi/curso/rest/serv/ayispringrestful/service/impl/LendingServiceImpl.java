@@ -1,7 +1,5 @@
 package com.ayi.curso.rest.serv.ayispringrestful.service.impl;
 
-import java.util.List;
-
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.LendingCreateDTORequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.LendingDTOResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Books;
@@ -27,14 +25,7 @@ public class LendingServiceImpl implements LendingService {
 
     // Mapper
     private ILendingsMapper lendingsMapper;
- 
-	// Get all
-    @Override 
-    public List<Lendings> fetchLendingList()
-    {
-        return (List<Lendings>) lendingsRepository.findAll();
-    }
-    
+
     
     // Create
     @Override
@@ -62,12 +53,6 @@ public class LendingServiceImpl implements LendingService {
     	
     	return lendingsMapper.convertEntityToDto(lendEntity);
     }
-    
-    // Delete
-    @Override
-    public void deleteLendingById(Long id)
-    {
-        lendingsRepository.deleteById(id);
-    }
+
 
 }

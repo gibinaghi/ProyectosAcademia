@@ -2,6 +2,7 @@ package com.ayi.curso.rest.serv.ayispringrestful.service;
 
 public interface ReturnService {
 	
-	//Create
+	//Delete lending
+    void deleteLendingById(Long id);
 
 }

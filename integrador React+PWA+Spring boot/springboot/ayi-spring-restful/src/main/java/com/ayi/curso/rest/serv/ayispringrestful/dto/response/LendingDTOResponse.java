@@ -23,16 +23,19 @@ import javax.validation.constraints.NotNull;
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class LendingDTOResponse {
 
-    @ApiModelProperty(position = 1, notes = "Date out")
+    @ApiModelProperty(position = 1, notes = "Id")
+    private long id;
+
+    @ApiModelProperty(position = 2, notes = "Date out")
     private String date_out;
 
-    @ApiModelProperty(position = 2, notes = "Date return")
+    @ApiModelProperty(position = 3, notes = "Date return")
     private String date_return;
 
-    @ApiModelProperty(position = 3, notes = "User")
+    @ApiModelProperty(position = 4, notes = "User")
     private Users users;
 
-    @ApiModelProperty(position = 4, notes = "Book")
+    @ApiModelProperty(position = 5, notes = "Book")
     private Books books;
 
 }

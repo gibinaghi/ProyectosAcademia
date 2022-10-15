@@ -1,13 +1,20 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../../assets/styles/StyleGeneral.css';
 import { Link } from "react-router-dom";
 import UserService from '../../service/UserService';
 
 function User() {
+  const [listUser, setListUser] = useState([]);
+
   useEffect(() => {
     UserService.getAllUsers()
-  }, [])
-
+    .then((response) => {
+      setListUser(response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }, [setListUser])
 
   return (
     <div class="container">
@@ -40,13 +47,14 @@ function User() {
         </tr>
       </thead>
       <tbody>
+      {listUser.map((item) => (
         <tr>
-          <td>Nombre</td>
-          <td>Nombre</td>
-          <td>Nombre</td>
-          <td>Nombre</td>
-          <td>Nombre</td>
-          <td>Nombre</td>
+          <td>{item.id}</td>
+          <td>{item.name}</td>
+          <td>{item.last_name}</td>
+          <td>{item.dni}</td>
+          <td>{item.address}</td>
+          <td>{item.phone}</td>
           <td>
              <button type="button" class="btn btn-primary action">
               <Link to="/update-user" class="colorBtnText">Editar</Link> 
@@ -56,6 +64,7 @@ function User() {
              </button>
            </td>
         </tr>
+      ))}
       </tbody>
     </table>
 
