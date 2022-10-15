@@ -18,7 +18,7 @@ public interface UserService {
     UserDTOResponse createUser(UserCreateDTORequest userRequest);
  
     // Update --> faltan las excepciones
-    Users updateUser(Users user, Long id);
+    //Users updateUser(Users user, Long id);
  
     // Delete
     void deleteUser(Long idUser)

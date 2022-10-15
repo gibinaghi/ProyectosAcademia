@@ -7,11 +7,8 @@ import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
 import com.ayi.curso.rest.serv.ayispringrestful.service.BookService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.swagger.annotations.*;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -28,11 +25,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 
-@CrossOrigin(origins = "http://localhost:3306")
+@Api(value = "Book Api", tags = {"Book Service"})
+@RequestMapping(value = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
+@AllArgsConstructor
 @RestController
-@RequestMapping("/api")
 public class BooksController {
-	@Autowired
 	private BookService booksService;
 
     // Get all
@@ -82,13 +79,13 @@ public class BooksController {
     }
     
     // Update --> faltan las excepciones
-    @PatchMapping("/book/{id}")
+    /*@PatchMapping("/book/{id}")
     public Books updateBook(
     		@RequestBody Books book,
             @PathVariable("id") Long id)
     {
         return booksService.updateBook(book, id);
-    }
+    }*/
 
     // Delete
     @DeleteMapping("/book/{id}")

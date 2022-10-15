@@ -5,7 +5,6 @@ import com.ayi.curso.rest.serv.ayispringrestful.dto.response.BookDTOResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Books;
 
 public interface IBooksMapper {
-    Books convertDtoToEntity(BookDTOResponse request);
 
     BookDTOResponse convertEntityToDto(Books entity);
 

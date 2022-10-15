@@ -1,8 +1,16 @@
 package com.ayi.curso.rest.serv.ayispringrestful.controller;
 
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.LendingCreateDTORequest;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.UserCreateDTORequest;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.response.LendingDTOResponse;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.response.UserDTOResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Lendings;
 import com.ayi.curso.rest.serv.ayispringrestful.service.LendingService;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.swagger.annotations.*;
+import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,11 +24,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 
-@CrossOrigin(origins = "http://localhost:3306")
+@Api(value = "Lending Api", tags = {"Lending Service"})
+@RequestMapping(value = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
+@AllArgsConstructor
 @RestController
-@RequestMapping("/api")
 public class LendingsController {
-	@Autowired
 	private LendingService lendingService;
 	
 	// Get all 
@@ -29,28 +37,30 @@ public class LendingsController {
     {
         return lendingService.fetchLendingList();
     }
-    
-	// Create
-    @PostMapping("/lending")
-    public Lendings createLending(@RequestBody Lendings lending, Long userId, Long bookId)
-    {
-        return lendingService.saveLending(lending);
-    }
 
-    //ver esto aca abajo si va
-    /*@PostMapping("/lending")
-    public Lendings saveLending(@RequestBody Lendings lending)
-    {
-        return lendingService.saveLending(lending);
-    }
-    
-    // Update
-    @PatchMapping("/lending/{id}")
-    public Lendings updateLending(
-    		@RequestBody Lendings lending,
-            @PathVariable("id") Long id)
-    {
-        return lendingService.updateLending(lending, id);
+    // Create
+    @PostMapping(
+            value = "/lending",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(
+            value = "Create lending",
+            httpMethod = "POST",
+            response = LendingDTOResponse.class
+    )
+    @ApiResponses(value = {
+            @ApiResponse(code = 201,
+                    message = "Body content with all information about address",
+                    response = LendingDTOResponse.class),
+            @ApiResponse(code = 400,
+                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data form")
+    })
+    public ResponseEntity<LendingDTOResponse> createLending(
+            @ApiParam(value = "data of lending", required = true)
+            @RequestBody LendingCreateDTORequest request, Long userId, Long bookId
+    ) {
+        LendingDTOResponse lendResponse = lendingService.createLending(request, userId, bookId);
+        return new ResponseEntity<>(lendResponse, HttpStatus.CREATED);
     }
     
     // Delete
@@ -63,6 +73,6 @@ public class LendingsController {
     	}catch(Exception e){
     		return "ERROR: No deleted";
     	}
-    }*/
+    }
 
 }

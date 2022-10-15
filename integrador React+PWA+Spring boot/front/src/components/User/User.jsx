@@ -1,8 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import '../../assets/styles/StyleGeneral.css';
 import { Link } from "react-router-dom";
+import UserService from '../../service/UserService';
 
 function User() {
+  useEffect(() => {
+    UserService.getAllUsers()
+  }, [])
+
 
   return (
     <div class="container">
@@ -26,7 +31,8 @@ function User() {
       <thead class="thead-dark">
         <tr>
           <th scope="col">Cod usuario</th>
-          <th scope="col">Nombre y Apellido</th>
+          <th scope="col">Nombre</th>
+          <th scope="col">Apellido</th>
           <th scope="col">DNI</th>
           <th scope="col">Domicilio</th>
           <th scope="col">Teléfono</th>
@@ -35,6 +41,7 @@ function User() {
       </thead>
       <tbody>
         <tr>
+          <td>Nombre</td>
           <td>Nombre</td>
           <td>Nombre</td>
           <td>Nombre</td>

@@ -3,26 +3,27 @@ import axios from 'axios';
 const API_URL = process.env.REACT_APP_APPIS_DEFAULT_URL;
 
 class UserService {
-    getAllUsers() {
-        return axios.get(API_URL + '/users').then(response => {
-            console.log(response);
-        });
+    async getAllUsers() {
+        const getAllUsers = await axios.get(API_URL + '/users')
+        .then(response => console.log(response.data))
+        .catch(error => console.log(error));
+        return getAllUsers;
     }
 
-    createUser() {
-        return axios.post(API_URL + '/user');
+    async createUser() {
+        return await axios.post(API_URL + '/user');
     }
 
-    updateUser(id) {
-        return axios.put(API_URL + '/user/' + id);
+    async updateUser(id) {
+        return await axios.put(API_URL + '/user/' + id);
     }
 
-    deleteUser(id) {
-        return axios.delete(API_URL + '/user/' + id);
+    async deleteUser(id) {
+        return await axios.delete(API_URL + '/user/' + id);
     }
 
-    searchUser(name) {
-        return axios.get(API_URL + '/user/' + name);
+    async searchUser(name) {
+        return await axios.get(API_URL + '/user/' + name);
     }
 }
 

@@ -1,6 +1,8 @@
 package com.ayi.curso.rest.serv.ayispringrestful.service;
 
 
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.LendingCreateDTORequest;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.response.LendingDTOResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Lendings;
 
 import java.util.List;
@@ -10,11 +12,7 @@ public interface LendingService {
     List<Lendings> fetchLendingList();
     
 	// Create
-    Lendings saveLending(Lendings lending);
-    Lendings createLending(Lendings lending, Long userId, Long bookId);
- 
-    // Update -> no necesito?
-    Lendings updateLending(Lendings lending, Long id);
+    LendingDTOResponse createLending(LendingCreateDTORequest lending, Long userId, Long bookId);
  
     // Delete -> no necesito?
     void deleteLendingById(Long id);

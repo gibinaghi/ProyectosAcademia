@@ -14,12 +14,6 @@ public class UsersMapperImp implements IUsersMapper {
     private final ModelMapper modelMapper;
 
     @Override
-    public Users convertDtoToEntity(UserDTOResponse request) {
-
-        return modelMapper.map(request, Users.class);
-    }
-
-    @Override
     public UserDTOResponse convertEntityToDto(Users entity) {
 
         return modelMapper.map(entity, UserDTOResponse.class);

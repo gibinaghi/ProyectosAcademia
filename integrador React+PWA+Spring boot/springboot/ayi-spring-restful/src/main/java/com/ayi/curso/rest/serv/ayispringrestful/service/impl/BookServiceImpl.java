@@ -2,23 +2,19 @@ package com.ayi.curso.rest.serv.ayispringrestful.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.BookCreateDTORequest;
-import com.ayi.curso.rest.serv.ayispringrestful.dto.request.UserCreateDTORequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.BookDTOResponse;
-import com.ayi.curso.rest.serv.ayispringrestful.dto.response.UserDTOResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Books;
-import com.ayi.curso.rest.serv.ayispringrestful.entity.Users;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
 import com.ayi.curso.rest.serv.ayispringrestful.mapper.IBooksMapper;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.BooksRepository;
 import com.ayi.curso.rest.serv.ayispringrestful.service.BookService;
+import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -27,10 +23,13 @@ import static com.ayi.curso.rest.serv.ayispringrestful.constants.Exceptions.*;
 import static com.ayi.curso.rest.serv.ayispringrestful.constants.Exceptions.EXCEPTION_ID_NULL;
 
 @Service
+@AllArgsConstructor
 public class BookServiceImpl implements BookService {
-	@Autowired
+
+    // Repository
     private BooksRepository booksRepository;
 
+    // Mapper
     private IBooksMapper booksMapper;
 
     // Get all
@@ -66,6 +65,8 @@ public class BookServiceImpl implements BookService {
     {
         Books bookEntity = booksMapper.convertDtoToEntityCreate(bookRequest);
 
+        //validar que si libro titulo, autor mas edicion e idioma existe tire excepcion
+
         //Save
         bookEntity = booksRepository.save(bookEntity);
 
@@ -73,7 +74,7 @@ public class BookServiceImpl implements BookService {
     }
  
     // Update --> faltan las excepciones
-    @Override
+    /*@Override
     public Books updateBook(Books book, Long id)
     {
         Books bookDB = booksRepository.findById(id).get();
@@ -115,7 +116,7 @@ public class BookServiceImpl implements BookService {
         }
  
         return booksRepository.save(bookDB);
-    }
+    }*/
  
     // Delete
     @Override

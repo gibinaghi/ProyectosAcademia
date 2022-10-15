@@ -14,12 +14,12 @@ function UserCreate() {
                     <input type="text" class="form-control" placeholder="Ingrese el nombre"formControlName="name"/>
                   </div>
                   <div class="form-group">
-                    <label>Apellido Paterno</label>
-                    <input type="text" class="form-control" placeholder="Ingrese el apellido paterno" formControlName="last_name_p"/>
+                    <label>Apellido</label>
+                    <input type="text" class="form-control" placeholder="Ingrese el apellido" formControlName="last_name"/>
                   </div>
                   <div class="form-group">
-                      <label>Apellido Materno</label>
-                      <input type="text" class="form-control" placeholder="Ingrese el apellido materno" formControlName="last_name_m"/>
+                      <label>DNI</label>
+                      <input type="text" class="form-control" placeholder="Ingrese el DNI en formato 11.111.111" formControlName="dni"/>
                     </div>
                 
           </div>

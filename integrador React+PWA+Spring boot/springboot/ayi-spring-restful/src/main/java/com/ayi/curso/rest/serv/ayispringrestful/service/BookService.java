@@ -19,7 +19,7 @@ public interface BookService {
     BookDTOResponse createBook(BookCreateDTORequest bookRequest);
  
     // Update --> faltan las excepciones
-    Books updateBook(Books book, Long id);
+    //Books updateBook(Books book, Long id);
 
     // Delete
     void deleteBook(Long idBook)

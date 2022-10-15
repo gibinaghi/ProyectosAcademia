@@ -1,7 +1,6 @@
 package com.ayi.curso.rest.serv.ayispringrestful.service.impl;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.UserCreateDTORequest;
@@ -13,8 +12,8 @@ import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
 import com.ayi.curso.rest.serv.ayispringrestful.mapper.IUsersMapper;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.UsersRepository;
 import com.ayi.curso.rest.serv.ayispringrestful.service.UserService;
+import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -22,10 +21,13 @@ import javax.transaction.Transactional;
 import static com.ayi.curso.rest.serv.ayispringrestful.constants.Exceptions.*;
 
 @Service
+@AllArgsConstructor
 public class UserServiceImpl implements UserService {
-	@Autowired
+
+    // Repository
     private UsersRepository usersRepository;
 
+    // Mapper
     private IUsersMapper usersMapper;
  
 	// Get all
@@ -61,6 +63,8 @@ public class UserServiceImpl implements UserService {
     {
         Users userEntity = usersMapper.convertDtoToEntityCreate(userRequest);
 
+        //validar que si el dni existe tire excepcion
+
         //Save
         userEntity = usersRepository.save(userEntity);
 
@@ -68,7 +72,7 @@ public class UserServiceImpl implements UserService {
     }
 
     // Update  --> faltan las excepciones
-    @Override
+    /*@Override
     @Transactional
     public Users updateUser(Users user, Long id)
     {
@@ -103,7 +107,7 @@ public class UserServiceImpl implements UserService {
         }
 
         return usersRepository.save(usDB);
-    }
+    }*/
  
     // Delete
     @Override
