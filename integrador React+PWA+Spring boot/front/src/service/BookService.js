@@ -7,8 +7,8 @@ class BookService {
         return axios.get(API_URL + '/books');
     }
 
-    createBook() {
-        return axios.post(API_URL + '/book');
+    createBook(bookCreate) {
+        return axios.post(API_URL + '/book', bookCreate);
     }
 
     updateBook(id) {

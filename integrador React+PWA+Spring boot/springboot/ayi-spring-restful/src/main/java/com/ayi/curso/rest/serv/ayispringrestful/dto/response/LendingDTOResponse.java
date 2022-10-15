@@ -33,9 +33,11 @@ public class LendingDTOResponse {
     private String date_return;
 
     @ApiModelProperty(position = 4, notes = "User")
+    @JsonIgnoreProperties(value = "lendings")
     private Users users;
 
     @ApiModelProperty(position = 5, notes = "Book")
+    @JsonIgnoreProperties(value = "lendings")
     private Books books;
 
 }

@@ -1,8 +1,43 @@
-import React from 'react'
+import React, { useEffect, useState }  from 'react'
 import '../../assets/styles/StyleGeneral.css';
-import { Link } from "react-router-dom";
+import LendingService from '../../service/LendingService';
+
+function showReports() {
+      const res = LendingService.getAllLendings();
+      if(res.response.status === 200) {
+        window.location.reload();
+      }
+}
+
+function deleteLending(id) {
+  const response = window.confirm('¿Seguro de que quiere eliminar el préstamo?');
+  if (response) {
+      const res = LendingService.returnLending(id) 
+      if(res.response.status === 200) {
+        window.location.reload();
+      }
+  }
+}
+
+function downloadReport() {
+  LendingService.downloadReport();
+}
+
 
 function Reports() {
+
+  const [listLend, setListLend] = useState([]);
+
+  useEffect(() => {
+    LendingService.getAllLendings()
+    .then((response) => {
+      setListLend(response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }, [setListLend])
+
   return (
     <div class="container">
         <h2 class="title">Reportes</h2>
@@ -18,21 +53,28 @@ function Reports() {
             </tr>
             </thead>
             <tbody >
+            {listLend.map((item) => (
             <tr>
-                <th scope="row">aca datos1</th>
-                <td>aca datos2</td>
-                <td>aca datos3</td>
-                <td>aca datos4</td>
+                <th scope="row">{item.users.id}</th>
+                <td>{item.books.id}</td>
+                <td>{item.date_out}</td>
+                <td>{item.date_return}</td>
                 <td>
-                  <button type="button" class="btn btn-primary action">
-                    <Link to="/delete-lending" class="colorBtnText">Devolver</Link> 
+                  <button 
+                    type="button" 
+                    class="btn btn-primary action" 
+                    key={item.id} 
+                    onClick={() => deleteLending(item.id)}
+                    >Devolver
                   </button>
                 </td>
             </tr>
+            ))}
             </tbody>
         </table>
 
-        <button type="button" class="btn btn-primary action">Actualizar</button>
+        <button type="button" class="btn btn-primary action" onClick={() => showReports()}>Actualizar</button>
+        <button type="button" class="btn btn-primary action" onClick={() => downloadReport()}>Descargar en excel</button>
     </div> 
   )
 }

@@ -7,8 +7,8 @@ class UserService {
         return await axios.get(API_URL + '/users');
     }
 
-    async createUser() {
-        return await axios.post(API_URL + '/user');
+    async createUser(userCreate) {
+        return await axios.post(API_URL + '/user', userCreate);
     }
 
     async updateUser(id) {

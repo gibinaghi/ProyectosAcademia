@@ -5,15 +5,14 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
-@Table(name = "books")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "books")
 public class Books {
 
 		@Id
@@ -43,8 +42,8 @@ public class Books {
 
 		//Relations
 		@OneToMany(mappedBy = "books", cascade = CascadeType.ALL, orphanRemoval = true)
-		@JsonIgnoreProperties(value = "users")
-	    private List<Lendings> lendings = new ArrayList<>();
+		@JsonIgnoreProperties(value = "books")
+	    private List<Lendings> lendings;
 		
 		
 }

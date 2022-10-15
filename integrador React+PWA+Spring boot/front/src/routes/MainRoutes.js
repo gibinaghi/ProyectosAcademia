@@ -12,7 +12,6 @@ import UserCreate from '../components/User/UserCreate';
 import UserUpdate from '../components/User/UserUpdate';
 import Lending from '../components/Lending/Lending';
 import Reports from '../components/Reports/Reports';
-import Return from '../components/Return/Return';
 import Footer from '../components/Footer/Footer';
 
 function MainRoutes() {
@@ -30,8 +29,6 @@ function MainRoutes() {
             <Route path="/create-book" element={<BookCreate />} />
             <Route path="/update-book" element={<BookUpdate />} />
             <Route path="/lendings" element={<Lending />} />
-            <Route path="/delete-lending" element={<Lending />} />
-            <Route path="/retuns" element={<Return />} />
             <Route path="/reports" element={<Reports />} />
         </Routes>
         <Footer />

@@ -3,8 +3,24 @@ import '../../assets/styles/StyleGeneral.css';
 import { Link } from "react-router-dom";
 import UserService from '../../service/UserService';
 
+function deleteUser(id) {
+  const response = window.confirm('¿Seguro de que quiere eliminar el usuario?');
+  if (response) {
+      const res = UserService.deleteUser(id)
+      if(res.response.status === 200) {
+        window.location.reload();
+      }
+  }
+}
+
+function searchUser(word) {
+      const res = UserService.searchUser(word)
+      console.log(res)
+}
+
 function User() {
   const [listUser, setListUser] = useState([]);
+  const [word, setWord] = useState('');
 
   useEffect(() => {
     UserService.getAllUsers()
@@ -15,6 +31,12 @@ function User() {
       console.log(error);
     });
   }, [setListUser])
+  
+
+  const handleChange = (e) => {
+    setWord(e.target.value)
+  }
+
 
   return (
     <div class="container">
@@ -26,9 +48,11 @@ function User() {
         class="form-control"
         placeholder="Ingrese en nombre del usuario a buscar"
         formControlName="nombreUsuario"
+        name="word"
+        onChange={handleChange}
       />
       <div class="input-group-append">
-        <button class="btn btn-primary action search" type="button">
+        <button class="btn btn-primary action search" type="button" onClick={() => searchUser(word)}>
           Buscar
         </button>
       </div>
@@ -60,7 +84,7 @@ function User() {
               <Link to="/update-user" class="colorBtnText">Editar</Link> 
              </button>
              <button type="button" class="btn btn-primary action">
-              <Link to="/users" class="colorBtnText">Borrar</Link>
+              <Link to="/users" class="colorBtnText" key={item.id} onClick={() => deleteUser(item.id)}>Borrar</Link>
              </button>
            </td>
         </tr>

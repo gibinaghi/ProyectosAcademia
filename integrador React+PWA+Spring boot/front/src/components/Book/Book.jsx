@@ -3,6 +3,16 @@ import '../../assets/styles/StyleGeneral.css';
 import { Link } from "react-router-dom";
 import BookService from '../../service/BookService';
 
+function deleteBook(id) {
+  const response = window.confirm('¿Seguro de que quiere eliminar el libro?');
+  if (response) {
+      const res = BookService.deleteBook(id)
+      if(res.response.status === 200){
+        window.location.reload();
+      }
+  }
+}
+
 function Book() {
   const [listBook, setListBook] = useState([]);
 
@@ -64,7 +74,7 @@ function Book() {
               <Link to="/update-book" class="colorBtnText">Editar</Link> 
              </button>
              <button type="button" class="btn btn-primary action">
-              <Link to="/books" class="colorBtnText">Borrar</Link>
+              <Link to="/books" class="colorBtnText" key={item.id} onClick={() => deleteBook(item.id)}>Borrar</Link>
              </button>
            </td>
         </tr>

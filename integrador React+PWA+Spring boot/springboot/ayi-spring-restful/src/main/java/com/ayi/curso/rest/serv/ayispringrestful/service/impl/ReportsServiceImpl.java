@@ -9,11 +9,13 @@ import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
 import com.ayi.curso.rest.serv.ayispringrestful.mapper.ILendingsMapper;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.LendingsRepository;
 import com.ayi.curso.rest.serv.ayispringrestful.service.ReportsService;
+import com.ayi.curso.rest.serv.ayispringrestful.utils.ExcelHelper;
 import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,5 +56,13 @@ public class ReportsServiceImpl implements ReportsService {
         });
 
         return listResponse ;
+    }
+
+    // Excel
+    public ByteArrayInputStream load() {
+        List<Lendings> lendings = lendingsRepository.findAll();
+
+        ByteArrayInputStream in = ExcelHelper.tutorialsToExcel(lendings);
+        return in;
     }
 }

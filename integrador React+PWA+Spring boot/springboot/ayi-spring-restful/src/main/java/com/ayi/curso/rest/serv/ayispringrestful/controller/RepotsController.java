@@ -11,12 +11,14 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.AllArgsConstructor;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayInputStream;
 import java.util.List;
 
 @Api(value = "Report Api", tags = {"Report Service"})
@@ -28,7 +30,7 @@ public class RepotsController {
     private ReportsService reportService;
 
 
-    // Get all ------------> NO FUNCIONA!!!!!!
+    // Get all
     @GetMapping("/reports")
     @ApiOperation(
             value = "List all report lendings",
@@ -51,5 +53,15 @@ public class RepotsController {
 
 
     //Export excel
+    @GetMapping("/downloadReports")
+    public ResponseEntity<Resource> getFile() {
+        String filename = "reportes.xlsx";
+        InputStreamResource file = new InputStreamResource(reportService.load());
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filename)
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(file);
+    }
 
 }

@@ -10,7 +10,7 @@ function Home() {
     <h2 class="title">Bienvenido</h2>
     <p class="parrafo"> Sistema de Gestion para Biblioteca Publica. 
         Controle y administre de forma optica y facil el flujo de prestamos y devoluciones de Libros.
-        Esta herramienta le permitira llevar un control completo y detallado de su Biblioteca, 
+        Esta herramienta le permitirá llevar un control completo y detallado de su Biblioteca, 
         tendra acceso a herramientas especiales para tareas especificas, como lo son: </p>
     <img class="homeimg" src={libroImg}/>
     <ul class="listaHome">

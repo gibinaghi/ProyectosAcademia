@@ -6,6 +6,7 @@ import lombok.*;
 
 import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 @Getter
 @Setter
@@ -28,7 +29,7 @@ public class UserCreateDTORequest {
 
     @NotNull(message = "DNI can not be null.")
     @ApiModelProperty(position = 3, required = true, notes = "Not null value, DNI is required")
-    //@Pattern(regexp = "[a-zA-Z ]{2,20}", message = "Only allows letters, minimum 2, maximum 20")
+    @Pattern(regexp = "[0-9]{8}", message = "Only allows numbers, format 11222333")
     private String dni;
 
     @ApiModelProperty(position = 4, notes = "Not null value, address is optional")

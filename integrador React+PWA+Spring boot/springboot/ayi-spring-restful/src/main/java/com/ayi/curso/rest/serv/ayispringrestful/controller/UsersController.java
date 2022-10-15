@@ -14,6 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Api(value = "User Api", tags = {"User Service"})
@@ -64,7 +65,7 @@ public class UsersController {
     })
     public ResponseEntity<UserDTOResponse> createUser(
             @ApiParam(value = "data of user", required = true)
-            @RequestBody UserCreateDTORequest request
+            @Valid @RequestBody UserCreateDTORequest request
     ) {
         UserDTOResponse userResponse = usersService.createUser(request);
         return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
