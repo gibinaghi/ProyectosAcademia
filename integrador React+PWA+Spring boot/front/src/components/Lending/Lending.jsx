@@ -5,9 +5,8 @@ import '../../assets/styles/Lending.css';
 import '../../assets/styles/StyleGeneral.css';
 import LendingService from '../../service/LendingService';
 
-function createLending(userId, bookId) {
-  const res = LendingService.createLending(userId, bookId);
-  console.log(res);
+function creationLending(userId, bookId) {
+  LendingService.createLending(userId, bookId);
 }
 
 function Lending() {
@@ -55,7 +54,7 @@ function Lending() {
             <button 
               type="submit" 
               class="btn btn-primary action"
-              onClick={() => createLending(userCreate.userId, userCreate.bookId)}
+              onClick={() => creationLending(userCreate.userId, userCreate.bookId)}
             >Prestar
             </button>
           </form>

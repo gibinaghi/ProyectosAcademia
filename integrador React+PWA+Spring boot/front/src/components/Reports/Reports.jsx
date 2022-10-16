@@ -3,10 +3,8 @@ import '../../assets/styles/StyleGeneral.css';
 import LendingService from '../../service/LendingService';
 
 function showReports() {
-      const res = LendingService.getAllLendings();
-      if(res.response.status === 200) {
-        window.location.reload();
-      }
+      LendingService.getAllLendings();
+      window.location.replace('');
 }
 
 function deleteLending(id) {
@@ -21,6 +19,14 @@ function deleteLending(id) {
 
 function downloadReport() {
   LendingService.downloadReport()
+  .then((response) => {
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'reporte.xlsx');
+    document.body.appendChild(link);
+    link.click();
+  });
 }
 
 

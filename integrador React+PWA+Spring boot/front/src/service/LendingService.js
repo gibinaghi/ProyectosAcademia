@@ -4,11 +4,17 @@ const API_URL = process.env.REACT_APP_APPIS_DEFAULT_URL;
 
 class LendingService {
     async createLending(userId, bookId) {
-        return await axios.post(API_URL + '/lending/' + userId + '/' + bookId);
+        return await axios({
+            method: 'POST',
+            url: `http://localhost:8080/api/lending/${userId}/${bookId}`
+        });;
     }
 
     async getAllLendings() {
-        return await axios.get(API_URL + '/reports');
+        return await axios({
+            method: 'GET',
+            url: API_URL + '/reports' 
+        });
     }
 
     async returnLending(id) {
@@ -16,7 +22,11 @@ class LendingService {
     }
 
     async downloadReport() {
-        return await axios.get(API_URL + '/downloadReports');
+        return await axios({
+            method: 'GET',
+            url: 'http://localhost:8080/api/downloadReports', 
+            responseType: 'blob'
+        });
     }
 
 }
