@@ -37,9 +37,6 @@ public class Books {
 		@Column(name = "stock")
 		private Integer stock;
 
-		@Column(name = "available")
-		private Integer available;
-
 		//Relations
 		@OneToMany(mappedBy = "books", cascade = CascadeType.ALL, orphanRemoval = true)
 		@JsonIgnoreProperties(value = "books")

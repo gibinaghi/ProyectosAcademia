@@ -47,9 +47,4 @@ public class BookCreateDTORequest {
     @Column(name = "stock")
     private Integer stock;
 
-    @NotNull(message = "Available can not be null.")
-    @ApiModelProperty(position = 7, required = true, notes = "Not null value, available is required")
-    @Column(name = "available")
-    private Integer available;
-
 }

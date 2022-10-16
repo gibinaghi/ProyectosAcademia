@@ -1,6 +1,7 @@
 package com.ayi.curso.rest.serv.ayispringrestful.mapper.impl;
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.BookCreateDTORequest;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.BookUpdateDTORequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.BookDTOResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Books;
 import com.ayi.curso.rest.serv.ayispringrestful.mapper.IBooksMapper;
@@ -21,6 +22,12 @@ public class BooksMapperImp implements IBooksMapper {
 
     @Override
     public Books convertDtoToEntityCreate(BookCreateDTORequest request) {
+
+        return modelMapper.map(request, Books.class);
+    }
+
+    @Override
+    public Books convertDtoToEntityUpdate(BookUpdateDTORequest request) {
 
         return modelMapper.map(request, Books.class);
     }

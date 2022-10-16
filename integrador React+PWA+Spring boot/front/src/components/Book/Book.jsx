@@ -13,8 +13,14 @@ function deleteBook(id) {
   }
 }
 
+function searchUser(word) {
+  const res = BookService.searchUser(word)
+  console.log(res)
+}
+
 function Book() {
   const [listBook, setListBook] = useState([]);
+  const [word, setWord] = useState('');
 
   useEffect(() => {
     BookService.getAllBooks()
@@ -25,6 +31,10 @@ function Book() {
       console.log(error);
     });
   }, [setListBook])
+
+  const handleChange = (e) => {
+    setWord(e.target.value)
+  }
   
   return (
     <div class="container">
@@ -36,9 +46,11 @@ function Book() {
         class="form-control"
         placeholder="Ingrese el título del libro a buscar"
         formControlName="nombreUsuario"
+        name="word"
+        onChange={handleChange}
       />
       <div class="input-group-append">
-        <button class="btn btn-primary action search" type="button">
+        <button class="btn btn-primary action search" type="button" onClick={() => searchUser(word)}>
           Buscar
         </button>
       </div>
@@ -54,7 +66,6 @@ function Book() {
             <th scope="col">Edición</th>
             <th scope="col">Idioma</th>
             <th scope="col">Stock</th>
-            <th scope="col">Disponible</th>
             <th scope="col">Operaciones</th>
         </tr>
       </thead>
@@ -68,7 +79,6 @@ function Book() {
           <td>{item.edition}</td>
           <td>{item.idiom}</td>
           <td>{item.stock}</td>
-          <td>{item.available}</td>
           <td>
             <button type="button" class="btn btn-primary action">
               <Link to="/update-book" class="colorBtnText">Editar</Link> 

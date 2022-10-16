@@ -1,10 +1,13 @@
-package com.ayi.curso.rest.serv.ayispringrestful.service.impl;
+package com.ayi.curso.rest.serv.ayispringrestful.constants.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
+import com.ayi.curso.rest.serv.ayispringrestful.constants.service.BookService;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.BookCreateDTORequest;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.BookUpdateDTORequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.BookDTOResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Books;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
@@ -12,7 +15,6 @@ import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
 import com.ayi.curso.rest.serv.ayispringrestful.mapper.IBooksMapper;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.BooksRepository;
-import com.ayi.curso.rest.serv.ayispringrestful.service.BookService;
 import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
@@ -65,58 +67,55 @@ public class BookServiceImpl implements BookService {
     {
         Books bookEntity = booksMapper.convertDtoToEntityCreate(bookRequest);
 
-        //validar que si libro titulo, autor mas edicion e idioma existe tire excepcion
-
         //Save
         bookEntity = booksRepository.save(bookEntity);
 
         return booksMapper.convertEntityToDto(bookEntity);
     }
  
-    // Update --> faltan las excepciones
-    /*@Override
-    public Books updateBook(Books book, Long id)
+    // Update
+    @Override
+    @Transactional
+    public BookDTOResponse updateBook(BookUpdateDTORequest bookUpdateDTORequest, Long id)
+            throws BadRequestException
     {
-        Books bookDB = booksRepository.findById(id).get();
- 
-        if (Objects.nonNull(book.getAuthor()) && !"".equalsIgnoreCase(book.getAuthor())) {
-        	bookDB.setAuthor(book.getAuthor());
+        if(id == null || id < 0){
+            throw new BadRequestException(EXCEPTION_ID_NOT_VALID);
         }
-        
-        if (Objects.nonNull(book.getAvailable())) {
-        	bookDB.setAvailable(book.getAvailable());
-        }
-        
-        if (Objects.nonNull(book.getCategory()) && !"".equalsIgnoreCase(book.getCategory())) {
-        	bookDB.setCategory(book.getCategory());
-        }
-        
-        if (Objects.nonNull(book.getDate()) && !"".equalsIgnoreCase(book.getDate())) {
-        	bookDB.setDate(book.getDate());
-        }
-        
-        if (Objects.nonNull(book.getDescription()) && !"".equalsIgnoreCase(book.getDescription())) {
-        	bookDB.setDescription(book.getDescription());
-        }
-        
-        if (Objects.nonNull(book.getEdit()) && !"".equalsIgnoreCase(book.getEdit())) {
-        	bookDB.setEdit(book.getEdit());
-        }
-        
-        if (Objects.nonNull(book.getLang()) && !"".equalsIgnoreCase(book.getLang())) {
-        	bookDB.setLang(book.getLang());
-        }
-        
-        if (Objects.nonNull(book.getStock())) {
-        	bookDB.setStock(book.getStock());
-        }
-        
+
+        Books book = booksMapper.convertDtoToEntityUpdate(bookUpdateDTORequest);
+
+        Books bkDB = booksRepository.findById(id).get();
+
         if (Objects.nonNull(book.getTitle()) && !"".equalsIgnoreCase(book.getTitle())) {
-        	bookDB.setTitle(book.getTitle());
+            bkDB.setTitle(book.getTitle());
         }
- 
-        return booksRepository.save(bookDB);
-    }*/
+
+        if (Objects.nonNull(book.getAuthor()) && !"".equalsIgnoreCase(book.getAuthor())) {
+            bkDB.setAuthor(book.getAuthor());
+        }
+
+        if (Objects.nonNull(book.getCategory()) && !"".equalsIgnoreCase(book.getCategory())) {
+            bkDB.setCategory(book.getCategory());
+        }
+
+        if (Objects.nonNull(book.getEdition()) && !"".equalsIgnoreCase(book.getEdition())) {
+            bkDB.setEdition(book.getEdition());
+        }
+
+        if (Objects.nonNull(book.getIdiom()) && !"".equalsIgnoreCase(book.getIdiom())) {
+            bkDB.setIdiom(book.getIdiom());
+        }
+
+        if (Objects.nonNull(book.getStock()) && book.getStock() > 0) {
+            bkDB.setStock(book.getStock());
+        }
+
+
+        bkDB = booksRepository.save(bkDB);
+
+        return booksMapper.convertEntityToDto(bkDB);
+    }
  
     // Delete
     @Override
@@ -141,10 +140,18 @@ public class BookServiceImpl implements BookService {
         }
     }
 
-    // Search by title --> faltan las excepciones
+    // Search by title
     @Override
-    public List<Books> searchByTitle(String title)
+    public List<BookDTOResponse> searchByTitle(String title)
     {
-        return (List<Books>) booksRepository.findByTitle(title);
+        List<Books> listBooks = booksRepository.findByTitle(title);
+
+        List<BookDTOResponse> listResponse = new ArrayList<>();
+        listBooks.forEach(book -> {
+            BookDTOResponse bookResponse = booksMapper.convertEntityToDto(book);
+            listResponse.add(bookResponse);
+        });
+
+        return listResponse ;
     }
 }

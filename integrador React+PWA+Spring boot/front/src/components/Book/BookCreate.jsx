@@ -9,7 +9,6 @@ function createBook(bookCreate) {
 }
 
 function BookCreate() {
-
   const [bookCreate, setBookCreate] = useState({
     title: '',
     author: '',
@@ -17,8 +16,6 @@ function BookCreate() {
     edition: '',
     idiom: '',
     stock: 0,
-    available: 0,
-    
   })
 
   const handleChange = (e) => {
@@ -102,26 +99,13 @@ function BookCreate() {
                             onChange={handleChange}
                           />
                       </div>
-                      <div class="form-group">
-                          <label>Disponibles</label>
-                          <input 
-                            type="text" 
-                            class="form-control" 
-                            placeholder="Cantidad a prestar" 
-                            formControlName="available"
-                            name='available'
-                            onChange={handleChange}
-                          />
-                      </div>
                       <button 
                         type="submit" 
                         class="btn btn-primary action" 
                         onClick={() => createBook(bookCreate)}
                         >Crear libro
-                      </button>
-                    
-          </div>
-        
+                      </button>         
+          </div> 
       </div> 
     </form> 
 </div>

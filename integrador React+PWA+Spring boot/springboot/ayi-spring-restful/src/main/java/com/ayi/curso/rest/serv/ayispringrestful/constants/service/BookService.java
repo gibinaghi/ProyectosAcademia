@@ -1,7 +1,7 @@
-package com.ayi.curso.rest.serv.ayispringrestful.service;
-
+package com.ayi.curso.rest.serv.ayispringrestful.constants.service;
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.BookCreateDTORequest;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.BookUpdateDTORequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.BookDTOResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Books;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
@@ -17,15 +17,16 @@ public interface BookService {
 
     // Create
     BookDTOResponse createBook(BookCreateDTORequest bookRequest);
- 
-    // Update --> faltan las excepciones
-    //Books updateBook(Books book, Long id);
+
+    // Update
+    BookDTOResponse updateBook(BookUpdateDTORequest bookUpdateDTORequest, Long id)
+            throws BadRequestException;
 
     // Delete
     void deleteBook(Long idBook)
             throws BadRequestException, InternalException, NotFoundException;
     
-    //Search by title --> faltan las excepciones
-    List<Books> searchByTitle(String title);
+    //Search by title
+    List<BookDTOResponse> searchByTitle(String title);
 
 }

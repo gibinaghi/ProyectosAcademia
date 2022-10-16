@@ -1,4 +1,4 @@
-package com.ayi.curso.rest.serv.ayispringrestful.service.impl;
+package com.ayi.curso.rest.serv.ayispringrestful.constants.service.impl;
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.LendingCreateDTORequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.LendingDTOResponse;
@@ -9,7 +9,7 @@ import com.ayi.curso.rest.serv.ayispringrestful.mapper.ILendingsMapper;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.BooksRepository;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.LendingsRepository;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.UsersRepository;
-import com.ayi.curso.rest.serv.ayispringrestful.service.LendingService;
+import com.ayi.curso.rest.serv.ayispringrestful.constants.service.LendingService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -34,8 +34,6 @@ public class LendingServiceImpl implements LendingService {
         // Mapper lending -> Lending entity
         Lendings lendEntity = lendingsMapper.convertDtoToEntity(lending);
 
-        // Me fijo si hay cantidad de libros para prestar, si -> descuento uno
-
         // Find user with userId
     	Users userEntity = userRepository.findById(userId).get();
         // Find book with bookId
@@ -44,9 +42,6 @@ public class LendingServiceImpl implements LendingService {
         // Set user and book entity en lending entity
         lendEntity.setUsers(userEntity);
         lendEntity.setBooks(bookEntity);
-
-        // Set date_return in lending entity -> ver como hacer, tipo Date
-        //lendEntity.setDate_return(lending.getDate_out() + 15);
 
         // Save
         lendEntity = lendingsRepository.save(lendEntity);

@@ -4,7 +4,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -32,10 +31,10 @@ public class UserCreateDTORequest {
     @Pattern(regexp = "[0-9]{8}", message = "Only allows numbers, format 11222333")
     private String dni;
 
-    @ApiModelProperty(position = 4, notes = "Not null value, address is optional")
+    @ApiModelProperty(position = 4, notes = "Address is optional")
     private String address;
 
-    @ApiModelProperty(position = 5, notes = "Not null value, phone is optional")
+    @ApiModelProperty(position = 5, notes = "Phone is optional")
     private String phone;
 
 }

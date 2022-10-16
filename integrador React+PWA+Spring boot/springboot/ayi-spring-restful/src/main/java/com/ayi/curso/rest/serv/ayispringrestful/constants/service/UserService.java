@@ -1,6 +1,7 @@
-package com.ayi.curso.rest.serv.ayispringrestful.service;
+package com.ayi.curso.rest.serv.ayispringrestful.constants.service;
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.UserCreateDTORequest;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.UserUpdateDTORequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.UserDTOResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Users;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
@@ -17,14 +18,15 @@ public interface UserService {
 	// Create
     UserDTOResponse createUser(UserCreateDTORequest userRequest);
  
-    // Update --> faltan las excepciones
-    //Users updateUser(Users user, Long id);
+    // Update
+    UserDTOResponse updateUser(UserUpdateDTORequest userUpdateDTORequest, Long id)
+            throws BadRequestException;
  
     // Delete
     void deleteUser(Long idUser)
             throws BadRequestException, InternalException, NotFoundException;
     
-    //Search by name --> faltan las excepciones
-    List<Users> searchByName(String name);
+    //Search by name
+    List<UserDTOResponse> searchByName(String name);
 
 }

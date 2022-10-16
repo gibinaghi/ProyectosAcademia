@@ -1,9 +1,14 @@
 package com.ayi.curso.rest.serv.ayispringrestful.controller;
 
-import com.ayi.curso.rest.serv.ayispringrestful.service.ReturnService;
-import io.swagger.annotations.Api;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
+import com.ayi.curso.rest.serv.ayispringrestful.constants.service.ReturnService;
+import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,16 +22,22 @@ public class ReturnsController {
 
     private ReturnService returnService;
 
-    // Delete for name user and title book
+    // Delete lending
     @DeleteMapping("/return/{id}")
-    public String deleteLendingById(@PathVariable("id") Long id)
-    {
-        try {
-            returnService.deleteLendingById(id);
-            return "Deleted Successfully";
-        }catch(Exception e){
-            return "ERROR: No deleted";
-        }
+    @ApiOperation(
+            value = "Delete a lending by id",
+            httpMethod = "DELETE"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(code = 204, message = "Success. Lending deleted by id"),
+            @ApiResponse(code = 404, message = "Lending not found"),
+            @ApiResponse(code = 400 , message = "Bad request/Invalid field")})
+    public ResponseEntity<Void> deleteLending(
+            @ApiParam(name = "id", required = true, value = "Lending Id", example = "1")
+            @PathVariable Long id
+    ) throws BadRequestException, NotFoundException, InternalException {
+        returnService.deleteLendingById(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }

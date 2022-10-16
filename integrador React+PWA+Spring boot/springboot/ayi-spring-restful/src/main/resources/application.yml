@@ -14,12 +14,13 @@ spring:
         show_sql: true
         format_sql: true
     hibernate:
-      ddl-auto: update
-      ##create
-  ##sql:
-    ##init:
-      ##mode: always
-      ##data-locations: classpath:data.sql
+      ##ddl-auto: create
+      ddl-auto: none
+      ##ddl-auto: update
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:data.sql
 
 # Swagger settings.
 springfox:

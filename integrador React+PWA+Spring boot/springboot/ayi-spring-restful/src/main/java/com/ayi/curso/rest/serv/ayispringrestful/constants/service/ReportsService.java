@@ -1,4 +1,4 @@
-package com.ayi.curso.rest.serv.ayispringrestful.service;
+package com.ayi.curso.rest.serv.ayispringrestful.constants.service;
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.LendingDTOResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Lendings;
@@ -15,7 +15,7 @@ public interface ReportsService {
     List<LendingDTOResponse> getAllReports()
             throws NotFoundException, InternalException;
 	
-	//Download reports in excel or pdf
+	//Download reports in excel
     ByteArrayInputStream load();
 
 }

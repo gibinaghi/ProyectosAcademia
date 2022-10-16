@@ -20,7 +20,7 @@ function deleteLending(id) {
 }
 
 function downloadReport() {
-  LendingService.downloadReport();
+  LendingService.downloadReport()
 }
 
 

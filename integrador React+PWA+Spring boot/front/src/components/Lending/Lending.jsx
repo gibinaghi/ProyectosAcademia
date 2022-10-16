@@ -55,7 +55,7 @@ function Lending() {
             <button 
               type="submit" 
               class="btn btn-primary action"
-              onClick={() => console.log(userCreate.userId, userCreate.bookId)}
+              onClick={() => createLending(userCreate.userId, userCreate.bookId)}
             >Prestar
             </button>
           </form>

@@ -1,6 +1,7 @@
 package com.ayi.curso.rest.serv.ayispringrestful.mapper.impl;
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.UserCreateDTORequest;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.UserUpdateDTORequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.UserDTOResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Users;
 import com.ayi.curso.rest.serv.ayispringrestful.mapper.IUsersMapper;
@@ -21,6 +22,12 @@ public class UsersMapperImp implements IUsersMapper {
 
     @Override
     public Users convertDtoToEntityCreate(UserCreateDTORequest request) {
+
+        return modelMapper.map(request, Users.class);
+    }
+
+    @Override
+    public Users convertDtoToEntityUpdate(UserUpdateDTORequest request) {
 
         return modelMapper.map(request, Users.class);
     }

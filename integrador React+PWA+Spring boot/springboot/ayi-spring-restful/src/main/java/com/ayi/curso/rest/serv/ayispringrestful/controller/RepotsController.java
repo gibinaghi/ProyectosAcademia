@@ -1,11 +1,9 @@
 package com.ayi.curso.rest.serv.ayispringrestful.controller;
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.LendingDTOResponse;
-import com.ayi.curso.rest.serv.ayispringrestful.dto.response.UserDTOResponse;
-import com.ayi.curso.rest.serv.ayispringrestful.entity.Lendings;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
-import com.ayi.curso.rest.serv.ayispringrestful.service.ReportsService;
+import com.ayi.curso.rest.serv.ayispringrestful.constants.service.ReportsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -18,7 +16,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.ByteArrayInputStream;
 import java.util.List;
 
 @Api(value = "Report Api", tags = {"Report Service"})

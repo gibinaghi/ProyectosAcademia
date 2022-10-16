@@ -1,14 +1,12 @@
-package com.ayi.curso.rest.serv.ayispringrestful.service.impl;
+package com.ayi.curso.rest.serv.ayispringrestful.constants.service.impl;
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.LendingDTOResponse;
-import com.ayi.curso.rest.serv.ayispringrestful.dto.response.UserDTOResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Lendings;
-import com.ayi.curso.rest.serv.ayispringrestful.entity.Users;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
 import com.ayi.curso.rest.serv.ayispringrestful.mapper.ILendingsMapper;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.LendingsRepository;
-import com.ayi.curso.rest.serv.ayispringrestful.service.ReportsService;
+import com.ayi.curso.rest.serv.ayispringrestful.constants.service.ReportsService;
 import com.ayi.curso.rest.serv.ayispringrestful.utils.ExcelHelper;
 import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;

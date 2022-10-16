@@ -45,8 +45,4 @@ public class BookDTOResponse {
     @Column(name = "stock")
     private Integer stock;
 
-    @ApiModelProperty(position = 8, notes = "Available")
-    @Column(name = "available")
-    private Integer available;
-
 }

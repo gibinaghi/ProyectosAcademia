@@ -1,12 +1,12 @@
 package com.ayi.curso.rest.serv.ayispringrestful.controller;
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.UserCreateDTORequest;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.UserUpdateDTORequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.UserDTOResponse;
-import com.ayi.curso.rest.serv.ayispringrestful.entity.Users;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
-import com.ayi.curso.rest.serv.ayispringrestful.service.UserService;
+import com.ayi.curso.rest.serv.ayispringrestful.constants.service.UserService;
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -43,7 +43,7 @@ public class UsersController {
     public ResponseEntity<?> fetchUserList() throws NotFoundException, InternalException
     {
         List<UserDTOResponse> userResponse = usersService.fetchUserList();
-        return ResponseEntity.ok(userResponse );
+        return ResponseEntity.ok(userResponse);
     }
     
     // Create
@@ -58,7 +58,7 @@ public class UsersController {
     )
     @ApiResponses(value = {
             @ApiResponse(code = 201,
-                    message = "Body content with all information about address",
+                    message = "Body content with all information about user",
                     response = UserDTOResponse.class),
             @ApiResponse(code = 400,
                     message = "Describes errors on invalid payload received, e.g: missing fields, invalid data form")
@@ -71,14 +71,15 @@ public class UsersController {
         return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
     }
 
-    // Update  --> faltan las excepciones
-    /*@PatchMapping("/user/{id}")
-    public Users updateUser(
-    		@RequestBody Users user,
-            @PathVariable("id") Long id)
-    {
-        return usersService.updateUser(user, id);
-    }*/
+    // Update
+    @PatchMapping("/user/{id}")
+    public ResponseEntity<UserDTOResponse> updateUser(
+    		@RequestBody UserUpdateDTORequest user,
+            @PathVariable("id") Long id
+    ) throws BadRequestException {
+        UserDTOResponse userResponse = usersService.updateUser(user, id);
+        return ResponseEntity.ok(userResponse);
+    }
  
     // Delete
     @DeleteMapping("/user/{id}")
@@ -98,9 +99,9 @@ public class UsersController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
     
-    // Search by name --> faltan las excepciones
+    // Search by name
     @GetMapping("/users/{name}")
-    public List<Users> searchByName(@PathVariable("name") String name)
+    public List<UserDTOResponse> searchByName(@PathVariable("name") String name)
     {
         return usersService.searchByName(name);
     }

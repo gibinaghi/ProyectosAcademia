@@ -4,7 +4,7 @@ const API_URL = process.env.REACT_APP_APPIS_DEFAULT_URL;
 
 class LendingService {
     async createLending(userId, bookId) {
-        return await axios.post(API_URL + `/lending?userId=${userId}&bookId=${bookId}`);
+        return await axios.post(API_URL + '/lending/' + userId + '/' + bookId);
     }
 
     async getAllLendings() {

@@ -1,9 +1,11 @@
-package com.ayi.curso.rest.serv.ayispringrestful.service.impl;
+package com.ayi.curso.rest.serv.ayispringrestful.constants.service.impl;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.UserCreateDTORequest;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.UserUpdateDTORequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.UserDTOResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Users;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
@@ -11,7 +13,7 @@ import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
 import com.ayi.curso.rest.serv.ayispringrestful.mapper.IUsersMapper;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.UsersRepository;
-import com.ayi.curso.rest.serv.ayispringrestful.service.UserService;
+import com.ayi.curso.rest.serv.ayispringrestful.constants.service.UserService;
 import lombok.AllArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
@@ -71,43 +73,44 @@ public class UserServiceImpl implements UserService {
         return usersMapper.convertEntityToDto(userEntity);
     }
 
-    // Update  --> faltan las excepciones
-    /*@Override
+    // Update
+    @Override
     @Transactional
-    public Users updateUser(Users user, Long id)
+    public UserDTOResponse updateUser(UserUpdateDTORequest userUpdateDTORequest, Long id)
+            throws BadRequestException
     {
+        if(id == null || id < 0){
+            throw new BadRequestException(EXCEPTION_ID_NOT_VALID);
+        }
+
+        Users user = usersMapper.convertDtoToEntityUpdate(userUpdateDTORequest);
+
         Users usDB = usersRepository.findById(id).get();
  
         if (Objects.nonNull(user.getName()) && !"".equalsIgnoreCase(user.getName())) {
             usDB.setName(user.getName());
         }
         
-        if (Objects.nonNull(user.getLast_name_p()) && !"".equalsIgnoreCase(user.getLast_name_p())) {
-            usDB.setLast_name_p(user.getLast_name_p());
+        if (Objects.nonNull(user.getLast_name()) && !"".equalsIgnoreCase(user.getLast_name())) {
+            usDB.setLast_name(user.getLast_name());
         }
         
-        if (Objects.nonNull(user.getLast_name_m()) && !"".equalsIgnoreCase(user.getLast_name_m())) {
-            usDB.setLast_name_m(user.getLast_name_m());
+        if (Objects.nonNull(user.getDni()) && !"".equalsIgnoreCase(user.getDni())) {
+            usDB.setDni(user.getDni());
         }
         
-        if (Objects.nonNull(user.getDomicilio()) && !"".equalsIgnoreCase(user.getDomicilio())) {
-            usDB.setDomicilio(user.getDomicilio());
+        if (Objects.nonNull(user.getAddress()) && !"".equalsIgnoreCase(user.getAddress())) {
+            usDB.setAddress(user.getAddress());
         }
         
-        if (Objects.nonNull(user.getTel()) && !"".equalsIgnoreCase(user.getTel())) {
-            usDB.setTel(user.getTel());
-        }
-        
-        if (Objects.nonNull(user.getSanctions())) {
-            usDB.setSanctions(user.getSanctions());
-        }
-        
-        if (Objects.nonNull(user.getSanc_money())) {
-            usDB.setSanc_money(user.getSanc_money());
+        if (Objects.nonNull(user.getPhone()) && !"".equalsIgnoreCase(user.getPhone())) {
+            usDB.setPhone(user.getPhone());
         }
 
-        return usersRepository.save(usDB);
-    }*/
+        usDB = usersRepository.save(usDB);
+
+        return usersMapper.convertEntityToDto(usDB);
+    }
  
     // Delete
     @Override
@@ -132,12 +135,20 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    //Search by name --> faltan las excepciones
+    //Search by name
     @Override
     @Transactional
-    public List<Users> searchByName(String name)
+    public List<UserDTOResponse> searchByName(String name)
     {
-        return (List<Users>) usersRepository.findByName(name);
+        List<Users> listUsers = usersRepository.findByName(name);
+
+        List<UserDTOResponse> listResponse = new ArrayList<>();
+        listUsers.forEach(user -> {
+            UserDTOResponse userResponse = usersMapper.convertEntityToDto(user);
+            listResponse.add(userResponse);
+        });
+
+        return listResponse ;
     }
 
 }

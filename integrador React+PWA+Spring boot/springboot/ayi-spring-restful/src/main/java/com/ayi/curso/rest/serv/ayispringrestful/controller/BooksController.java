@@ -1,26 +1,18 @@
 package com.ayi.curso.rest.serv.ayispringrestful.controller;
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.BookCreateDTORequest;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.request.BookUpdateDTORequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.BookDTOResponse;
-import com.ayi.curso.rest.serv.ayispringrestful.entity.Books;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
-import com.ayi.curso.rest.serv.ayispringrestful.service.BookService;
+import com.ayi.curso.rest.serv.ayispringrestful.constants.service.BookService;
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -65,7 +57,7 @@ public class BooksController {
     )
     @ApiResponses(value = {
             @ApiResponse(code = 201,
-                    message = "Body content with all information about address",
+                    message = "Body content with all information about book",
                     response = BookDTOResponse.class),
             @ApiResponse(code = 400,
                     message = "Describes errors on invalid payload received, e.g: missing fields, invalid data form")
@@ -77,15 +69,16 @@ public class BooksController {
         BookDTOResponse bookResponse = booksService.createBook(request);
         return new ResponseEntity<>(bookResponse, HttpStatus.CREATED);
     }
-    
-    // Update --> faltan las excepciones
-    /*@PatchMapping("/book/{id}")
-    public Books updateBook(
-    		@RequestBody Books book,
-            @PathVariable("id") Long id)
-    {
-        return booksService.updateBook(book, id);
-    }*/
+
+    // Update
+    @PatchMapping("/book/{id}")
+    public ResponseEntity<BookDTOResponse> updateBook(
+            @RequestBody BookUpdateDTORequest book,
+            @PathVariable("id") Long id
+    ) throws BadRequestException {
+        BookDTOResponse bookResponse = booksService.updateBook(book, id);
+        return ResponseEntity.ok(bookResponse);
+    }
 
     // Delete
     @DeleteMapping("/book/{id}")
@@ -105,6 +98,12 @@ public class BooksController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    // Search by title --> faltan las excepciones
+    // Search by title
+    @GetMapping("/books/{title}")
+    public List<BookDTOResponse> searchByName(@PathVariable("title") String title)
+
+    {
+        return booksService.searchByTitle(title);
+    }
 
 }

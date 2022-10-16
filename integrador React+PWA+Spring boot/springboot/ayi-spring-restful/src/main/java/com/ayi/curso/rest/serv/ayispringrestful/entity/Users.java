@@ -22,7 +22,7 @@ public class Users {
 	@Column(name = "name")
 	private String name;
 	
-	@Column(name = "last_name_p")
+	@Column(name = "last_name")
 	private String last_name;
 	
 	@Column(name = "dni", unique = true)
