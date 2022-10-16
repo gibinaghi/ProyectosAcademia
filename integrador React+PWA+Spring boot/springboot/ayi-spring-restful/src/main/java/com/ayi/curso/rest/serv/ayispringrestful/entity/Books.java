@@ -1,4 +1,5 @@
 package com.ayi.curso.rest.serv.ayispringrestful.entity;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,11 +14,12 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "books")
-public class Books {
+public class Books implements Serializable {
+	private static final Long serialVersionUID = 1L;
 
 		@Id
 		@GeneratedValue(strategy = GenerationType.AUTO)
-		private long id;
+		private Long id;
 
 		@Column(name = "title", unique = true)
 		private String title;
