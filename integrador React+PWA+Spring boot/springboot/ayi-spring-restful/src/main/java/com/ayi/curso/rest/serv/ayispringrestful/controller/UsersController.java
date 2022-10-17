@@ -6,7 +6,7 @@ import com.ayi.curso.rest.serv.ayispringrestful.dto.response.UserDTOResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
-import com.ayi.curso.rest.serv.ayispringrestful.constants.service.UserService;
+import com.ayi.curso.rest.serv.ayispringrestful.service.UserService;
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -101,8 +101,9 @@ public class UsersController {
     
     // Search by name
     @GetMapping("/users/{name}")
-    public List<UserDTOResponse> searchByName(@PathVariable("name") String name)
+    public ResponseEntity<?> searchByName(@PathVariable("name") String name)
     {
-        return usersService.searchByName(name);
+        List<UserDTOResponse> userResponse = usersService.searchByName(name);
+        return ResponseEntity.ok(userResponse);
     }
 }

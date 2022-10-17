@@ -2,20 +2,23 @@ import React, { useEffect, useState } from 'react'
 import '../../assets/styles/StyleGeneral.css';
 import { Link } from "react-router-dom";
 import UserService from '../../service/UserService';
+import setTime from '../util/reloadPage';
 
 function deleteUser(id) {
   const response = window.confirm('¿Seguro de que quiere eliminar el usuario?');
   if (response) {
       const res = UserService.deleteUser(id)
       if(res.response.status === 200) {
-        window.location.reload();
+        window.alert('Usuario eliminado correctamente')
+      } else if (res.response.status === 400) {
+        window.alert('No se pudo eliminar el usuario')
       }
+      setTime(5000);
   }
 }
 
 function searchUser(word) {
-      const res = UserService.searchUser(word)
-      console.log(res)
+    UserService.searchUser(word)
 }
 
 function User() {

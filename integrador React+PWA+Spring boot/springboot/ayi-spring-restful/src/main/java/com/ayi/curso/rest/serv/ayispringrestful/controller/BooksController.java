@@ -6,7 +6,7 @@ import com.ayi.curso.rest.serv.ayispringrestful.dto.response.BookDTOResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
-import com.ayi.curso.rest.serv.ayispringrestful.constants.service.BookService;
+import com.ayi.curso.rest.serv.ayispringrestful.service.BookService;
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -100,10 +100,11 @@ public class BooksController {
 
     // Search by title
     @GetMapping("/books/{title}")
-    public List<BookDTOResponse> searchByName(@PathVariable("title") String title)
+    public ResponseEntity<?> searchByName(@PathVariable("title") String title)
 
     {
-        return booksService.searchByTitle(title);
+        List<BookDTOResponse> bookResponse = booksService.searchByTitle(title);
+        return ResponseEntity.ok(bookResponse);
     }
 
 }

@@ -6,15 +6,22 @@ import '../../assets/styles/StyleGeneral.css';
 import LendingService from '../../service/LendingService';
 
 function creationLending(userId, bookId) {
-  LendingService.createLending(userId, bookId);
+  LendingService.createLendingNew(userId, bookId)
+  .then(response => {
+    this.Info = JSON.parse(response.data);
+  })
+  .catch(error => {
+    console.log(error);
+  });
+
 }
 
 function Lending() {
 
   const [userCreate, setUserCreate] = useState({
-    userId: 0,
-    bookId: 0,
-  })
+    userId: '',
+    bookId: ''
+  });
 
   const handleChange = (e) => {
     setUserCreate({
@@ -22,6 +29,7 @@ function Lending() {
       [e.target.name]: e.target.value
     })
   }
+
 
   return (
     <div class="container">
@@ -52,7 +60,7 @@ function Lending() {
               />
             </div>
             <button 
-              type="submit" 
+              type="button" 
               class="btn btn-primary action"
               onClick={() => creationLending(userCreate.userId, userCreate.bookId)}
             >Prestar

@@ -1,4 +1,4 @@
-package com.ayi.curso.rest.serv.ayispringrestful.constants.service.impl;
+package com.ayi.curso.rest.serv.ayispringrestful.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -13,8 +13,10 @@ import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
 import com.ayi.curso.rest.serv.ayispringrestful.mapper.IUsersMapper;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.UsersRepository;
-import com.ayi.curso.rest.serv.ayispringrestful.constants.service.UserService;
+import com.ayi.curso.rest.serv.ayispringrestful.service.UserService;
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 
@@ -23,13 +25,15 @@ import javax.transaction.Transactional;
 import static com.ayi.curso.rest.serv.ayispringrestful.constants.Exceptions.*;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     // Repository
+    @NotNull
     private UsersRepository usersRepository;
 
     // Mapper
+    @NotNull
     private IUsersMapper usersMapper;
  
 	// Get all

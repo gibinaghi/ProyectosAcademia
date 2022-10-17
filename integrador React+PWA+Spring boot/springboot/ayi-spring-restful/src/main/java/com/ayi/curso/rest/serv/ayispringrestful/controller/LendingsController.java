@@ -2,7 +2,7 @@ package com.ayi.curso.rest.serv.ayispringrestful.controller;
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.LendingCreateDTORequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.LendingDTOResponse;
-import com.ayi.curso.rest.serv.ayispringrestful.constants.service.LendingService;
+import com.ayi.curso.rest.serv.ayispringrestful.service.LendingService;
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,7 +20,7 @@ public class LendingsController {
 
     // Create
     @PostMapping(
-            value = "/lending/{userId}/{bookId}",
+            value = "/lending",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiOperation(
@@ -37,10 +37,10 @@ public class LendingsController {
     })
     public ResponseEntity<LendingDTOResponse> createLending(
             @ApiParam(value = "data of lending", required = true)
-            //@RequestParam("userId") Long userId,
-            //@RequestParam("bookId") Long bookId,
-            @PathVariable Long userId,
-            @PathVariable Long bookId,
+            @RequestParam("userId") Long userId,
+            @RequestParam("bookId") Long bookId,
+            //@PathVariable Long userId,
+            //@PathVariable Long bookId,
             @RequestBody LendingCreateDTORequest request
     ) {
         LendingDTOResponse lendResponse = lendingService.createLending(request, userId, bookId);

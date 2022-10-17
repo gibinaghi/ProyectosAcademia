@@ -1,12 +1,14 @@
-package com.ayi.curso.rest.serv.ayispringrestful.constants.service.impl;
+package com.ayi.curso.rest.serv.ayispringrestful.service.impl;
 
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Lendings;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.LendingsRepository;
-import com.ayi.curso.rest.serv.ayispringrestful.constants.service.ReturnService;
+import com.ayi.curso.rest.serv.ayispringrestful.service.ReturnService;
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -14,10 +16,11 @@ import java.util.Optional;
 import static com.ayi.curso.rest.serv.ayispringrestful.constants.Exceptions.*;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ReturnServiceImpl implements ReturnService {
 
     // Repository
+    @NotNull
     private LendingsRepository lendingsRepository;
 
     //Delete lending

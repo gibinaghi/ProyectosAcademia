@@ -1,9 +1,8 @@
-package com.ayi.curso.rest.serv.ayispringrestful.constants.service;
+package com.ayi.curso.rest.serv.ayispringrestful.service;
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.BookCreateDTORequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.BookUpdateDTORequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.BookDTOResponse;
-import com.ayi.curso.rest.serv.ayispringrestful.entity.Books;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;

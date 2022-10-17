@@ -3,10 +3,17 @@ import axios from 'axios';
 const API_URL = process.env.REACT_APP_APPIS_DEFAULT_URL;
 
 class LendingService {
-    async createLending(userId, bookId) {
+    async createLendingNew(userId, bookId) {
         return await axios({
             method: 'POST',
-            url: `http://localhost:8080/api/lending/${userId}/${bookId}`
+            url: API_URL + '/lending',
+            params: {
+                userId: `${userId}`,	
+                bookId: `${bookId}`
+            },
+            headers: {
+                'Content-Type': 'application/json'
+            }
         });;
     }
 

@@ -1,11 +1,10 @@
-package com.ayi.curso.rest.serv.ayispringrestful.constants.service.impl;
+package com.ayi.curso.rest.serv.ayispringrestful.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import com.ayi.curso.rest.serv.ayispringrestful.constants.service.BookService;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.BookCreateDTORequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.BookUpdateDTORequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.BookDTOResponse;
@@ -15,7 +14,10 @@ import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
 import com.ayi.curso.rest.serv.ayispringrestful.mapper.IBooksMapper;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.BooksRepository;
+import com.ayi.curso.rest.serv.ayispringrestful.service.BookService;
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 
@@ -25,13 +27,15 @@ import static com.ayi.curso.rest.serv.ayispringrestful.constants.Exceptions.*;
 import static com.ayi.curso.rest.serv.ayispringrestful.constants.Exceptions.EXCEPTION_ID_NULL;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
 
     // Repository
+    @NotNull
     private BooksRepository booksRepository;
 
     // Mapper
+    @NotNull
     private IBooksMapper booksMapper;
 
     // Get all

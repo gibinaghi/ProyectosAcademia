@@ -1,4 +1,4 @@
-package com.ayi.curso.rest.serv.ayispringrestful.constants.service;
+package com.ayi.curso.rest.serv.ayispringrestful.service;
 
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.LendingCreateDTORequest;

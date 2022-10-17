@@ -1,4 +1,4 @@
-package com.ayi.curso.rest.serv.ayispringrestful.constants.service.impl;
+package com.ayi.curso.rest.serv.ayispringrestful.service.impl;
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.LendingDTOResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.entity.Lendings;
@@ -6,9 +6,11 @@ import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
 import com.ayi.curso.rest.serv.ayispringrestful.mapper.ILendingsMapper;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.LendingsRepository;
-import com.ayi.curso.rest.serv.ayispringrestful.constants.service.ReportsService;
+import com.ayi.curso.rest.serv.ayispringrestful.service.ReportsService;
 import com.ayi.curso.rest.serv.ayispringrestful.utils.ExcelHelper;
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 
@@ -21,13 +23,15 @@ import static com.ayi.curso.rest.serv.ayispringrestful.constants.Exceptions.EXCE
 import static com.ayi.curso.rest.serv.ayispringrestful.constants.Exceptions.INTERNAL;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ReportsServiceImpl implements ReportsService {
 
     // Repository
+    @NotNull
     private LendingsRepository lendingsRepository;
 
     // Mapper
+    @NotNull
     private ILendingsMapper lendingsMapper;
 
     // Get all

@@ -1,4 +1,4 @@
-package com.ayi.curso.rest.serv.ayispringrestful.constants.service.impl;
+package com.ayi.curso.rest.serv.ayispringrestful.service.impl;
 
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.LendingCreateDTORequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.LendingDTOResponse;
@@ -9,21 +9,27 @@ import com.ayi.curso.rest.serv.ayispringrestful.mapper.ILendingsMapper;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.BooksRepository;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.LendingsRepository;
 import com.ayi.curso.rest.serv.ayispringrestful.repository.UsersRepository;
-import com.ayi.curso.rest.serv.ayispringrestful.constants.service.LendingService;
+import com.ayi.curso.rest.serv.ayispringrestful.service.LendingService;
+import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class LendingServiceImpl implements LendingService {
 
     // Repository
+    @NotNull
     private LendingsRepository lendingsRepository;
+    @NotNull
 	private UsersRepository userRepository;
+    @NotNull
 	private BooksRepository bookRepository;
 
     // Mapper
+    @NotNull
     private ILendingsMapper lendingsMapper;
 
     
