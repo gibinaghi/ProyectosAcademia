@@ -3,6 +3,7 @@ package com.ayi.curso.rest.serv.ayispringrestful.controller;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.BookCreateDTORequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.BookUpdateDTORequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.BookDTOResponse;
+import com.ayi.curso.rest.serv.ayispringrestful.dto.response.UserDTOResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
@@ -71,7 +72,22 @@ public class BooksController {
     }
 
     // Update
-    @PatchMapping("/book/{id}")
+    @PatchMapping(
+            value = "/book/{id}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(
+            value = "Update book",
+            httpMethod = "PATCH",
+            response = BookDTOResponse.class
+    )
+    @ApiResponses(value = {
+            @ApiResponse(code = 201,
+                    message = "Body content with all information about book",
+                    response = BookDTOResponse.class),
+            @ApiResponse(code = 400,
+                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data form")
+    })
     public ResponseEntity<BookDTOResponse> updateBook(
             @RequestBody BookUpdateDTORequest book,
             @PathVariable("id") Long id
@@ -100,6 +116,18 @@ public class BooksController {
 
     // Search by title
     @GetMapping("/books/{title}")
+    @ApiOperation(
+            value = "Search book by title",
+            httpMethod = "GET",
+            response = BookDTOResponse[].class
+    )
+    @ApiResponses(value = {
+            @ApiResponse(code = 201,
+                    message = "Body content with all information about book",
+                    response = BookDTOResponse[].class),
+            @ApiResponse(code = 400,
+                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data form")
+    })
     public ResponseEntity<?> searchByName(@PathVariable("title") String title)
 
     {

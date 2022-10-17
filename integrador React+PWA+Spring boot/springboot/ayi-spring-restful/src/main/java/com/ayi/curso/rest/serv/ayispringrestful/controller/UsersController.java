@@ -72,7 +72,22 @@ public class UsersController {
     }
 
     // Update
-    @PatchMapping("/user/{id}")
+    @PatchMapping(
+            value = "/user/{id}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(
+            value = "Update user",
+            httpMethod = "PATCH",
+            response = UserDTOResponse.class
+    )
+    @ApiResponses(value = {
+            @ApiResponse(code = 201,
+                    message = "Body content with all information about user",
+                    response = UserDTOResponse.class),
+            @ApiResponse(code = 400,
+                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data form")
+    })
     public ResponseEntity<UserDTOResponse> updateUser(
     		@RequestBody UserUpdateDTORequest user,
             @PathVariable("id") Long id
@@ -101,6 +116,18 @@ public class UsersController {
     
     // Search by name
     @GetMapping("/users/{name}")
+    @ApiOperation(
+            value = "Search user by name",
+            httpMethod = "GET",
+            response = UserDTOResponse[].class
+    )
+    @ApiResponses(value = {
+            @ApiResponse(code = 201,
+                    message = "Body content with all information about user",
+                    response = UserDTOResponse[].class),
+            @ApiResponse(code = 400,
+                    message = "Describes errors on invalid payload received, e.g: missing fields, invalid data form")
+    })
     public ResponseEntity<?> searchByName(@PathVariable("name") String name)
     {
         List<UserDTOResponse> userResponse = usersService.searchByName(name);
