@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Api(value = "Report Api", tags = {"Report Service"})
-@RequestMapping(value = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(value = "/api")
 @AllArgsConstructor
 @RestController
 public class RepotsController {
@@ -28,7 +28,10 @@ public class RepotsController {
 
 
     // Get all
-    @GetMapping("/reports")
+    @GetMapping(
+            value = "/reports",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @ApiOperation(
             value = "List all report lendings",
             httpMethod = "GET",
@@ -41,6 +44,7 @@ public class RepotsController {
                     response = LendingDTOResponse[].class
             ),
             @ApiResponse(code = 404, message = "Report not found"),
+            @ApiResponse(code = 500, message = "Internal error")
     })
     public ResponseEntity<?> getAllReports() throws NotFoundException, InternalException
     {

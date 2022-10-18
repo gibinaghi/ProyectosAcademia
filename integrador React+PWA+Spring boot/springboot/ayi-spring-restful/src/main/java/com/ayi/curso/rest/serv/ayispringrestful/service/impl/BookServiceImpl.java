@@ -68,8 +68,17 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public BookDTOResponse createBook(BookCreateDTORequest bookRequest)
+            throws BadRequestException
     {
         Books bookEntity = booksMapper.convertDtoToEntityCreate(bookRequest);
+
+        if(
+                bookEntity.getTitle().isEmpty() || bookEntity.getAuthor().isEmpty() ||
+                        bookEntity.getCategory().isEmpty() || bookEntity.getEdition().isEmpty() ||
+                        bookEntity.getIdiom().isEmpty() || bookEntity.getStock() == null
+        ){
+            throw new BadRequestException(EXCEPTION_FIEL_REQ);
+        }
 
         //Save
         bookEntity = booksRepository.save(bookEntity);
@@ -147,8 +156,13 @@ public class BookServiceImpl implements BookService {
     // Search by title
     @Override
     public List<BookDTOResponse> searchByTitle(String title)
+        throws NotFoundException
     {
         List<Books> listBooks = booksRepository.findByTitle(title);
+
+        if(listBooks.isEmpty()){
+            throw new NotFoundException(EXCEPTION_DATA_NULL);
+        }
 
         List<BookDTOResponse> listResponse = new ArrayList<>();
         listBooks.forEach(book -> {

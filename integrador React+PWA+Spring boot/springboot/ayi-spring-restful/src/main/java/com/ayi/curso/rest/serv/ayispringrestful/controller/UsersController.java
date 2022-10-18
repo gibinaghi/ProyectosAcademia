@@ -18,7 +18,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Api(value = "User Api", tags = {"User Service"})
-@RequestMapping(value = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(value = "/api")
 @AllArgsConstructor
 @RestController
 public class UsersController {
@@ -26,7 +26,10 @@ public class UsersController {
 	private UserService usersService;
 	
 	// Get all 
-    @GetMapping("/users")
+    @GetMapping(
+            value = "/users",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @ApiOperation(
             value = "List all users",
             httpMethod = "GET",
@@ -39,6 +42,7 @@ public class UsersController {
                     response = UserDTOResponse[].class
             ),
             @ApiResponse(code = 404, message = "Users not found"),
+            @ApiResponse(code = 500, message = "Internal error")
     })
     public ResponseEntity<?> fetchUserList() throws NotFoundException, InternalException
     {
@@ -66,7 +70,7 @@ public class UsersController {
     public ResponseEntity<UserDTOResponse> createUser(
             @ApiParam(value = "data of user", required = true)
             @Valid @RequestBody UserCreateDTORequest request
-    ) {
+    ) throws BadRequestException {
         UserDTOResponse userResponse = usersService.createUser(request);
         return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
     }
@@ -105,7 +109,9 @@ public class UsersController {
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "Success. User deleted by id"),
             @ApiResponse(code = 404, message = "User not found"),
-            @ApiResponse(code = 400 , message = "Bad request/Invalid field")})
+            @ApiResponse(code = 400 , message = "Bad request/Invalid field"),
+            @ApiResponse(code = 500, message = "Internal error")
+    })
     public ResponseEntity<Void> deleteUser(
             @ApiParam(name = "id", required = true, value = "User Id", example = "1")
             @PathVariable Long id
@@ -129,6 +135,7 @@ public class UsersController {
                     message = "Describes errors on invalid payload received, e.g: missing fields, invalid data form")
     })
     public ResponseEntity<?> searchByName(@PathVariable("name") String name)
+            throws NotFoundException
     {
         List<UserDTOResponse> userResponse = usersService.searchByName(name);
         return ResponseEntity.ok(userResponse);

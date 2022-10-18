@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Api(value = "Return Api", tags = {"Return Service"})
-@RequestMapping(value = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(value = "/api")
 @AllArgsConstructor
 @RestController
 public class ReturnsController {
@@ -31,7 +31,9 @@ public class ReturnsController {
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "Success. Lending deleted by id"),
             @ApiResponse(code = 404, message = "Lending not found"),
-            @ApiResponse(code = 400 , message = "Bad request/Invalid field")})
+            @ApiResponse(code = 400 , message = "Bad request/Invalid field"),
+            @ApiResponse(code = 500, message = "Internal error")
+    })
     public ResponseEntity<Void> deleteLending(
             @ApiParam(name = "id", required = true, value = "Lending Id", example = "1")
             @PathVariable Long id

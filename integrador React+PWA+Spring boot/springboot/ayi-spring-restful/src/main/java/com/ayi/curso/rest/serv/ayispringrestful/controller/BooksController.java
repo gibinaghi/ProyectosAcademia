@@ -19,14 +19,17 @@ import java.util.List;
 
 
 @Api(value = "Book Api", tags = {"Book Service"})
-@RequestMapping(value = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(value = "/api")
 @AllArgsConstructor
 @RestController
 public class BooksController {
 	private BookService booksService;
 
     // Get all
-    @GetMapping("/books")
+    @GetMapping(
+            value = "/books",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     @ApiOperation(
             value = "List all books",
             httpMethod = "GET",
@@ -39,6 +42,7 @@ public class BooksController {
                     response = BookDTOResponse[].class
             ),
             @ApiResponse(code = 404, message = "Books not found"),
+            @ApiResponse(code = 500, message = "Internal error")
     })
     public ResponseEntity<?> fetchBookList() throws NotFoundException, InternalException
     {
@@ -66,7 +70,7 @@ public class BooksController {
     public ResponseEntity<BookDTOResponse> createBook(
             @ApiParam(value = "data of book", required = true)
             @RequestBody BookCreateDTORequest request
-    ) {
+    ) throws BadRequestException {
         BookDTOResponse bookResponse = booksService.createBook(request);
         return new ResponseEntity<>(bookResponse, HttpStatus.CREATED);
     }
@@ -105,7 +109,9 @@ public class BooksController {
     @ApiResponses(value = {
             @ApiResponse(code = 204, message = "Success. Book deleted by id"),
             @ApiResponse(code = 404, message = "Book not found"),
-            @ApiResponse(code = 400 , message = "Bad request/Invalid field")})
+            @ApiResponse(code = 400 , message = "Bad request/Invalid field"),
+            @ApiResponse(code = 500, message = "Internal error")
+    })
     public ResponseEntity<Void> deleteBook(
             @ApiParam(name = "id", required = true, value = "Book Id", example = "1")
             @PathVariable Long id
@@ -129,6 +135,7 @@ public class BooksController {
                     message = "Describes errors on invalid payload received, e.g: missing fields, invalid data form")
     })
     public ResponseEntity<?> searchByName(@PathVariable("title") String title)
+            throws NotFoundException
 
     {
         List<BookDTOResponse> bookResponse = booksService.searchByTitle(title);

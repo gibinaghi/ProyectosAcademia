@@ -6,4 +6,6 @@ public class Exceptions {
     public static final String EXCEPTION_ID_NOT_FOUND = "ID not found";
     public static final String EXCEPTION_ID_NULL = "ID null or empty";
     public static final String INTERNAL = "Internal exception";
+    public static final String EXCEPTION_FIEL_REQ = "Los campos son requeridos";
+
 }

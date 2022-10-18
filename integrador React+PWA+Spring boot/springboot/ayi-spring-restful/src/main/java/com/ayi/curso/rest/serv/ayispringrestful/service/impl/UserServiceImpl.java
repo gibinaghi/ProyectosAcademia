@@ -66,10 +66,18 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDTOResponse createUser(UserCreateDTORequest userRequest)
+            throws BadRequestException
     {
+
         Users userEntity = usersMapper.convertDtoToEntityCreate(userRequest);
 
-        //validar que si el dni existe tire excepcion
+        if(
+                userEntity.getName().isEmpty() || userEntity.getLast_name().isEmpty() ||
+                        userEntity.getDni().isEmpty() || userEntity.getAddress().isEmpty() ||
+                        userEntity.getPhone().isEmpty()
+        ){
+            throw new BadRequestException(EXCEPTION_FIEL_REQ);
+        }
 
         //Save
         userEntity = usersRepository.save(userEntity);
@@ -143,8 +151,13 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public List<UserDTOResponse> searchByName(String name)
+            throws NotFoundException
     {
         List<Users> listUsers = usersRepository.findByName(name);
+
+        if(listUsers.isEmpty()){
+            throw new NotFoundException(EXCEPTION_DATA_NULL);
+        }
 
         List<UserDTOResponse> listResponse = new ArrayList<>();
         listUsers.forEach(user -> {

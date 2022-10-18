@@ -15,7 +15,8 @@ public interface BookService {
             throws NotFoundException, InternalException;
 
     // Create
-    BookDTOResponse createBook(BookCreateDTORequest bookRequest);
+    BookDTOResponse createBook(BookCreateDTORequest bookRequest)
+            throws BadRequestException;
 
     // Update
     BookDTOResponse updateBook(BookUpdateDTORequest bookUpdateDTORequest, Long id)
@@ -26,6 +27,7 @@ public interface BookService {
             throws BadRequestException, InternalException, NotFoundException;
     
     //Search by title
-    List<BookDTOResponse> searchByTitle(String title);
+    List<BookDTOResponse> searchByTitle(String title)
+            throws NotFoundException;
 
 }

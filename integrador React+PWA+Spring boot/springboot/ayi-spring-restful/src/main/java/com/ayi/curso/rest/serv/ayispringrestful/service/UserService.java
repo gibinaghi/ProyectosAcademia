@@ -15,7 +15,8 @@ public interface UserService {
             throws NotFoundException, InternalException;
     
 	// Create
-    UserDTOResponse createUser(UserCreateDTORequest userRequest);
+    UserDTOResponse createUser(UserCreateDTORequest userRequest)
+            throws BadRequestException;
  
     // Update
     UserDTOResponse updateUser(UserUpdateDTORequest userUpdateDTORequest, Long id)
@@ -26,6 +27,7 @@ public interface UserService {
             throws BadRequestException, InternalException, NotFoundException;
     
     //Search by name
-    List<UserDTOResponse> searchByName(String name);
+    List<UserDTOResponse> searchByName(String name)
+            throws NotFoundException;
 
 }
