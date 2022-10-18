@@ -42,8 +42,6 @@ public class LendingsController {
             @ApiParam(value = "data of lending", required = true)
             @RequestParam("userId") Long userId,
             @RequestParam("bookId") Long bookId,
-            //@PathVariable Long userId,
-            //@PathVariable Long bookId,
             @RequestBody LendingCreateDTORequest request
     ) throws BadRequestException, NotFoundException {
         LendingDTOResponse lendResponse = lendingService.createLending(request, userId, bookId);

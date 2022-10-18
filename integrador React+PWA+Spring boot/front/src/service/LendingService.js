@@ -13,6 +13,10 @@ class LendingService {
             },
             headers: {
                 'Content-Type': 'application/json'
+            },
+            data: {
+                "date_out": "2022-09-23",
+                "date_return": "2022-09-24"
             }
         });;
     }
