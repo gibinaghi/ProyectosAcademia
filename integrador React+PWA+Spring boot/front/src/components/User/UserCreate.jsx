@@ -1,7 +1,6 @@
 import React, { useState }  from 'react'
 import UserService from '../../service/UserService';
 import setTime from '../util/reloadPage';
-import {Formix} from 'formik';
 
 function createUser(userCreate) {
   const res = UserService.createUser(userCreate)
@@ -32,29 +31,7 @@ function UserCreate() {
 
   return (
     <div class="container">
-      <Formix>
-        initialValues={{
-          name: '',
-          last_name: '',
-          dni: '',
-          address: '',
-          phone: '',
-        }}
-        validate={values => {
-          const errors = {};
-          if (!values.name) {
-            errors.name = 'Required';
-          } else if (
-            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.name)
-          ) {
-            errors.name = 'Invalid email address';
-          }
-          return errors;
-        }}
-        onSubmit={()=> {console.log("Formulario enviado")}}
-
-        {( {values, handleSubmit, handleChange}) => (
-          <form onSubmit={handleSubmit}>
+          <form>
           <h2 class="title">Crear usuario</h2>
           <div class="row">
               <div class="col-6">
@@ -125,8 +102,6 @@ function UserCreate() {
                   </div>
           </div>  
         </form>
-        )}
-      </Formix>
     
   </div>
   )

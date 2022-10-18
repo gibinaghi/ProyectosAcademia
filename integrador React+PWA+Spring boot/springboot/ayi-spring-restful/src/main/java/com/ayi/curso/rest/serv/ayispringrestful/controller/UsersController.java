@@ -115,7 +115,7 @@ public class UsersController {
     public ResponseEntity<Void> deleteUser(
             @ApiParam(name = "id", required = true, value = "User Id", example = "1")
             @PathVariable Long id
-    ) throws BadRequestException, NotFoundException, InternalException {
+    ) {
         usersService.deleteUser(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

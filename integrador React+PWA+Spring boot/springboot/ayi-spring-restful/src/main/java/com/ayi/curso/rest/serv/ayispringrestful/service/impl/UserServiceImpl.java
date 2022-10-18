@@ -126,8 +126,7 @@ public class UserServiceImpl implements UserService {
  
     // Delete
     @Override
-    public void deleteUser(Long idUser)
-            throws BadRequestException, InternalException, NotFoundException {
+    public void deleteUser(Long idUser) {
 
         if(idUser == null || idUser < 0){
             throw new BadRequestException(EXCEPTION_ID_NOT_VALID);

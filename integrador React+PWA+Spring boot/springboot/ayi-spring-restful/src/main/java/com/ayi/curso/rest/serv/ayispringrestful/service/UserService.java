@@ -23,8 +23,7 @@ public interface UserService {
             throws BadRequestException;
  
     // Delete
-    void deleteUser(Long idUser)
-            throws BadRequestException, InternalException, NotFoundException;
+    void deleteUser(Long idUser);
     
     //Search by name
     List<UserDTOResponse> searchByName(String name)
