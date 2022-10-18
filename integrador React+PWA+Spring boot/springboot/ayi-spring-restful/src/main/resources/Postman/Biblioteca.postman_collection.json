@@ -57,7 +57,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Gimena\",\r\n    \"last_name\": \"Binaghi\",\r\n    \"dni\": \"45986123\",\r\n    \"address\": \"calle 15\",\r\n    \"phone\": \"3482449966\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Gimena\",\r\n    \"last_name\": \"\",\r\n    \"dni\": \"45986123\",\r\n    \"address\": \"calle 15\",\r\n    \"phone\": \"3482449966\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -115,7 +115,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/user/2",
+							"raw": "http://localhost:8080/api/user/7",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -124,7 +124,7 @@
 							"path": [
 								"api",
 								"user",
-								"2"
+								"7"
 							]
 						}
 					},
@@ -141,7 +141,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/books/art",
+							"raw": "http://localhost:8080/api/books/amo",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -150,7 +150,7 @@
 							"path": [
 								"api",
 								"books",
-								"art"
+								"amo"
 							]
 						}
 					},
@@ -296,7 +296,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8080/api/lending/1/2",
+							"raw": "http://localhost:8080/api/lending?userId=3&bookId=1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -304,9 +304,17 @@
 							"port": "8080",
 							"path": [
 								"api",
-								"lending",
-								"1",
-								"2"
+								"lending"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "3"
+								},
+								{
+									"key": "bookId",
+									"value": "1"
+								}
 							]
 						}
 					},
