@@ -1,8 +1,10 @@
 # Iniciar
 
-### FE: el proyecto fué creado con [Create React App](https://github.com/facebook/create-react-app).
+### FE: 
+- El proyecto fué creado con [Create React App](https://github.com/facebook/create-react-app).
 
-### BE: el proyecto fué creado con Maven, Hibernate y Spring boot.
+### BE:
+- El proyecto fué creado con Maven, Hibernate y Spring boot.
 
 ## Levantar ambientes
 
@@ -18,7 +20,10 @@
 - Para levantar los script de data colocar en resourses/spring/jpa/hibernate debe estar en "None"
 
 ## Postman
-- Para importar la colección de Postaman ir a resourses/Postman. Allí econtrará todos los endpoint para probar en el BE.
+- Para importar la colección de Postman ir a resourses/Postman. Ahí encontrará todos los endpoint para probar en el BE.
+- Probar el search Users en el siguiente endpoint en Postman. FE no implementado. `http://localhost:8080/api/users/campoabusacardenombre`
+- Probar el search Books en el siguiente endpoint en Postman. FE no implementado. `http://localhost:8080/api/books/campoabusacardetítulo`
+- Crear Prestamos en el siguiente endpoint en Postman. FE no implementado. `http://localhost:8080/api/lending?userId=3&bookId=1`
 
 
 
