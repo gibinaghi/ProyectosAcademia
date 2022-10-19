@@ -34,12 +34,22 @@ public class ReturnsController {
             @ApiResponse(code = 400 , message = "Bad request/Invalid field"),
             @ApiResponse(code = 500, message = "Internal error")
     })
-    public ResponseEntity<Void> deleteLending(
+    public ResponseEntity<?> deleteLending(
             @ApiParam(name = "id", required = true, value = "Lending Id", example = "1")
             @PathVariable Long id
     ) throws BadRequestException, NotFoundException, InternalException {
-        returnService.deleteLendingById(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        ResponseEntity<?> response;
+        try {
+            returnService.deleteLendingById(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (BadRequestException e) {
+            response = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }catch (InternalException e){
+            response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        } catch (NotFoundException e){
+            response = ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+        return response;
     }
 
 }

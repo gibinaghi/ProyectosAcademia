@@ -3,6 +3,7 @@ package com.ayi.curso.rest.serv.ayispringrestful.controller;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.LendingCreateDTORequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.LendingDTOResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
 import com.ayi.curso.rest.serv.ayispringrestful.service.LendingService;
 import io.swagger.annotations.*;
@@ -38,14 +39,22 @@ public class LendingsController {
                     message = "Describes errors on invalid payload received, e.g: missing fields, invalid data form"),
             @ApiResponse(code = 404, message = "Book not found")
     })
-    public ResponseEntity<LendingDTOResponse> createLending(
+    public ResponseEntity<?> createLending(
             @ApiParam(value = "data of lending", required = true)
             @RequestParam("userId") Long userId,
             @RequestParam("bookId") Long bookId,
             @RequestBody LendingCreateDTORequest request
     ) throws BadRequestException, NotFoundException {
-        LendingDTOResponse lendResponse = lendingService.createLending(request, userId, bookId);
-        return new ResponseEntity<>(lendResponse, HttpStatus.CREATED);
+        ResponseEntity<?> response;
+        try {
+            LendingDTOResponse lendResponse = lendingService.createLending(request, userId, bookId);
+            return new ResponseEntity<>(lendResponse, HttpStatus.CREATED);
+        } catch (BadRequestException e) {
+            response = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (NotFoundException e){
+            response = ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+        return response;
     }
 
 }
