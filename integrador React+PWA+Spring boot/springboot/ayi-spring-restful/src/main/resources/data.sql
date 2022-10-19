@@ -16,11 +16,11 @@ WHERE NOT EXISTS (SELECT * FROM `books` WHERE id = 2);
 
 -- INSERT LENDINGS
 INSERT INTO `biblioteca`.`lendings`(`id`, `date_out`, `date_return`, `book_id`, `user_id`)
-SELECT 1,'05-10-2022','16-10-2022',1,1
+SELECT 1,'05/10/2022','16/10/2022',1,1
 WHERE NOT EXISTS (SELECT * FROM `lendings` WHERE id = 1);
 INSERT INTO `biblioteca`.`lendings`(`id`, `date_out`, `date_return`, `book_id`, `user_id`)
-SELECT 2,'07-10-2022','17-10-2022',2,2
+SELECT 2,'07/10/2022','17/10/2022',2,2
 WHERE NOT EXISTS (SELECT * FROM `lendings` WHERE id = 2);
 INSERT INTO `biblioteca`.`lendings`(`id`, `date_out`, `date_return`, `book_id`, `user_id`)
-SELECT 3,'11-10-2022','15-10-2022',1,2
+SELECT 3,'11/10/2022','15/10/2022',1,2
 WHERE NOT EXISTS (SELECT * FROM `lendings` WHERE id = 3);

@@ -54,7 +54,7 @@ function Reports() {
                 <th scope="col">Cod usuario</th>
                 <th scope="col">Cod libro</th>
                 <th scope="col">Fecha de prestamo</th>
-                <th scope="col">Fecha de devolución</th>
+                <th scope="col">Fecha en la que debe devolver</th>
                 <th scope="col">Operaciones</th>
             </tr>
             </thead>

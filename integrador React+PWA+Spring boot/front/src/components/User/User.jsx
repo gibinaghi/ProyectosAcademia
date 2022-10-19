@@ -10,7 +10,7 @@ function deleteUser(id) {
       const res = UserService.deleteUser(id)
       if(res.response.status === 200) {
         window.alert('Usuario eliminado correctamente')
-      } else if (res.response.status === 400) {
+      } else {
         window.alert('No se pudo eliminar el usuario')
       }
       setTime(5000);

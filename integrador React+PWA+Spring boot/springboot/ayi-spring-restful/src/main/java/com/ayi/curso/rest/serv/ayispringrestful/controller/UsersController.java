@@ -3,9 +3,7 @@ package com.ayi.curso.rest.serv.ayispringrestful.controller;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.UserCreateDTORequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.UserUpdateDTORequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.UserDTOResponse;
-import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
-import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
-import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
+import com.ayi.curso.rest.serv.ayispringrestful.exceptions.*;
 import com.ayi.curso.rest.serv.ayispringrestful.service.UserService;
 import io.swagger.annotations.*;
 import lombok.AllArgsConstructor;
@@ -46,8 +44,16 @@ public class UsersController {
     })
     public ResponseEntity<?> fetchUserList() throws NotFoundException, InternalException
     {
-        List<UserDTOResponse> userResponse = usersService.fetchUserList();
-        return ResponseEntity.ok(userResponse);
+        ResponseEntity<?> response;
+        try {
+            List<UserDTOResponse> userResponse = usersService.fetchUserList();
+            return ResponseEntity.ok(userResponse);
+        }catch (InternalException e){
+            response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        } catch (NotFoundException e){
+            response = ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+        return response;
     }
     
     // Create
@@ -67,12 +73,19 @@ public class UsersController {
             @ApiResponse(code = 400,
                     message = "Describes errors on invalid payload received, e.g: missing fields, invalid data form")
     })
-    public ResponseEntity<UserDTOResponse> createUser(
+    public ResponseEntity<?> createUser(
             @ApiParam(value = "data of user", required = true)
             @Valid @RequestBody UserCreateDTORequest request
     ) throws BadRequestException {
-        UserDTOResponse userResponse = usersService.createUser(request);
-        return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
+        ResponseEntity<?> response;
+        try {
+            UserDTOResponse userResponse = usersService.createUser(request);
+            return new ResponseEntity<>(userResponse, HttpStatus.CREATED);
+        } catch (BadRequestException e) {
+            response = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+        return response;
+
     }
 
     // Update
@@ -92,12 +105,18 @@ public class UsersController {
             @ApiResponse(code = 400,
                     message = "Describes errors on invalid payload received, e.g: missing fields, invalid data form")
     })
-    public ResponseEntity<UserDTOResponse> updateUser(
+    public ResponseEntity<?> updateUser(
     		@RequestBody UserUpdateDTORequest user,
             @PathVariable("id") Long id
     ) throws BadRequestException {
-        UserDTOResponse userResponse = usersService.updateUser(user, id);
-        return ResponseEntity.ok(userResponse);
+        ResponseEntity<?> response;
+        try {
+            UserDTOResponse userResponse = usersService.updateUser(user, id);
+            return ResponseEntity.ok(userResponse);
+        } catch (BadRequestException e) {
+            response = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+        return response;
     }
  
     // Delete
@@ -112,12 +131,22 @@ public class UsersController {
             @ApiResponse(code = 400 , message = "Bad request/Invalid field"),
             @ApiResponse(code = 500, message = "Internal error")
     })
-    public ResponseEntity<Void> deleteUser(
+    public ResponseEntity<?> deleteUser(
             @ApiParam(name = "id", required = true, value = "User Id", example = "1")
             @PathVariable Long id
-    ) {
-        usersService.deleteUser(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    ) throws BadRequestException, InternalException, NotFoundException {
+        ResponseEntity<?> response;
+        try {
+            usersService.deleteUser(id);
+            return response = ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (BadRequestException e) {
+            response = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }catch (InternalException e){
+            response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        } catch (NotFoundException e){
+            response = ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+        return response;
     }
     
     // Search by name
@@ -137,7 +166,13 @@ public class UsersController {
     public ResponseEntity<?> searchByName(@PathVariable("name") String name)
             throws NotFoundException
     {
-        List<UserDTOResponse> userResponse = usersService.searchByName(name);
-        return ResponseEntity.ok(userResponse);
+        ResponseEntity<?> response;
+        try{
+            List<UserDTOResponse> userResponse = usersService.searchByName(name);
+            return ResponseEntity.ok(userResponse);
+        }catch (NotFoundException e){
+            response = ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+        return response;
     }
 }

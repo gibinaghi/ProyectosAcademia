@@ -1,4 +1,5 @@
 import axios from 'axios';
+import moment from 'moment';
 
 const API_URL = process.env.REACT_APP_APPIS_DEFAULT_URL;
 
@@ -15,8 +16,8 @@ class LendingService {
                 'Content-Type': 'application/json'
             },
             data: {
-                "date_out": "2022-09-23",
-                "date_return": "2022-09-24"
+                "date_out": moment().format('DD/MM/YYYY'),
+                "date_return": moment().add(15, 'days').format('DD/MM/YYYY')
             }
         });;
     }
