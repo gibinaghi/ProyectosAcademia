@@ -3,7 +3,6 @@ package com.ayi.curso.rest.serv.ayispringrestful.controller;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.LendingCreateDTORequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.LendingDTOResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
-import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
 import com.ayi.curso.rest.serv.ayispringrestful.service.LendingService;
 import io.swagger.annotations.*;

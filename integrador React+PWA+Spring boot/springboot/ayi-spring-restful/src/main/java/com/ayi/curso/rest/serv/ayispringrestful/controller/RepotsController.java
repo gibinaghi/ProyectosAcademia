@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,8 +49,16 @@ public class RepotsController {
     })
     public ResponseEntity<?> getAllReports() throws NotFoundException, InternalException
     {
-        List<LendingDTOResponse> lendResponse = reportService.getAllReports();
-        return ResponseEntity.ok(lendResponse );
+        ResponseEntity<?> response;
+        try {
+            List<LendingDTOResponse> lendResponse = reportService.getAllReports();
+            return ResponseEntity.ok(lendResponse );
+        }catch (InternalException e){
+            response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        } catch (NotFoundException e){
+            response = ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+        return response;
     }
 
 

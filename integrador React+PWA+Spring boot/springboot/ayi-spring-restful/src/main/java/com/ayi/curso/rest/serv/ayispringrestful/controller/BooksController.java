@@ -3,7 +3,6 @@ package com.ayi.curso.rest.serv.ayispringrestful.controller;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.BookCreateDTORequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.request.BookUpdateDTORequest;
 import com.ayi.curso.rest.serv.ayispringrestful.dto.response.BookDTOResponse;
-import com.ayi.curso.rest.serv.ayispringrestful.dto.response.UserDTOResponse;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.BadRequestException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.InternalException;
 import com.ayi.curso.rest.serv.ayispringrestful.exceptions.NotFoundException;
@@ -46,8 +45,16 @@ public class BooksController {
     })
     public ResponseEntity<?> fetchBookList() throws NotFoundException, InternalException
     {
-        List<BookDTOResponse> bookResponse = booksService.fetchBookList();
-        return ResponseEntity.ok(bookResponse );
+        ResponseEntity<?> response;
+        try {
+            List<BookDTOResponse> bookResponse = booksService.fetchBookList();
+            return ResponseEntity.ok(bookResponse );
+        }catch (InternalException e){
+            response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        } catch (NotFoundException e){
+            response = ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+        return response;
     }
     
     // Create
@@ -67,12 +74,18 @@ public class BooksController {
             @ApiResponse(code = 400,
                     message = "Describes errors on invalid payload received, e.g: missing fields, invalid data form")
     })
-    public ResponseEntity<BookDTOResponse> createBook(
+    public ResponseEntity<?> createBook(
             @ApiParam(value = "data of book", required = true)
             @RequestBody BookCreateDTORequest request
     ) throws BadRequestException {
-        BookDTOResponse bookResponse = booksService.createBook(request);
-        return new ResponseEntity<>(bookResponse, HttpStatus.CREATED);
+        ResponseEntity<?> response;
+        try {
+            BookDTOResponse bookResponse = booksService.createBook(request);
+            return new ResponseEntity<>(bookResponse, HttpStatus.CREATED);
+        } catch (BadRequestException e) {
+            response = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+        return response;
     }
 
     // Update
@@ -92,12 +105,18 @@ public class BooksController {
             @ApiResponse(code = 400,
                     message = "Describes errors on invalid payload received, e.g: missing fields, invalid data form")
     })
-    public ResponseEntity<BookDTOResponse> updateBook(
+    public ResponseEntity<?> updateBook(
             @RequestBody BookUpdateDTORequest book,
             @PathVariable("id") Long id
     ) throws BadRequestException {
-        BookDTOResponse bookResponse = booksService.updateBook(book, id);
-        return ResponseEntity.ok(bookResponse);
+        ResponseEntity<?> response;
+        try {
+            BookDTOResponse bookResponse = booksService.updateBook(book, id);
+            return ResponseEntity.ok(bookResponse);
+        } catch (BadRequestException e) {
+            response = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+        return response;
     }
 
     // Delete
@@ -112,12 +131,22 @@ public class BooksController {
             @ApiResponse(code = 400 , message = "Bad request/Invalid field"),
             @ApiResponse(code = 500, message = "Internal error")
     })
-    public ResponseEntity<Void> deleteBook(
+    public ResponseEntity<?> deleteBook(
             @ApiParam(name = "id", required = true, value = "Book Id", example = "1")
             @PathVariable Long id
     ) throws BadRequestException, NotFoundException, InternalException {
-        booksService.deleteBook(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        ResponseEntity<?> response;
+        try {
+            booksService.deleteBook(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        } catch (BadRequestException e) {
+            response = ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }catch (InternalException e){
+            response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        } catch (NotFoundException e){
+            response = ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+        return response;
     }
 
     // Search by title
@@ -138,8 +167,14 @@ public class BooksController {
             throws NotFoundException
 
     {
-        List<BookDTOResponse> bookResponse = booksService.searchByTitle(title);
-        return ResponseEntity.ok(bookResponse);
+        ResponseEntity<?> response;
+        try {
+            List<BookDTOResponse> bookResponse = booksService.searchByTitle(title);
+            return ResponseEntity.ok(bookResponse);
+        } catch (NotFoundException e){
+            response = ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+        return response;
     }
 
 }
