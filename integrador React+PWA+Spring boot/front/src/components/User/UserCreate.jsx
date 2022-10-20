@@ -2,13 +2,13 @@ import React, { useState }  from 'react'
 import UserService from '../../service/UserService';
 import setTime from '../util/reloadPage';
 
-function createUser(userCreate) {
-  const res = UserService.createUser(userCreate)
+async function createUser(userCreate) {
+  const res = await UserService.createUser(userCreate)
   if(res.response.status === 201){
-    window.alert('Usuario eliminado correctamente')
+    window.alert('Usuario creado correctamente')
     setTime(5000);
-  } else if (res.response.status === 400) {
-    window.alert('No se pudo eliminar el usuario')
+  } else {
+    window.alert('No se pudo crear el usuario')
     setTime(5000);
   }
 }

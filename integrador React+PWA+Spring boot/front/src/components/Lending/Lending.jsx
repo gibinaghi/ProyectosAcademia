@@ -4,15 +4,17 @@ import libroImg from '../../assets/img/prestamo.png';
 import '../../assets/styles/Lending.css';
 import '../../assets/styles/StyleGeneral.css';
 import LendingService from '../../service/LendingService';
+import setTime from '../util/reloadPage';
 
-function creationLending(userId, bookId) {
-  LendingService.createLendingNew(userId, bookId)
-  .then(response => {
-    this.Info = JSON.parse(response.data);
-  })
-  .catch(error => {
-    console.log(error);
-  });
+async function creationLending(userId, bookId) {
+  const res = await LendingService.createLendingNew(userId, bookId)
+  if(res.response.status === 201){
+    window.confirm('Usuario creado correctamente')
+    setTime(5000);
+  } else {
+    window.confirm('No se pudo crear el usuario')
+    setTime(5000);
+  }
 
 }
 

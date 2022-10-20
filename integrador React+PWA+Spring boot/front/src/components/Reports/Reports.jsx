@@ -2,16 +2,16 @@ import React, { useEffect, useState }  from 'react'
 import '../../assets/styles/StyleGeneral.css';
 import LendingService from '../../service/LendingService';
 
-function showReports() {
-      LendingService.getAllLendings();
+async function showReports() {
+      await LendingService.getAllLendings();
       window.location.replace('');
 }
 
-function deleteLending(id) {
+async function deleteLending(id) {
   const response = window.confirm('¿Seguro de que quiere eliminar el préstamo?');
   if (response) {
-      const res = LendingService.returnLending(id) 
-      if(res.response.status === 200) {
+      const res = await LendingService.returnLending(id) 
+      if(res.response.status === 204) {
         window.location.reload();
       }
   }

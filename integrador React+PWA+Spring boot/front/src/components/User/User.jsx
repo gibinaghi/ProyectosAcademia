@@ -4,11 +4,11 @@ import { Link } from "react-router-dom";
 import UserService from '../../service/UserService';
 import setTime from '../util/reloadPage';
 
-function deleteUser(id) {
+async function deleteUser(id) {
   const response = window.confirm('¿Seguro de que quiere eliminar el usuario?');
   if (response) {
-      const res = UserService.deleteUser(id)
-      if(res.response.status === 200) {
+      const res = await UserService.deleteUser(id)
+      if(res.response.status === 204) {
         window.alert('Usuario eliminado correctamente')
       } else {
         window.alert('No se pudo eliminar el usuario')
@@ -17,8 +17,15 @@ function deleteUser(id) {
   }
 }
 
-function searchUser(word) {
-    UserService.searchUser(word)
+async function searchUser(word) {
+    const res = await UserService.searchUser(word)
+    console.log(res)
+    if(res.response.status === 200) {
+      window.alert('Se ha encontrado')
+    } else {
+      window.alert('No  se ha encontrado')
+    }
+    setTime(5000);
 }
 
 function User() {

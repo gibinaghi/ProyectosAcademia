@@ -19,8 +19,14 @@ class BookService {
         return axios.delete(API_URL + '/book/' + id);
     }
 
-    searchBook(title) {
-        return axios.get(API_URL + '/book/' + title);
+    async searchBook(title) {
+        return await axios({
+            method: 'GET',
+            url: API_URL + `/books/${title}`,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });;
     }
 }
 

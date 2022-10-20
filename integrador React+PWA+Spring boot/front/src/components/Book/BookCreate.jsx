@@ -1,10 +1,15 @@
 import React, { useState } from 'react'
 import BookService from '../../service/BookService';
+import setTime from '../util/reloadPage';
 
-function createBook(bookCreate) {
-  const res = BookService.createBook(bookCreate)
-  if(res.response.status === 201) {
-    window.location.reload();
+async function createBook(bookCreate) {
+  const res = await BookService.createBook(bookCreate)
+  if(res.response.status === 201){
+    window.alert('Libro creado correctamente')
+    setTime(5000);
+  } else {
+    window.alert('No se pudo crear el libro')
+    setTime(5000);
   }
 }
 

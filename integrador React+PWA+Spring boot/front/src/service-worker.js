@@ -28,7 +28,10 @@ const APP_SHELL = [
   '/index.html'
 ]; //aca puede ir alguna imagen de static, del build, todos los logos
 
-const APP_SHELL_INMUTABLE = []; //aca pueden ir las fuentes del css
+const APP_SHELL_INMUTABLE = [
+  'https://fonts.googleapis.com/css2?family=Comforter+Brush&family=Crimson+Text:ital@1&display=swap',
+  'https://fonts.googleapis.com/css2?family=Comforter+Brush&display=swap'
+]; //aca pueden ir las fuentes del css
 
 self.addEventListener('install', e => {
   const promiseStatic = caches.open(CACHE_STATIC).then(cache => cache.addAll(APP_SHELL));

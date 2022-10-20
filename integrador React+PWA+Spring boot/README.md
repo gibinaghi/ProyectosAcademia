@@ -23,6 +23,8 @@
 - Para importar la colección de Postman ir a resourses/Postman. Ahí encontrará todos los endpoint para probar en el BE.
 - Probar el search Users en el siguiente endpoint en Postman. FE no implementado. `http://localhost:8080/api/users/campoabusacardenombre`
 - Probar el search Books en el siguiente endpoint en Postman. FE no implementado. `http://localhost:8080/api/books/campoabusacardetítulo`
+- Probar el update User en el siguiente endpoint en Postman. FE no implementado. `http://localhost:8080/api/user/userId`
+- Probar el update Books en el siguiente endpoint en Postman. FE no implementado. `http://localhost:8080/api/book/bookId`
 
 
 

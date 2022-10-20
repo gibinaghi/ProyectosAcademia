@@ -20,7 +20,13 @@ class UserService {
     }
 
     async searchUser(name) {
-        return await axios.get(API_URL + '/user/' + name);
+        return await axios({
+            method: 'GET',
+            url: API_URL + `/users/${name}`,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        });;
     }
 }
 

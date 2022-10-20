@@ -2,20 +2,30 @@ import React, { useEffect, useState } from 'react'
 import '../../assets/styles/StyleGeneral.css';
 import { Link } from "react-router-dom";
 import BookService from '../../service/BookService';
+import setTime from '../util/reloadPage';
 
-function deleteBook(id) {
+async function deleteBook(id) {
   const response = window.confirm('¿Seguro de que quiere eliminar el libro?');
   if (response) {
-      const res = BookService.deleteBook(id)
-      if(res.response.status === 200){
-        window.location.reload();
+      const res = await  BookService.deleteBook(id)
+      if(res.response.status === 204) {
+        window.alert('Usuario eliminado correctamente')
+      } else {
+        window.alert('No se pudo eliminar el usuario')
       }
+      setTime(5000);
   }
 }
 
-function searchUser(word) {
-  const res = BookService.searchUser(word)
+async function searchBook(word) {
+  const res = await BookService.searchBook(word)
   console.log(res)
+  if(res.response.status === 200) {
+    window.alert('Se ha encontrado')
+  } else {
+    window.alert('No  se ha encontrado')
+  }
+  setTime(5000);
 }
 
 function Book() {
@@ -50,7 +60,7 @@ function Book() {
         onChange={handleChange}
       />
       <div class="input-group-append">
-        <button class="btn btn-primary action search" type="button" onClick={() => searchUser(word)}>
+        <button class="btn btn-primary action search" type="button" onClick={() => searchBook(word)}>
           Buscar
         </button>
       </div>
